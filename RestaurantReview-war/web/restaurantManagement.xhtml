@@ -21,25 +21,25 @@
                 &nbsp;
                 <br />
                 <br />
-                
+
                 <p:outputLabel value="Email: " />&nbsp;
                 <h:outputText value="#{restaurantManagedBean.currentRestaurant.email}">
                 </h:outputText>
                 &nbsp;
                 <br />
                 <br />
-                
+
                 <p:outputLabel for="name" value="Name: " />&nbsp;
                 <p:inputText id="name" value="#{restaurantManagedBean.currentRestaurant.name}" required="true" requiredMessage="Name is required">
-                <f:validateLength minimum="1" />
+                    <f:validateLength minimum="1" />
                 </p:inputText>
                 <p:message for="name" />
                 &nbsp;
                 <br />
                 <br />
-                
-                
-                
+
+
+
                 <p:outputLabel for="address" value="Address: " />&nbsp;
                 <p:inputText id="address" value="#{restaurantManagedBean.currentRestaurant.address}" required="true" requiredMessage="Restaurant address is required">
                     <f:validateLength minimum="1" />
@@ -108,15 +108,15 @@
                 &nbsp;
                 <br />
                 <br />
-                
+
                 <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
-                    
-                    
+
+
                     <p:outputLabel value="Add New Bank Account" />&nbsp;
                     <br />
                     <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
                     <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.newBankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
-                    <f:validateLength minimum="1" />
+                        <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="bankAccountNumber" />
                     &nbsp;
@@ -124,7 +124,7 @@
 
                     <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
                     <p:inputText id="nameOfBank" value="#{restaurantManagedBean.newBankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
-                    <f:validateLength minimum="1" />
+                        <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="nameOfBank" />
                     &nbsp;
@@ -132,82 +132,84 @@
 
                     <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
                     <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.newBankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
-                    <f:validateLength minimum="1" />
+                        <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="nameOfOwner" />
                     &nbsp;
                     <br />
                     <br />
-                    
-                    <p:messages id="messagesRegisterBankAccount" redisplay="false" closable="true" />
-                    
+
                     <p:commandButton id="createBankAccount" value="Create" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
                 </p:panel>
-                
-                
-                
-                
+
+
+
+
 
                 <p:outputLabel for="openTime" value="Open time: " />&nbsp;
                 <p:selectOneMenu id="openTime" value="#{restaurantManagedBean.currentRestaurant.openTime}">
-                     <f:selectItem itemLabel="12am" itemValue="0"/> 
-                     <f:selectItem itemLabel="1am" itemValue="1"/>
-                     <f:selectItem itemLabel="2am" itemValue="2"/>
-                     <f:selectItem itemLabel="3am" itemValue="3"/>
-                     <f:selectItem itemLabel="4am" itemValue="4"/>
-                     <f:selectItem itemLabel="5am" itemValue="5"/>
-                     <f:selectItem itemLabel="6am" itemValue="6"/>
-                     <f:selectItem itemLabel="7am" itemValue="7"/>
-                     <f:selectItem itemLabel="8am" itemValue="8"/>
-                     <f:selectItem itemLabel="9am" itemValue="9"/>
-                     <f:selectItem itemLabel="10am" itemValue="10"/>
-                     <f:selectItem itemLabel="11am" itemValue="11"/>
-                     <f:selectItem itemLabel="12pm" itemValue="12"/>
-                     <f:selectItem itemLabel="1pm" itemValue="13"/>
-                     <f:selectItem itemLabel="2pm" itemValue="14"/>
-                     <f:selectItem itemLabel="3pm" itemValue="15"/>
-                     <f:selectItem itemLabel="4pm" itemValue="16"/>
-                     <f:selectItem itemLabel="5pm" itemValue="17"/>
-                     <f:selectItem itemLabel="6pm" itemValue="18"/>
-                     <f:selectItem itemLabel="7pm" itemValue="19"/>
-                     <f:selectItem itemLabel="8pm" itemValue="20"/>
-                     <f:selectItem itemLabel="9pm" itemValue="21"/>
-                     <f:selectItem itemLabel="10pm" itemValue="22"/>
-                     <f:selectItem itemLabel="11pm" itemValue="23"/>
+                    <f:selectItem itemLabel="12am" itemValue="0"/> 
+                    <f:selectItem itemLabel="1am" itemValue="1"/>
+                    <f:selectItem itemLabel="2am" itemValue="2"/>
+                    <f:selectItem itemLabel="3am" itemValue="3"/>
+                    <f:selectItem itemLabel="4am" itemValue="4"/>
+                    <f:selectItem itemLabel="5am" itemValue="5"/>
+                    <f:selectItem itemLabel="6am" itemValue="6"/>
+                    <f:selectItem itemLabel="7am" itemValue="7"/>
+                    <f:selectItem itemLabel="8am" itemValue="8"/>
+                    <f:selectItem itemLabel="9am" itemValue="9"/>
+                    <f:selectItem itemLabel="10am" itemValue="10"/>
+                    <f:selectItem itemLabel="11am" itemValue="11"/>
+                    <f:selectItem itemLabel="12pm" itemValue="12"/>
+                    <f:selectItem itemLabel="1pm" itemValue="13"/>
+                    <f:selectItem itemLabel="2pm" itemValue="14"/>
+                    <f:selectItem itemLabel="3pm" itemValue="15"/>
+                    <f:selectItem itemLabel="4pm" itemValue="16"/>
+                    <f:selectItem itemLabel="5pm" itemValue="17"/>
+                    <f:selectItem itemLabel="6pm" itemValue="18"/>
+                    <f:selectItem itemLabel="7pm" itemValue="19"/>
+                    <f:selectItem itemLabel="8pm" itemValue="20"/>
+                    <f:selectItem itemLabel="9pm" itemValue="21"/>
+                    <f:selectItem itemLabel="10pm" itemValue="22"/>
+                    <f:selectItem itemLabel="11pm" itemValue="23"/>
                 </p:selectOneMenu> 
                 <br />
                 <br />
 
                 <p:outputLabel for="closeTime" value="Close time: " />&nbsp;
                 <p:selectOneMenu id="closeTime" value="#{restaurantManagedBean.currentRestaurant.closeTime}">
-                     <f:selectItem itemLabel="12am" itemValue="0"/> 
-                     <f:selectItem itemLabel="1am" itemValue="1"/>
-                     <f:selectItem itemLabel="2am" itemValue="2"/>
-                     <f:selectItem itemLabel="3am" itemValue="3"/>
-                     <f:selectItem itemLabel="4am" itemValue="4"/>
-                     <f:selectItem itemLabel="5am" itemValue="5"/>
-                     <f:selectItem itemLabel="6am" itemValue="6"/>
-                     <f:selectItem itemLabel="7am" itemValue="7"/>
-                     <f:selectItem itemLabel="8am" itemValue="8"/>
-                     <f:selectItem itemLabel="9am" itemValue="9"/>
-                     <f:selectItem itemLabel="10am" itemValue="10"/>
-                     <f:selectItem itemLabel="11am" itemValue="11"/>
-                     <f:selectItem itemLabel="12pm" itemValue="12"/>
-                     <f:selectItem itemLabel="1pm" itemValue="13"/>
-                     <f:selectItem itemLabel="2pm" itemValue="14"/>
-                     <f:selectItem itemLabel="3pm" itemValue="15"/>
-                     <f:selectItem itemLabel="4pm" itemValue="16"/>
-                     <f:selectItem itemLabel="5pm" itemValue="17"/>
-                     <f:selectItem itemLabel="6pm" itemValue="18"/>
-                     <f:selectItem itemLabel="7pm" itemValue="19"/>
-                     <f:selectItem itemLabel="8pm" itemValue="20"/>
-                     <f:selectItem itemLabel="9pm" itemValue="21"/>
-                     <f:selectItem itemLabel="10pm" itemValue="22"/>
-                     <f:selectItem itemLabel="11pm" itemValue="23"/>
+                    <f:selectItem itemLabel="12am" itemValue="0"/> 
+                    <f:selectItem itemLabel="1am" itemValue="1"/>
+                    <f:selectItem itemLabel="2am" itemValue="2"/>
+                    <f:selectItem itemLabel="3am" itemValue="3"/>
+                    <f:selectItem itemLabel="4am" itemValue="4"/>
+                    <f:selectItem itemLabel="5am" itemValue="5"/>
+                    <f:selectItem itemLabel="6am" itemValue="6"/>
+                    <f:selectItem itemLabel="7am" itemValue="7"/>
+                    <f:selectItem itemLabel="8am" itemValue="8"/>
+                    <f:selectItem itemLabel="9am" itemValue="9"/>
+                    <f:selectItem itemLabel="10am" itemValue="10"/>
+                    <f:selectItem itemLabel="11am" itemValue="11"/>
+                    <f:selectItem itemLabel="12pm" itemValue="12"/>
+                    <f:selectItem itemLabel="1pm" itemValue="13"/>
+                    <f:selectItem itemLabel="2pm" itemValue="14"/>
+                    <f:selectItem itemLabel="3pm" itemValue="15"/>
+                    <f:selectItem itemLabel="4pm" itemValue="16"/>
+                    <f:selectItem itemLabel="5pm" itemValue="17"/>
+                    <f:selectItem itemLabel="6pm" itemValue="18"/>
+                    <f:selectItem itemLabel="7pm" itemValue="19"/>
+                    <f:selectItem itemLabel="8pm" itemValue="20"/>
+                    <f:selectItem itemLabel="9pm" itemValue="21"/>
+                    <f:selectItem itemLabel="10pm" itemValue="22"/>
+                    <f:selectItem itemLabel="11pm" itemValue="23"/>
                 </p:selectOneMenu>
                 <br />
                 <br />
-               
+
+                <p:galleria value="#{restaurantManagedBean.currentRestaurant.photos}" var="image" panelWidth="500" panelHeight="313">
+                    <p:graphicImage value="#{image}" width="100%"/>
+                </p:galleria>
+
 
                 <p:commandButton id="update" value="Update" actionListener="#{restaurantManagedBean.updateRestaurant}" update="@form formUpdateRestaurant"/>
 
