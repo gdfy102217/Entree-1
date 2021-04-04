@@ -45,7 +45,7 @@ public class Review implements Serializable {
     
     @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date timeStamp;
+    private Date timeOfCreation;
     
     @ManyToOne
     private Customer creater;
@@ -68,7 +68,7 @@ public class Review implements Serializable {
         this.rating = rating;
         this.photos = photos;
         this.numOfLikes = 0;
-        this.timeStamp = new Date();
+        this.timeOfCreation = new Date();
     }
     
     
@@ -171,12 +171,12 @@ public class Review implements Serializable {
         return "entity.Review[ id=" + reviewId + " ]";
     }
 
-    public Date getTimeStamp() {
-        return timeStamp;
+    public Date getTimeOfCreation() {
+        return timeOfCreation;
     }
 
-    public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimeOfCreation(Date timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
     }
     
 }

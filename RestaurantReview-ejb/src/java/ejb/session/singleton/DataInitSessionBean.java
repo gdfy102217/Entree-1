@@ -88,11 +88,11 @@ public class DataInitSessionBean {
         {
             initializeVoucherData();
         }
-//        if(em.find(CustomerVoucher.class, 1l) == null)
-//        {
-//            initializeCustomerVoucherData();
-//        }
-//            
+        if(em.find(CustomerVoucher.class, 1l) == null)
+        {
+            initializeCustomerVoucherData();
+        }
+            
     
     }
     

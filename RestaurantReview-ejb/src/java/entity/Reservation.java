@@ -41,7 +41,7 @@ public class Reservation implements Serializable {
     @NotNull
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date timetstamp;
+    private Date timeOfCreation;
     
     @NotNull
     @Column(nullable = false )
@@ -65,9 +65,9 @@ public class Reservation implements Serializable {
     public Reservation() {
     }
 
-    public Reservation(Date reservationTime, Date timetstamp, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
+    public Reservation(Date reservationTime, Date timeOfCreation, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
         this.reservationTime = reservationTime;
-        this.timetstamp = timetstamp;
+        this.timeOfCreation = timeOfCreation;
         this.numOfPax = numOfPax;
         this.tableSizeAssigned = tableSizeAssigned;
         this.remark = remark;
@@ -91,12 +91,12 @@ public class Reservation implements Serializable {
         this.reservationTime = reservationTime;
     }
 
-    public Date getTimetstamp() {
-        return timetstamp;
+    public Date getTimeOfCreation() {
+        return timeOfCreation;
     }
 
-    public void setTimetstamp(Date timetstamp) {
-        this.timetstamp = timetstamp;
+    public void setTimeOfCreation(Date timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
     }
 
     public Integer getNumOfPax() {
