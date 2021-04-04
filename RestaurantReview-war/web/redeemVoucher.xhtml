@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      template="./template/defaultTemplate.xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <ui:define name="content">
+        
+        <h1>Redeem Voucher</h1>
+        
+        <h:form id="redeemVoucherForm" rendered="#{sessionScope.isLogin == true}">
+            <p:messages id="messagesRedeemVoucher" redisplay="false" />
+            
+            <h:panelGrid>
+                <h:head>Enter 6 digit voucher code: </h:head>&nbsp;
+                <p:inputText id="code" label="code" value="#{redeemVoucherManagedBean.sixDigitCode}" required="true" requiredMessage="Six digit is required" >
+                    <f:validateLength minimum="6" maximum="6"/>
+                </p:inputText>
+                    <p:message for="code" id="msgCode"/>
+            </h:panelGrid>
+            
+            <p:commandButton value="Redeem" update="redeemVoucherForm" actionListener="#{redeemVoucherManagedBean.redeemVoucher}" style="margin-top: 20px"/>
+        </h:form>
+        
+    </ui:define>
+    
+</ui:composition>

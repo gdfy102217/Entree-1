@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      template="../template/defaultTemplate.xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    
+    <ui:define name="content">
+        
+        <h1>View My Dishes</h1>
+        
+        <h:form>
+            <p:commandButton value="Create New Dish" onclick="PF('dialogCreateNewDish').show()" icon="pi pi-plus" />
+        </h:form>
+        
+        <h:form id="formAllDishes" rendered="#{sessionScope.isLogin == true}">
+            
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <p:dataTable id="dataTableAllDishes" widgetVar="dataTableAllDishes" value="#{dishManagementManagedBean.dishes}" var="dish" rowKey="#{dish.dishId}" rowIndexVar="row"
+                         filteredValue="#{dishManagementManagedBean.filteredDishes}"
+                         rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: right;">
+                        <h:outputText value="Search all fields:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllDishes').filter()" style="width:300px" placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="Dish ID" sortBy="#{dish.dishId}" filterBy="#{dish.dishId}" filterMatchMode="contains">
+                    <h:outputText value="#{dish.dishId}" />
+                </p:column>                            
+
+                <p:column headerText="Name" sortBy="#{dish.name}" filterBy="#{dish.name}" filterMatchMode="contains">
+                    <h:outputText value="#{dish.name}" />
+                </p:column>
+
+                <p:column headerText="Description" sortBy="#{dish.description}" filterBy="#{dish.description}" filterMatchMode="contains">
+                    <h:outputText value="#{dish.description}" />
+                </p:column>
+
+                <p:column headerText="Photo" sortBy="#{dish.photo}" filterBy="#{dish.photo}" filterMatchMode="contains">
+                    <h:outputText value="#{dish.photo}" />
+                </p:column>
+
+                <p:column headerText="Price" sortBy="#{dish.price}" filterBy="#{dish.price}" filterMatchMode="contains" style="text-align: right;">
+                    <h:outputText value="#{dish.price}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Action" >
+                    <p:commandButton oncomplete="PF('dialogViewDish').show()" icon="ui-icon-document" title="View">
+                        <f:setPropertyActionListener value="#{dish}" target="#{dishManagementManagedBean.dishToView}" />
+                    </p:commandButton>
+                    <p:commandButton actionListener="#{dishManagementManagedBean.doUpdateDish}" update="formUpdateDish" oncomplete="PF('dialogUpdateDish').show()" icon="ui-icon-pencil" title="Update">
+                        <f:attribute name="dishToUpdate" value="#{dish}" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-trash" actionListener="#{dishManagementManagedBean.deleteDish}" update="formAllDishes:dataTableAllDishes formAllDishes:messages">
+                        <f:attribute name="dishToDelete" value="#{dish}" />
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete #{dish.name}?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+        </h:form>
+        
+        <h:form id="formCreateNewDish">
+
+            <p:dialog id="dialogCreateNewDish" widgetVar="dialogCreateNewDish" header="Create New Dish" closable="true">
+
+                <p:messages id="messagesCreateNewDish" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{dishManagementManagedBean.newDish.name}" placeholder="Dish 1" required="true" requiredMessage="Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="description" value="Description " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="description" value="#{dishManagementManagedBean.newDish.description}" placeholder="Dish 1" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="photo" value="Photo " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="photo" value="#{dishManagementManagedBean.newDish.photo}" placeholder="nth" required="true" requiredMessage="Photo is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="photo" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="price" value="Price " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>                            
+                            <p:spinner id="price" value="#{dishManagementManagedBean.newDish.price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="price" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="recommended" value="Recommended " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneRadio id="recommended" value="#{dishManagementManagedBean.newDish.recommended}">
+                                <f:selectItem itemLabel="Yes" itemValue="#{true}"/>
+                                <f:selectItem itemLabel="No" itemValue="#{false}"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                        <p:column>
+                            <p:message for="recommended" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton  value="Create New Dish" update="@form formAllDishes:dataTableAllDishes" actionListener="#{dishManagementManagedBean.createNewDish}" oncomplete="PF('dialogCreateNewDish').show();" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+        
+        <p:dialog id="dialogViewDish" widgetVar="dialogViewDish" header="View Dish Photo" closable="true">
+            <h:outputLabel value="Photo: " />
+            <h:outputText value="#{dish.photo}" />
+        </p:dialog>
+
+        <h:form id="formUpdateDish">
+
+            <p:dialog id="dialogUpdateDish" widgetVar="dialogUpdateDish" header="Update Dish" closable="true">
+
+                <p:messages id="messagesUpdateDish" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Dish ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{dishManagementManagedBean.dishToUpdate.dishId}" />
+                        </p:column>
+                        <p:column>
+                            &nbsp;
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{dishManagementManagedBean.dishToUpdate.name}" required="true" requiredMessage="Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="description" value="Description " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="description" value="#{dishManagementManagedBean.dishToUpdate.description}" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="photo" value="Photo " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="photo" value="#{dishManagementManagedBean.dishToUpdate.photo}" required="true" requiredMessage="Photo is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="photo" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="price" value="Price " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="price" value="#{dishManagementManagedBean.dishToUpdate.price}" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="price" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Update Dish" update="@form formAllDishes:dataTableAllDishes" actionListener="#{dishManagementManagedBean.updateDish}" oncomplete="PF('dialogUpdateDish').show();" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+        
+    </ui:define>
+    
+    
+</ui:composition>

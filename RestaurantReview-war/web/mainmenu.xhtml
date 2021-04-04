@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <nav>
+        <h3>Main Menu</h3>
+        <h:form>
+
+            <p:menu style="width:200px;">	
+                
+                <p:submenu label="System">
+                    <p:menuitem value ="Home" outcome="/index.xhtml" icon="pi pi-home"/>                   
+                </p:submenu>
+                
+                <p:submenu label="Account" rendered="#{sessionScope.isLogin == true}">
+                    <p:menuitem value="View Account Details" outcome="/restaurantManagement.xhtml" icon="pi pi-id-card"/>
+                    <p:menuitem value="View Dishes" outcome="/RestaurantAdministration/dishManagement.xhtml" icon="pi pi-tags"/>
+                    <p:menuitem value="Change Password" outcome="/restaurantManagement.xhtml" icon="pi pi-lock"/>
+                    
+                </p:submenu>
+                
+                <p:submenu label="Operation" rendered="#{sessionScope.isLogin == true}">
+                    <p:menuitem value="View Reservations" outcome="/reservation.xhtml" icon="pi pi-calendar"/>
+                    <p:menuitem value="View Promotions" outcome="/promotion.xhtml" icon="pi pi-tag" />
+                    <p:menuitem value="Redeem Voucher" outcome="/redeemVoucher.xhtml" icon="pi pi-ticket"/>
+                </p:submenu>
+                
+       
+
+            </p:menu>
+        </h:form>
+    </nav>
+
+
+</ui:composition>
