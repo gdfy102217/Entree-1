@@ -74,7 +74,7 @@ public class Restaurant extends User implements Serializable {
     @OneToMany(mappedBy = "restaurant")
     private List<Promotion> promotions;
     
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "receiver")
     private List<Review> reviews;
     
     @OneToMany(mappedBy = "restaurant")

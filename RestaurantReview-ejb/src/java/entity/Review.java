@@ -34,8 +34,6 @@ public class Review implements Serializable {
     @Column(nullable = false)
     private String content;
     
-    @NotNull
-    @Column(nullable = false)
     @Digits(integer = 1, fraction = 0)
     private Integer rating;
     
@@ -51,7 +49,7 @@ public class Review implements Serializable {
     private Customer creater;
     
     @ManyToOne
-    private Restaurant restaurant;
+    private User receiver;
     
     @OneToMany(mappedBy = "originalReview")
     private List<Review> replies;
@@ -68,7 +66,7 @@ public class Review implements Serializable {
         this.rating = rating;
         this.photos = photos;
         this.numOfLikes = 0;
-        this.timeOfCreation = new Date();
+        this.timeOfCreation = new Date(new Date().getTime() + 1000);
     }
     
     
@@ -112,23 +110,7 @@ public class Review implements Serializable {
     public void setNumOfLikes(Integer numOfLikes) {
         this.numOfLikes = numOfLikes;
     }
-
-    public Customer getCreater() {
-        return creater;
-    }
-
-    public void setCreater(Customer creater) {
-        this.creater = creater;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
+    
     public List<Review> getReplies() {
         return replies;
     }
@@ -177,6 +159,22 @@ public class Review implements Serializable {
 
     public void setTimeOfCreation(Date timeOfCreation) {
         this.timeOfCreation = timeOfCreation;
+    }
+
+    public Customer getCreater() {
+        return creater;
+    }
+
+    public void setCreater(Customer creater) {
+        this.creater = creater;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
     
 }
