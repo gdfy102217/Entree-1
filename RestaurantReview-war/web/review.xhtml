@@ -39,19 +39,13 @@
                 </p:column>
 
                 <p:column headerText="Created by: " sortBy="#{review.creater.firstName}" filterBy="#{review.creater.firstName}" filterMatchMode="contains">
-                    <h:outputText value="#{review.creater.firstName}" />
+                    <h:outputText value="#{review.creater.firstName} #{review.creater.lastName}" />
                 </p:column>
                 
                 <p:column headerText="Time of Creation" sortBy="#{review.timeOfCreation}" filterBy="#{review.timeOfCreation}" filterMatchMode="contains">
                     <h:outputText value="#{review.timeOfCreation}" >
                         <f:convertDateTime pattern="MM/dd/yyyy"/> 
                     </h:outputText>
-                </p:column>
-                
-                <p:column headerText="Action" >
-                    <p:commandButton actionListener="#{promotionManagedBean.replyReview}" update="formReplyReview" oncomplete="PF('dialogReplyReview').show()" icon="ui-icon-pencil" title="Reply">
-                        <f:attribute name="reviewToReply" value="#{review}" />
-                    </p:commandButton>
                 </p:column>
 
             </p:dataTable>
