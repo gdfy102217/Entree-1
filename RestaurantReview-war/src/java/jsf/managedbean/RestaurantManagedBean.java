@@ -10,6 +10,7 @@ import ejb.session.stateless.RestaurantSessionBeanLocal;
 import entity.BankAccount;
 import entity.Restaurant;
 import entity.TableConfiguration;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -42,6 +43,7 @@ public class RestaurantManagedBean {
     
     private Restaurant currentRestaurant;
     private BankAccount newBankAccount;
+    private String photoToView;
     
     public RestaurantManagedBean() {
     }
@@ -96,6 +98,23 @@ public class RestaurantManagedBean {
 
     public void setNewBankAccount(BankAccount newBankAccount) {
         this.newBankAccount = newBankAccount;
+    }
+
+    public String getPhotoToView() {
+        return photoToView;
+    }
+
+    public void setPhotoToView(String photoToView) {
+        this.photoToView = photoToView;
+    }
+    
+    
+    
+    public void viewPhoto(ActionEvent event) throws IOException{
+        
+        System.out.println("********** viewPhoto():" + photoToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "uploadedFiles/" + photoToView);
+        
     }
     
     
