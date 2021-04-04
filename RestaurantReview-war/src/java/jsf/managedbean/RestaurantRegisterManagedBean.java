@@ -47,9 +47,9 @@ public class RestaurantRegisterManagedBean implements Serializable
     private TableConfiguration newTableConfiguration; 
     
     // To store list of uploaded file path
-    private List<String> filePaths;
+//    private String newFilePath;
     
-    private String newFilePath;
+    private List<String> filePaths;
     
     
     public RestaurantRegisterManagedBean() {
@@ -74,7 +74,7 @@ public class RestaurantRegisterManagedBean implements Serializable
 
 
             getNewRestaurant().setPhotos(filePaths);
-            //getNewRestaurant().setOpenTime(filePaths.size());
+            //getNewRestaurant().setOpenTime(fileNames.size());
             System.out.println("!!!!!!!!!!!!!!!Total file upload: " + filePaths.size());
             Long newRestaurantId = restaurantSessionBeanLocal.createNewRestaurant(getNewRestaurant(), getNewTableConfiguration());
             getNewRestaurant().setUseId(newRestaurantId);
@@ -102,15 +102,25 @@ public class RestaurantRegisterManagedBean implements Serializable
     public void setNewTableConfiguration(TableConfiguration newTableConfiguration) {
         this.newTableConfiguration = newTableConfiguration;
     }
+
+    public List<String> getFilePaths() {
+        return filePaths;
+    }
+
+    public void setFilePaths(List<String> filePaths) {
+        this.filePaths = filePaths;
+    }
+    
+    
     
     public void handleFileUpload(FileUploadEvent event)
     {
         try
         {
             String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-            newRestaurant.getPhotos().add(newFilePath);
+//            newRestaurant.getPhotos().add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
             System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+//            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
             
             // add file path to the list
 //            filePaths.add(newFilePath);
@@ -136,14 +146,14 @@ public class RestaurantRegisterManagedBean implements Serializable
                 a = inputStream.read(buffer);
 
                 if (a < 0)
-                {
+                {                    
                     break;
                 }
-
+                
                 fileOutputStream.write(buffer, 0, a);
                 fileOutputStream.flush();
             }
-
+            filePaths.add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
             fileOutputStream.close();
             inputStream.close();
             
@@ -152,12 +162,6 @@ public class RestaurantRegisterManagedBean implements Serializable
         catch(IOException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
-        }
-        finally
-        {
-            filePaths.add(newFilePath);
-//            newRestaurant.getPhotos().add(newFilePath);
-            System.out.println("File Path size: " + filePaths.size());
         }
     }
     

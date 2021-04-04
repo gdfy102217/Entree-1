@@ -12,8 +12,8 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
-  <!--for Windows uncomment below path-->
-  <!--<property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=C:/glassfish-5.1.0-uploadedfiles"/>-->
-  
-  <property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=/Applications/glassfish-5.1.0-uploadedFiles/uploadedFiles"/>
+<!--  for Windows uncomment below path-->
+  <property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=C:/glassfish-5.1.0-uploadedfiles"/>
+  <!--for MAC uncomment below path and comment out windows path-->
+<!--  <property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=/Applications/glassfish-5.1.0-uploadedFiles/uploadedFiles"/>-->
 </glassfish-web-app>
