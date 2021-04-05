@@ -86,7 +86,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new RestaurantUsernameExistException();
+                        throw new RestaurantUsernameExistException("Username already exists");
                     }
                     else
                     {
