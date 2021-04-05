@@ -13,7 +13,8 @@
             </article>
 
             <h:form id="formUpdateRestaurant"> 
-                <p:messages id="messagesUpdateRestaurant" redisplay="false"/>
+
+                <p:messages id="messages" redisplay="false" closable="true" />
 
                 <p:outputLabel value="Restaurant ID: " />&nbsp;
                 <h:outputText value="#{restaurantManagedBean.currentRestaurant.id}">
@@ -109,39 +110,7 @@
                 <br />
                 <br />
 
-                <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
-
-
-                    <p:outputLabel value="Add New Bank Account" />&nbsp;
-                    <br />
-                    <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
-                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.newBankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
-                        <f:validateLength minimum="1" />
-                    </p:inputText>
-                    <p:message for="bankAccountNumber" />
-                    &nbsp;
-                    <br />
-
-                    <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
-                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.newBankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
-                        <f:validateLength minimum="1" />
-                    </p:inputText>
-                    <p:message for="nameOfBank" />
-                    &nbsp;
-                    <br />
-
-                    <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
-                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.newBankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
-                        <f:validateLength minimum="1" />
-                    </p:inputText>
-                    <p:message for="nameOfOwner" />
-                    &nbsp;
-                    <br />
-                    <br />
-
-                    <p:commandButton id="createBankAccount" value="Create" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
-                </p:panel>
-
+                
 
 
 
@@ -206,13 +175,35 @@
                 <br />
                 <br />
 
+
                 <p:galleria value="#{restaurantManagedBean.currentRestaurant.photos}" var="image" panelWidth="500" panelHeight="313">
                     <p:graphicImage value="#{image}" width="100%"/>
                 </p:galleria>
+                <br />
+
+                <p:commandButton icon="ui-icon-trash" value="Delete Photos" actionListener="#{restaurantManagedBean.deletePhoto}" update="@form formUpdateRestaurant">
+                    <p:confirm header="Confirmation" message="Are you sure you want to delete all the current restaurant photos?" icon="ui-icon-alert" />
+                </p:commandButton>
+
+                
+                <br />
+                <br />
+
+                <p:outputLabel value="Upload Photos: (max 5 photos)" />&nbsp;
+                <br />
+
+
+                <p:fileUpload listener="#{restaurantManagedBean.handleFileUpload}" multiple="true" />
+                &nbsp;
 
 
                 <p:commandButton id="update" value="Update" actionListener="#{restaurantManagedBean.updateRestaurant}" update="@form formUpdateRestaurant"/>
 
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+                
             </h:form> 
         </h:panelGroup>
     </ui:define>

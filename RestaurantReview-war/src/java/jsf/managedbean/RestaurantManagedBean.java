@@ -10,7 +10,13 @@ import ejb.session.stateless.RestaurantSessionBeanLocal;
 import entity.BankAccount;
 import entity.Restaurant;
 import entity.TableConfiguration;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -20,6 +26,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
+import org.primefaces.event.FileUploadEvent;
 import util.exception.BankAccountExistException;
 import util.exception.BankAccountNotFoundException;
 import util.exception.CreateNewBankAccountException;
@@ -31,8 +39,8 @@ import util.exception.UnknownPersistenceException;
 
 
 @Named(value = "restaurantManagedBean")
-@RequestScoped
-public class RestaurantManagedBean {
+@ViewScoped
+public class RestaurantManagedBean implements Serializable {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -43,7 +51,6 @@ public class RestaurantManagedBean {
     
     private Restaurant currentRestaurant;
     private BankAccount newBankAccount;
-    private String photoToView;
     
     public RestaurantManagedBean() {
     }
@@ -99,24 +106,64 @@ public class RestaurantManagedBean {
     public void setNewBankAccount(BankAccount newBankAccount) {
         this.newBankAccount = newBankAccount;
     }
-
-    public String getPhotoToView() {
-        return photoToView;
-    }
-
-    public void setPhotoToView(String photoToView) {
-        this.photoToView = photoToView;
-    }
     
-    
-    
-    public void viewPhoto(ActionEvent event) throws IOException{
+    public void deletePhoto(ActionEvent event){
+        System.out.println("********** RestaurantManagedBean.deletePhoto()");
         
-        System.out.println("********** viewPhoto():" + photoToView);
-        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "uploadedFiles/" + photoToView);
-        
+        currentRestaurant.getPhotos().clear();
+       
     }
     
-    
+    public void handleFileUpload(FileUploadEvent event)
+    {
+        try
+        {
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+//            newRestaurant.getPhotos().add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
+            System.err.println("********** RestaurantManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
+//            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+            
+            // add file path to the list
+//            newFilePaths.add(newFilePath);
+//            System.out.println("File Path size: " + newFilePaths.size());
+
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            
+//            byte[] picInBytes = new byte[(int) file.length()];
+//            FileInputStream fileInputStream = new FileInputStream(file);
+//            fileInputStream.read(picInBytes);
+//            fileInputStream.close();
+//            getNewRestaurant().setProfiePic(picInBytes);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputStream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {                    
+                    break;
+                }
+                
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+            currentRestaurant.getPhotos().add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
+            fileOutputStream.close();
+            inputStream.close();
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
+        }
+        catch(IOException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
+        }
+    }
     
 }

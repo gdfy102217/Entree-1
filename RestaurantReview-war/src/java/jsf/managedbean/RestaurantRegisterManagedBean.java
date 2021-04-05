@@ -119,7 +119,7 @@ public class RestaurantRegisterManagedBean implements Serializable
         {
             String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
 //            newRestaurant.getPhotos().add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
+            System.err.println("********** RestaurantRegisterManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
 //            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
             
             // add file path to the list
