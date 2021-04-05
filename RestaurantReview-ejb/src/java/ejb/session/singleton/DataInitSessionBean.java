@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import entity.Voucher;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -181,7 +182,7 @@ public class DataInitSessionBean {
     {
         try
         {
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing", 5, new String[1]), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing", 5, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
         }
         catch (UnknownPersistenceException | InputDataValidationException | ReviewExistException | CreateNewReviewException ex)
         {

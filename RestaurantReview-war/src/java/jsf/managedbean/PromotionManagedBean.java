@@ -49,7 +49,6 @@ public class PromotionManagedBean implements Serializable{
     private Promotion promotionToView;
     
     private String filePath;
-    private String updateFilePath;
     
     public PromotionManagedBean() 
     {
