@@ -42,8 +42,8 @@
                     <h:outputText value="#{dish.description}" />
                 </p:column>
 
-                <p:column headerText="Photo" sortBy="#{dish.photo}" filterBy="#{dish.photo}" filterMatchMode="contains">
-                    <h:outputText value="#{dish.photo}" />
+                <p:column headerText="Photo" width="30%">
+                    <p:graphicImage value="#{dish.photo}" width="100%"/>
                 </p:column>
 
                 <p:column headerText="Price" sortBy="#{dish.price}" filterBy="#{dish.price}" filterMatchMode="contains" style="text-align: right;">
@@ -108,13 +108,14 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="photo" value="Photo " style="font-weight: bold;" />
+                            <p:outputLabel value="Photo: " />&nbsp;
                         </p:column>
+                        <br />
+                        <p:messages  redisplay="false">
+                            <p:autoUpdate />
+                        </p:messages>    
                         <p:column>
-                            <p:spinner id="photo" value="#{dishManagementManagedBean.newDish.photo}" placeholder="nth" required="true" requiredMessage="Photo is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="photo" />
+                            <p:fileUpload listener="#{dishManagementManagedBean.handleFileUpload}" multiple="false" />
                         </p:column>
                     </p:row>
 
@@ -160,7 +161,7 @@
         
         <p:dialog id="dialogViewDish" widgetVar="dialogViewDish" header="View Dish Photo" closable="true">
             <h:outputLabel value="Photo: " />
-            <h:outputText value="#{dish.photo}" />
+            <p:graphicImage value="#{dish.photo}" width="100%" />
         </p:dialog>
 
         <h:form id="formUpdateDish">
@@ -209,13 +210,14 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="photo" value="Photo " />
+                            <p:outputLabel value="Photo: " />&nbsp;
                         </p:column>
+                        <br />
+                        <p:messages  redisplay="false">
+                            <p:autoUpdate />
+                        </p:messages>    
                         <p:column>
-                            <p:spinner id="photo" value="#{dishManagementManagedBean.dishToUpdate.photo}" required="true" requiredMessage="Photo is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="photo" />
+                            <p:fileUpload listener="#{dishManagementManagedBean.updatePhoto}" multiple="false" />
                         </p:column>
                     </p:row>
 

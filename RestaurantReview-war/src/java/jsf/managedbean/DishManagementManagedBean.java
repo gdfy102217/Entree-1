@@ -8,7 +8,10 @@ package jsf.managedbean;
 import ejb.session.stateless.DishSessionBeanLocal;
 import entity.Dish;
 import entity.Restaurant;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import org.primefaces.event.FileUploadEvent;
 import util.exception.CreateNewDishException;
 import util.exception.DeleteDishException;
 import util.exception.DishExistException;
@@ -46,6 +50,7 @@ public class DishManagementManagedBean implements Serializable
     private Dish newDish;
     private Dish dishToUpdate;
     private Dish dishToView;
+    private String filePath;
 
     public DishManagementManagedBean()
     {
@@ -79,6 +84,10 @@ public class DishManagementManagedBean implements Serializable
         try
         {
             Dish dish = dishSessionBeanLocal.createNewDish(getNewDish(), getCurrentRestaurant().getId());
+            if (filePath != null) 
+            {
+                dish.setPhoto(filePath);
+            }
             getDishes().add(dish);
             if(getFilteredDishes() != null)
             {
@@ -93,6 +102,111 @@ public class DishManagementManagedBean implements Serializable
         catch(InputDataValidationException | CreateNewDishException | UnknownPersistenceException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new dish: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void handleFileUpload(FileUploadEvent event)
+    {
+        try
+        {
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+//            newRestaurant.getPhotos().add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
+            System.err.println("********** DishManagementManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
+//            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+            
+            // add file path to the list
+//            newFilePaths.add(newFilePath);
+//            System.out.println("File Path size: " + newFilePaths.size());
+
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            
+//            byte[] picInBytes = new byte[(int) file.length()];
+//            FileInputStream fileInputStream = new FileInputStream(file);
+//            fileInputStream.read(picInBytes);
+//            fileInputStream.close();
+//            getNewRestaurant().setProfiePic(picInBytes);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputStream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {                    
+                    break;
+                }
+                
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+            newDish.setPhoto("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
+            fileOutputStream.close();
+            inputStream.close();
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
+        }
+        catch(IOException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
+        }
+    }
+    
+    
+    public void updatePhoto(FileUploadEvent event)
+    {
+         try
+        {
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+//            newRestaurant.getPhotos().add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
+            System.err.println("********** DishManagementManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
+//            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+            
+            // add file path to the list
+//            newFilePaths.add(newFilePath);
+//            System.out.println("File Path size: " + newFilePaths.size());
+
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            
+//            byte[] picInBytes = new byte[(int) file.length()];
+//            FileInputStream fileInputStream = new FileInputStream(file);
+//            fileInputStream.read(picInBytes);
+//            fileInputStream.close();
+//            getNewRestaurant().setProfiePic(picInBytes);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputStream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {                    
+                    break;
+                }
+                
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+            dishToUpdate.setPhoto("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
+            fileOutputStream.close();
+            inputStream.close();
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
+        }
+        catch(IOException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
         }
     }
     
@@ -205,5 +319,13 @@ public class DishManagementManagedBean implements Serializable
 
     public void setDishToView(Dish dishToView) {
         this.dishToView = dishToView;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

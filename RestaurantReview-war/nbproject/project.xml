@@ -14,15 +14,15 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.javaee-web-api-8.0.classpath}</file>
+                    <file>${libs.Blitzer_1.0_10.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.Blitzer-1.0.10.classpath}</file>
+                    <file>${libs.Java_EE_Web_8_API_Library.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.PrimeFaces_8.0_library.classpath}</file>
+                    <file>${libs.PrimeFaces_8.0.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
