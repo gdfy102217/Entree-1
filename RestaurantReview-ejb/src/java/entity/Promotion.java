@@ -57,8 +57,8 @@ public class Promotion implements Serializable {
         this.content = content;
         this.title = title;
         this.photo = photo;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = new Date(startDate.getTime() + 1000);
+        this.endDate = new Date(endDate.getTime() + 1000);
     }
 
     public Long getPromotionId() {

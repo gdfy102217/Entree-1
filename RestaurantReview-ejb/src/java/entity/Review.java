@@ -37,7 +37,7 @@ public class Review implements Serializable {
     @Digits(integer = 1, fraction = 0)
     private Integer rating;
     
-    private String[] photos;
+    private List<String> photos;
     
     private Integer numOfLikes;
     
@@ -61,7 +61,7 @@ public class Review implements Serializable {
         replies = new ArrayList<>();
     }
 
-    public Review(String content, Integer rating, String[] photos) {
+    public Review(String content, Integer rating, List<String> photos) {
         this.content = content;
         this.rating = rating;
         this.photos = photos;
@@ -95,11 +95,11 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
-    public String[] getPhotos() {
+    public List<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(String[] photos) {
+    public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
 
