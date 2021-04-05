@@ -155,6 +155,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
 
                 promotionToUpdate.setTitle(promotion.getTitle());
                 promotionToUpdate.setContent(promotion.getContent());
+                promotionToUpdate.setPhoto(promotion.getPhoto());
                 promotionToUpdate.setStartDate(promotion.getStartDate());
                 promotionToUpdate.setEndDate(promotion.getEndDate());
 

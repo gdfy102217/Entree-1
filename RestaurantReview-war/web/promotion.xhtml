@@ -42,8 +42,8 @@
                     <h:outputText value="#{promotion.content}" />
                 </p:column>
                 
-                <p:column headerText="Photo" sortBy="#{promotion.photo}" filterBy="#{promotion.photo}" filterMatchMode="contains">
-                    <h:outputText value="#{promotion.photo}" />
+                <p:column headerText="Photo" width="30%">
+                    <p:graphicImage url="#{promotion.photo}" style="max-width: 100%"/>
                 </p:column>
                 
                 <p:column headerText="Start Date" sortBy="#{promotion.startDate}" filterBy="#{promotion.startDate}" filterMatchMode="contains">
@@ -58,10 +58,7 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Action" >
-                    <p:commandButton oncomplete="PF('dialogViewPromotion').show()" icon="ui-icon-document" title="View">
-                        <f:setPropertyActionListener value="#{promotion}" target="#{promotionManagedBean.promotionToView}" />
-                    </p:commandButton>
+                <p:column headerText="Action">
                     <p:commandButton actionListener="#{promotionManagedBean.doUpdatePromotion}" update="formUpdatePromotion" oncomplete="PF('dialogUpdatePromotion').show()" icon="ui-icon-pencil" title="Update">
                         <f:attribute name="promotionToUpdate" value="#{promotion}" />
                     </p:commandButton>
@@ -161,11 +158,6 @@
             </p:dialog>
 
         </h:form>
-        
-        <p:dialog id="dialogViewPromotion" widgetVar="dialogViewPromotion" header="View Promotion Photo" closable="true">
-            <h:outputLabel value="Photo: " />
-            <h:outputText value="#{promotion.photo}" />
-        </p:dialog>
 
         <h:form id="formUpdatePromotion">
 
@@ -209,7 +201,20 @@
                         <p:column>
                             <p:message for="content" />
                         </p:column>
-                    </p:row>      
+                    </p:row>  
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Photos: " />&nbsp;
+                        </p:column>
+                        <br />
+                        <p:messages  redisplay="false">
+                            <p:autoUpdate />
+                        </p:messages>    
+                        <p:column>
+                            <p:fileUpload listener="#{promotionManagedBean.updatePhoto}" multiple="false" />
+                        </p:column>
+                    </p:row>
 
                     <p:row>
                         <p:column>
