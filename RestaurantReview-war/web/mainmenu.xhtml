@@ -16,7 +16,7 @@
                 
                 <p:submenu label="Account" rendered="#{sessionScope.isLogin == true}">
                     <p:menuitem value="View Account Details" outcome="/restaurantManagement.xhtml" icon="pi pi-id-card"/>
-                    <p:menuitem value="View Dishes" outcome="/RestaurantAdministration/dishManagement.xhtml" icon="pi pi-tags"/>
+                    <p:menuitem value="View Bank Account" outcome="/bankAccountManagement.xhtml" icon="pi pi-money-bill"/>
                     <p:menuitem value="Change Password" outcome="/restaurantManagement.xhtml" icon="pi pi-lock"/>
                     
                 </p:submenu>
@@ -25,6 +25,7 @@
                     <p:menuitem value="View Reservations" outcome="/reservation.xhtml" icon="pi pi-calendar"/>
                     <p:menuitem value="View Promotions" outcome="/promotion.xhtml" icon="pi pi-tag" />
                     <p:menuitem value="View Reviews" outcome="/review.xhtml" icon="pi pi-comment" />
+                    <p:menuitem value="View Dishes" outcome="/RestaurantAdministration/dishManagement.xhtml" icon="pi pi-tags"/>
                     <p:menuitem value="Redeem Voucher" outcome="/redeemVoucher.xhtml" icon="pi pi-ticket"/>
                 </p:submenu>
                 

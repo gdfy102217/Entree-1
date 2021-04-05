@@ -50,7 +50,7 @@ public class RestaurantManagedBean implements Serializable {
     
     
     private Restaurant currentRestaurant;
-    private BankAccount newBankAccount;
+    private BankAccount bankAccount;
     
     public RestaurantManagedBean() {
     }
@@ -58,7 +58,15 @@ public class RestaurantManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct(){
         currentRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
-        newBankAccount = new BankAccount();
+        
+        if (currentRestaurant.getBankAccount() == null)
+        {
+            bankAccount = new BankAccount();
+        }
+        else
+        {
+            bankAccount = currentRestaurant.getBankAccount();
+        }
     }
     
     
@@ -83,7 +91,7 @@ public class RestaurantManagedBean implements Serializable {
     public void createNewBankAccount(ActionEvent event){
         try {
             System.out.println("Ceate Bank Account!!!!!!!!!!!");
-            Long newBankAccountId = bankAccountSessionBeanLocal.createNewBankAccount(newBankAccount, currentRestaurant.getUseId());
+            Long newBankAccountId = bankAccountSessionBeanLocal.createNewBankAccount(bankAccount, currentRestaurant.getUseId());
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bank account " + newBankAccountId + " registered successfully", null));  
         } catch (UnknownPersistenceException | InputDataValidationException | CreateNewBankAccountException | BankAccountExistException ex) {
@@ -99,12 +107,12 @@ public class RestaurantManagedBean implements Serializable {
         this.currentRestaurant = currentRestaurant;
     }
 
-    public BankAccount getNewBankAccount() {
-        return newBankAccount;
+    public BankAccount getBankAccount() {
+        return bankAccount;
     }
 
-    public void setNewBankAccount(BankAccount newBankAccount) {
-        this.newBankAccount = newBankAccount;
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
     
     public void deletePhoto(ActionEvent event){

@@ -9,21 +9,21 @@
     <ui:define name="content">
          <h:panelGroup>
             <article>
-                <h3>View Account Details</h3>
+                <h3>Account Details</h3>
             </article>
 
-            <h:form id="formUpdateRestaurant"> 
+            <h:form id="formBankDetail"> 
 
-                <p:messages id="messages" redisplay="false" closable="true" />
+                <p:messages id="bankDetailMessages" redisplay="false" closable="true" />
         
         
-        <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
+        <p:panel id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
 
 
                     <p:outputLabel value="Add New Bank Account" />&nbsp;
                     <br />
                     <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
-                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.newBankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
+                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.bankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
                         <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="bankAccountNumber" />
@@ -31,7 +31,7 @@
                     <br />
 
                     <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
-                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.newBankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
+                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.bankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
                         <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="nameOfBank" />
@@ -39,7 +39,7 @@
                     <br />
 
                     <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
-                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.newBankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
+                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.bankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
                         <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="nameOfOwner" />
@@ -48,7 +48,8 @@
                     <p:messages  redisplay="false">
                         <p:autoUpdate />
                     </p:messages>
-                    <p:commandButton id="createBankAccount" value="Create" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="createBankAccount" value="Create" disabled="#{restaurantManagedBean.currentRestaurant.bankAccount != null}" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="updateBankAccount" value="Update" disabled="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
                 </p:panel>
          
             </h:form>
