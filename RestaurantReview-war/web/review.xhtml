@@ -15,6 +15,7 @@
             
             <p:messages id="messages" redisplay="false" closable="true" />
 
+            
             <p:dataTable id="dataTableAllReviews" widgetVar="dataTableAllReviews" value="#{reviewManagedBean.myReviews}" var="review" rowKey="#{review.reviewId}" rowIndexVar="row"
                          filteredValue="#{reviewManagedBean.filteredReviews}"
                          rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">

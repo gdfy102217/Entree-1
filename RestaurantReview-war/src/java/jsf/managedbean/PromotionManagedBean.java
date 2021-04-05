@@ -63,6 +63,7 @@ public class PromotionManagedBean implements Serializable{
 //        setPromotions(promotionSessionBeanLocal.retrieveAllPromotions());
     }
     
+    
     public void createNewPromotion(ActionEvent event)
     {        
         try

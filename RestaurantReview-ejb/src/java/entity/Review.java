@@ -56,6 +56,7 @@ public class Review implements Serializable {
     
     @ManyToOne
     private Review originalReview;
+    
 
     public Review() {
         replies = new ArrayList<>();

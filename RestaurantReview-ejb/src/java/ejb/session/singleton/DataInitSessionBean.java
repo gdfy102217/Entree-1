@@ -74,6 +74,7 @@ public class DataInitSessionBean {
     @EJB
     private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
     
+    
     private Long restaurantIdToTest;
     private Long customerIdToTest;
     private Voucher voucherToTest;

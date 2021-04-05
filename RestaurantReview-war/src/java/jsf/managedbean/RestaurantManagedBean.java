@@ -38,6 +38,7 @@ public class RestaurantManagedBean {
     private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
     
     
+    
     private Restaurant currentRestaurant;
     private BankAccount newBankAccount;
     private String photoToView;

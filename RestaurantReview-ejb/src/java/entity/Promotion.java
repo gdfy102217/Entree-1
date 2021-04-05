@@ -49,6 +49,7 @@ public class Promotion implements Serializable {
     
     @ManyToOne(optional = false)
     private Restaurant restaurant;
+    
 
     public Promotion() {
     }

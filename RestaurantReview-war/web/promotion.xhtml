@@ -59,6 +59,7 @@
                     </h:outputText>
                 </p:column>
 
+                
                 <p:column headerText="Action">
                     <p:commandButton oncomplete="PF('dialogViewPromotion').show()" icon="ui-icon-document" title="View">
                         <f:setPropertyActionListener value="#{promotion}" target="#{promotionManagedBean.promotionToView}" />
@@ -162,6 +163,7 @@
             </p:dialog>
 
         </h:form>
+        
         
         <p:dialog id="dialogViewPromotion" widgetVar="dialogViewPromotion" header="View Promotion Photo" closable="true">
             <h:outputLabel value="Photo: " />
