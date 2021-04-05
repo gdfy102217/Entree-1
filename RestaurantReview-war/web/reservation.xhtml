@@ -14,20 +14,30 @@
             <h:form id="formAllReservations">
                 <p:messages id="messages" redisplay="false" closable="true" />
                 
-                <p:dataTable id="dataTableAllReservations" widgetVar="dataTableAllReservations" value="#{reservationManagedBean.reservations}" var="reservation" 
+                <p:dataTable id="dataTableAllReservations" widgetVar="dataTableAllReservations" value="#{reservationManagedBean.selectedReservations}" var="reservation" 
                              rowKey="#{reservation.reservationId}" rowIndexVar="row" emptyMessage="No reservation found with given criteria"
                              filteredValue="#{reservationManagedBean.filtedReservations}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                 
-                    <p:column field="date" headerText="Reservation Time" sortBy="#{reservation.reservationTime}" 
-                              filterBy="#{reservation.reservationTime}" filterMatchMode="contains">
+                    <p:column field="date" headerText="Reservation Date"
+                              filterBy="#{reservation.reservationDate}" filterMatchMode="contains">
                         <f:facet name="filter">
-                            <p:datePicker pattern="yyyy.MM.dd" selectionMode="single" onchange="PF('dataTableAllReservations').filter()" />
+                            <p:datePicker pattern="yyyy.MM.dd" selectionMode="single" hideOnDateTimeSelect="true" value="#{reservationManagedBean.selectedDate}" id="dateFilter" widgetVar="dateFilter">
+                                <p:ajax event="dateSelect" listener="#{reservationManagedBean.getSelectedReservationByDate}" update="formAllReservations"/>
+                            </p:datePicker>
                         </f:facet>
-                        <h:outputText value="#{reservation.reservationTime}">
-                            <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd"/>  
+                        <h:outputText value="#{reservation.reservationDate}">
+                            <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd" type="localDate"/>  
                         </h:outputText>
                     </p:column>
+                    
+                    <p:column headerText="Time" sortBy="#{reservation.reservationTime}"
+                              filterBy="#{reservation.reservationTime}" filterMatchMode="contains">
+                        <h:outputText value="#{reservation.reservationTime}">
+                            <f:convertDateTime pattern="HH:mm" type="localTime"/>
+                        </h:outputText>
+                    </p:column>
+                    
                     
                     <p:column headerText="Customer Name" sortBy="#{reservation.customer.lastName}" filterBy="#{reservation.customer.lastName}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.customer.lastName} #{reservation.customer.firstName}" />
@@ -78,10 +88,23 @@
                         
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Reservation Time: " />                                
+                                <h:outputLabel value="Reservation Date " />                                
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{reservationManagedBean.selectedReservation.reservationTime}" />
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.reservationDate}" >
+                                    <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd" type="localDate"/>  
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Reservation Time " />                                
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.reservationTime}" >
+                                    <f:convertDateTime pattern="HH:mm" type="localTime"/>
+                                </h:outputText>
                             </p:column>
                         </p:row>
                         
