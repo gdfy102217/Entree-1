@@ -19,9 +19,7 @@
         
         <p:panel id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
 
-
-                    <p:outputLabel value="Add New Bank Account" />&nbsp;
-                    <br />
+            <h:panelGrid id="grid" columns="5" cellpadding="3">
                     <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
                     <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.bankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
                         <f:validateLength minimum="1" />
@@ -45,6 +43,8 @@
                     <p:message for="nameOfOwner" />
                     &nbsp;
                     <br />
+                    
+                    </h:panelGrid>
                     <p:messages  redisplay="false">
                         <p:autoUpdate />
                     </p:messages>

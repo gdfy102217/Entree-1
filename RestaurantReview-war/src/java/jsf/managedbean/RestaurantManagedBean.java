@@ -30,6 +30,7 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.event.FileUploadEvent;
 import util.exception.BankAccountExistException;
 import util.exception.BankAccountNotFoundException;
+import util.exception.ChangePasswordException;
 import util.exception.CreateNewBankAccountException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
@@ -51,6 +52,9 @@ public class RestaurantManagedBean implements Serializable {
     
     private Restaurant currentRestaurant;
     private BankAccount bankAccount;
+    
+    private String newPassword;
+    private String confirmPasswod;
     
     public RestaurantManagedBean() {
     }
@@ -86,6 +90,20 @@ public class RestaurantManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Update error: " + ex.getMessage(), null));
         }
         
+    }
+    
+    public void changeRestaurantPassword(ActionEvent event)
+    {
+        try
+        {
+            System.out.println("Change password!");
+            currentRestaurant = restaurantSessionBeanLocal.changePassword(currentRestaurant.getId(), newPassword);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", currentRestaurant.getName() + " password changed successfully"));  
+        }
+        catch (ChangePasswordException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info", "Something went wrong: " + ex.getMessage()));
+        }
     }
     
     public void createNewBankAccount(ActionEvent event){
@@ -172,6 +190,26 @@ public class RestaurantManagedBean implements Serializable {
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
         }
+    }
+
+    public String getNewPassword()
+    {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword)
+    {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmPasswod()
+    {
+        return confirmPasswod;
+    }
+
+    public void setConfirmPasswod(String confirmPasswod)
+    {
+        this.confirmPasswod = confirmPasswod;
     }
     
 }

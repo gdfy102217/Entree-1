@@ -10,6 +10,7 @@ import entity.TableConfiguration;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.BankAccountNotFoundException;
+import util.exception.ChangePasswordException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -39,5 +40,7 @@ public interface RestaurantSessionBeanLocal {
     public Restaurant retrieveRestaurantByEmail(String email) throws RestaurantNotFoundException;
 
     public Long updateRestaurant(Restaurant restaurant) throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException;
+
+    public Restaurant changePassword(Long restaurantId, String newPassword) throws ChangePasswordException;
     
 }

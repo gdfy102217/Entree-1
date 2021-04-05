@@ -24,6 +24,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.BankAccountNotFoundException;
+import util.exception.ChangePasswordException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -173,6 +174,32 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         }
         
         return restaurants;
+    }
+    
+    @Override
+    public Restaurant changePassword(Long restaurantId, String newPassword) throws ChangePasswordException
+    {
+        try
+        {
+            Restaurant restaurant = em.find(Restaurant.class, restaurantId);
+            
+            if(restaurant != null)
+            {
+                restaurant.setPassword(newPassword);
+                restaurant.getReservations().size();
+                restaurant.getPhotos().size();
+                return restaurant;
+            }
+            else
+            {
+                throw new ChangePasswordException("Password is not changed!");
+            }
+        }
+        catch(ChangePasswordException ex)
+        {
+            throw new ChangePasswordException("Password is not changed!");
+        }
+        
     }
     
     @Override

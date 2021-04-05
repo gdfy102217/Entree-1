@@ -13,189 +13,175 @@
             </article>
 
             <h:form id="formUpdateRestaurant"> 
+                <p:panel closable="true">
+                    <p:messages id="messages" redisplay="false" closable="true" />
+                    <h:panelGrid columns="4" cellpadding="2">
 
-                <p:messages id="messages" redisplay="false" closable="true" />
 
-                <p:outputLabel value="Restaurant ID: " />&nbsp;
-                <h:outputText value="#{restaurantManagedBean.currentRestaurant.id}">
-                </h:outputText>
-                &nbsp;
-                <br />
-                <br />
+                        <p:outputLabel value="Restaurant ID: " />&nbsp;
+                        <h:outputText value="#{restaurantManagedBean.currentRestaurant.id}">
+                        </h:outputText>
+                        <br />
 
-                <p:outputLabel value="Email: " />&nbsp;
-                <h:outputText value="#{restaurantManagedBean.currentRestaurant.email}">
-                </h:outputText>
-                &nbsp;
-                <br />
-                <br />
+                        <p:outputLabel value="Email: " />&nbsp;
+                        <h:outputText value="#{restaurantManagedBean.currentRestaurant.email}">
+                        </h:outputText>
+                        <br />
+                    </h:panelGrid>
 
-                <p:outputLabel for="name" value="Name: " />&nbsp;
-                <p:inputText id="name" value="#{restaurantManagedBean.currentRestaurant.name}" required="true" requiredMessage="Name is required">
-                    <f:validateLength minimum="1" />
-                </p:inputText>
-                <p:message for="name" />
-                &nbsp;
-                <br />
-                <br />
+                    <h:panelGrid columns="4" cellpadding="2">
+                        <p:outputLabel for="name" value="Name: " />&nbsp;
+                        <p:inputText id="name" value="#{restaurantManagedBean.currentRestaurant.name}" required="true" requiredMessage="Name is required">
+                            <f:validateLength minimum="1" />
+                        </p:inputText>
+                        <p:message for="name" />
 
 
 
-                <p:outputLabel for="address" value="Address: " />&nbsp;
-                <p:inputText id="address" value="#{restaurantManagedBean.currentRestaurant.address}" required="true" requiredMessage="Restaurant address is required">
-                    <f:validateLength minimum="1" />
-                </p:inputText>
-                <p:message for="address" />
-                &nbsp;
-                <br />
-                <br />
 
-                <p:outputLabel for="postalCode" value="Postal Code: " />&nbsp;
-                <p:inputText id="postalCode" value="#{restaurantManagedBean.currentRestaurant.postalCode}" required="true" requiredMessage="Restaurant address is required" maxlength="6">
-                    <f:validateLength minimum="6" />
-                </p:inputText>
-                <p:message for="postalCode" />
-                &nbsp;
-                <br />
-                <br />
+                        <p:outputLabel for="address" value="Address: " />&nbsp;
+                        <p:inputText id="address" value="#{restaurantManagedBean.currentRestaurant.address}" required="true" requiredMessage="Restaurant address is required">
+                            <f:validateLength minimum="1" />
+                        </p:inputText>
+                        <p:message for="address" />
 
-                <p:outputLabel for="contactNumber" value="Contact Number: " />&nbsp;
-                <p:inputText id="contactNumber" value="#{restaurantManagedBean.currentRestaurant.contactNumber}" required="true" requiredMessage="Restaurant contact number is required" maxlength="8">
-                    <f:validateLength minimum="8" />
-                </p:inputText>
-                <p:message for="contactNumber" />
-                &nbsp;
-                <br />
-                <br />
+                        <p:outputLabel for="postalCode" value="Postal Code: " />&nbsp;
+                        <p:inputText id="postalCode" value="#{restaurantManagedBean.currentRestaurant.postalCode}" required="true" requiredMessage="Restaurant address is required" maxlength="6">
+                            <f:validateLength minimum="6" />
+                        </p:inputText>
+                        <p:message for="postalCode" />
 
-                <p:outputLabel for="acceptReservation" value="Accept Reservation: " />&nbsp;
-                <p:selectOneRadio id="acceptReservation" value="#{restaurantManagedBean.currentRestaurant.acceptReservation}">
-                    <f:selectItem itemLabel="Accept Reservations" itemValue="#{true}"/>
-                    <f:selectItem itemLabel="Do Not Accept Reservations" itemValue="#{false}"/>
-                    <p:ajax event="click" update="formUpdateRestaurant:tableConfig"  />
-                </p:selectOneRadio>
-                <br />
-                <br />
 
-                <p:panel visible="#{restaurantManagedBean.currentRestaurant.acceptReservation == true}" id="tableConfig">
-                    <p:outputLabel value="Table Configuration" />&nbsp;
-                    <br />
-                    <p:outputLabel for="numOfSmallTable" value="Number of small tables (1-4 pax): " />&nbsp;
-                    <p:spinner id="numOfSmallTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfSmallTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
-                    <p:message for="numOfSmallTable" />
-                    &nbsp;
-                    <br />
+                        <p:outputLabel for="contactNumber" value="Contact Number: " />&nbsp;
+                        <p:inputText id="contactNumber" value="#{restaurantManagedBean.currentRestaurant.contactNumber}" required="true" requiredMessage="Restaurant contact number is required" maxlength="8">
+                            <f:validateLength minimum="8" />
+                        </p:inputText>
+                        <p:message for="contactNumber" />
 
-                    <p:outputLabel for="numOfMediumTable" value="Number of medium tables (5-8 pax): " />&nbsp;
-                    <p:spinner id="numOfMediumTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfMediumTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
-                    <p:message for="numOfMediumTable" />
-                    &nbsp;
-                    <br />
 
-                    <p:outputLabel for="numOfLargeTable" value="Number of large tables (above 8 pax): " />&nbsp;
-                    <p:spinner id="numOfLargeTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfLargeTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
-                    <p:message for="numOfLargeTable" />
-                    &nbsp;
-                    <br />
-                    <br />
+
+
+                        <p:outputLabel for="openTime" value="Open time: " />&nbsp;
+                        <p:selectOneMenu id="openTime" value="#{restaurantManagedBean.currentRestaurant.openTime}">
+                            <f:selectItem itemLabel="12am" itemValue="0"/> 
+                            <f:selectItem itemLabel="1am" itemValue="1"/>
+                            <f:selectItem itemLabel="2am" itemValue="2"/>
+                            <f:selectItem itemLabel="3am" itemValue="3"/>
+                            <f:selectItem itemLabel="4am" itemValue="4"/>
+                            <f:selectItem itemLabel="5am" itemValue="5"/>
+                            <f:selectItem itemLabel="6am" itemValue="6"/>
+                            <f:selectItem itemLabel="7am" itemValue="7"/>
+                            <f:selectItem itemLabel="8am" itemValue="8"/>
+                            <f:selectItem itemLabel="9am" itemValue="9"/>
+                            <f:selectItem itemLabel="10am" itemValue="10"/>
+                            <f:selectItem itemLabel="11am" itemValue="11"/>
+                            <f:selectItem itemLabel="12pm" itemValue="12"/>
+                            <f:selectItem itemLabel="1pm" itemValue="13"/>
+                            <f:selectItem itemLabel="2pm" itemValue="14"/>
+                            <f:selectItem itemLabel="3pm" itemValue="15"/>
+                            <f:selectItem itemLabel="4pm" itemValue="16"/>
+                            <f:selectItem itemLabel="5pm" itemValue="17"/>
+                            <f:selectItem itemLabel="6pm" itemValue="18"/>
+                            <f:selectItem itemLabel="7pm" itemValue="19"/>
+                            <f:selectItem itemLabel="8pm" itemValue="20"/>
+                            <f:selectItem itemLabel="9pm" itemValue="21"/>
+                            <f:selectItem itemLabel="10pm" itemValue="22"/>
+                            <f:selectItem itemLabel="11pm" itemValue="23"/>
+                        </p:selectOneMenu> 
+                        <br />
+                        <br />
+
+                        <p:outputLabel for="closeTime" value="Close time: " />&nbsp;
+                        <p:selectOneMenu id="closeTime" value="#{restaurantManagedBean.currentRestaurant.closeTime}">
+                            <f:selectItem itemLabel="12am" itemValue="0"/> 
+                            <f:selectItem itemLabel="1am" itemValue="1"/>
+                            <f:selectItem itemLabel="2am" itemValue="2"/>
+                            <f:selectItem itemLabel="3am" itemValue="3"/>
+                            <f:selectItem itemLabel="4am" itemValue="4"/>
+                            <f:selectItem itemLabel="5am" itemValue="5"/>
+                            <f:selectItem itemLabel="6am" itemValue="6"/>
+                            <f:selectItem itemLabel="7am" itemValue="7"/>
+                            <f:selectItem itemLabel="8am" itemValue="8"/>
+                            <f:selectItem itemLabel="9am" itemValue="9"/>
+                            <f:selectItem itemLabel="10am" itemValue="10"/>
+                            <f:selectItem itemLabel="11am" itemValue="11"/>
+                            <f:selectItem itemLabel="12pm" itemValue="12"/>
+                            <f:selectItem itemLabel="1pm" itemValue="13"/>
+                            <f:selectItem itemLabel="2pm" itemValue="14"/>
+                            <f:selectItem itemLabel="3pm" itemValue="15"/>
+                            <f:selectItem itemLabel="4pm" itemValue="16"/>
+                            <f:selectItem itemLabel="5pm" itemValue="17"/>
+                            <f:selectItem itemLabel="6pm" itemValue="18"/>
+                            <f:selectItem itemLabel="7pm" itemValue="19"/>
+                            <f:selectItem itemLabel="8pm" itemValue="20"/>
+                            <f:selectItem itemLabel="9pm" itemValue="21"/>
+                            <f:selectItem itemLabel="10pm" itemValue="22"/>
+                            <f:selectItem itemLabel="11pm" itemValue="23"/>
+                        </p:selectOneMenu>
+                        <br />
+                        <br />
+                        
+                        <p:outputLabel for="description" value="Description: " />&nbsp;
+                        <p:inputTextarea id="description" value="#{restaurantManagedBean.currentRestaurant.description}" rows="5" cols="40">
+                        </p:inputTextarea>
+                        <p:message for="description" />
+
+
+                    </h:panelGrid>
                 </p:panel>
 
                 <br />
-                <p:outputLabel for="description" value="Description: " />&nbsp;
-                <br />
-                <p:inputTextarea id="description" value="#{restaurantManagedBean.currentRestaurant.description}" rows="5" cols="40">
-                </p:inputTextarea>
-                <p:message for="description" />
-                &nbsp;
-                <br />
-                <br />
+                <p:panel>
+                    <p:outputLabel for="acceptReservation" value="Accept Reservation: " />&nbsp;
+                    <p:selectOneRadio id="acceptReservation" value="#{restaurantManagedBean.currentRestaurant.acceptReservation}">
+                        <f:selectItem itemLabel="Accept Reservations" itemValue="#{true}"/>
+                        <f:selectItem itemLabel="Do Not Accept Reservations" itemValue="#{false}"/>
+                        <p:ajax event="click" update="formUpdateRestaurant:tableConfig"  />
+                    </p:selectOneRadio>
 
-                
+                    <p:panel visible="#{restaurantManagedBean.currentRestaurant.acceptReservation == true}" id="tableConfig">
 
-
-
-
-                <p:outputLabel for="openTime" value="Open time: " />&nbsp;
-                <p:selectOneMenu id="openTime" value="#{restaurantManagedBean.currentRestaurant.openTime}">
-                    <f:selectItem itemLabel="12am" itemValue="0"/> 
-                    <f:selectItem itemLabel="1am" itemValue="1"/>
-                    <f:selectItem itemLabel="2am" itemValue="2"/>
-                    <f:selectItem itemLabel="3am" itemValue="3"/>
-                    <f:selectItem itemLabel="4am" itemValue="4"/>
-                    <f:selectItem itemLabel="5am" itemValue="5"/>
-                    <f:selectItem itemLabel="6am" itemValue="6"/>
-                    <f:selectItem itemLabel="7am" itemValue="7"/>
-                    <f:selectItem itemLabel="8am" itemValue="8"/>
-                    <f:selectItem itemLabel="9am" itemValue="9"/>
-                    <f:selectItem itemLabel="10am" itemValue="10"/>
-                    <f:selectItem itemLabel="11am" itemValue="11"/>
-                    <f:selectItem itemLabel="12pm" itemValue="12"/>
-                    <f:selectItem itemLabel="1pm" itemValue="13"/>
-                    <f:selectItem itemLabel="2pm" itemValue="14"/>
-                    <f:selectItem itemLabel="3pm" itemValue="15"/>
-                    <f:selectItem itemLabel="4pm" itemValue="16"/>
-                    <f:selectItem itemLabel="5pm" itemValue="17"/>
-                    <f:selectItem itemLabel="6pm" itemValue="18"/>
-                    <f:selectItem itemLabel="7pm" itemValue="19"/>
-                    <f:selectItem itemLabel="8pm" itemValue="20"/>
-                    <f:selectItem itemLabel="9pm" itemValue="21"/>
-                    <f:selectItem itemLabel="10pm" itemValue="22"/>
-                    <f:selectItem itemLabel="11pm" itemValue="23"/>
-                </p:selectOneMenu> 
-                <br />
-                <br />
-
-                <p:outputLabel for="closeTime" value="Close time: " />&nbsp;
-                <p:selectOneMenu id="closeTime" value="#{restaurantManagedBean.currentRestaurant.closeTime}">
-                    <f:selectItem itemLabel="12am" itemValue="0"/> 
-                    <f:selectItem itemLabel="1am" itemValue="1"/>
-                    <f:selectItem itemLabel="2am" itemValue="2"/>
-                    <f:selectItem itemLabel="3am" itemValue="3"/>
-                    <f:selectItem itemLabel="4am" itemValue="4"/>
-                    <f:selectItem itemLabel="5am" itemValue="5"/>
-                    <f:selectItem itemLabel="6am" itemValue="6"/>
-                    <f:selectItem itemLabel="7am" itemValue="7"/>
-                    <f:selectItem itemLabel="8am" itemValue="8"/>
-                    <f:selectItem itemLabel="9am" itemValue="9"/>
-                    <f:selectItem itemLabel="10am" itemValue="10"/>
-                    <f:selectItem itemLabel="11am" itemValue="11"/>
-                    <f:selectItem itemLabel="12pm" itemValue="12"/>
-                    <f:selectItem itemLabel="1pm" itemValue="13"/>
-                    <f:selectItem itemLabel="2pm" itemValue="14"/>
-                    <f:selectItem itemLabel="3pm" itemValue="15"/>
-                    <f:selectItem itemLabel="4pm" itemValue="16"/>
-                    <f:selectItem itemLabel="5pm" itemValue="17"/>
-                    <f:selectItem itemLabel="6pm" itemValue="18"/>
-                    <f:selectItem itemLabel="7pm" itemValue="19"/>
-                    <f:selectItem itemLabel="8pm" itemValue="20"/>
-                    <f:selectItem itemLabel="9pm" itemValue="21"/>
-                    <f:selectItem itemLabel="10pm" itemValue="22"/>
-                    <f:selectItem itemLabel="11pm" itemValue="23"/>
-                </p:selectOneMenu>
-                <br />
-                <br />
+                        <p:outputLabel value="Table Configuration" />&nbsp;
+                        <br />
+                        <h:panelGrid columns="3" cellpadding="2">
+                            <p:outputLabel for="numOfSmallTable" value="Number of small tables (1-4 pax): " />
+                            <p:spinner id="numOfSmallTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfSmallTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
+                            <p:message for="numOfSmallTable" />
 
 
-                <p:galleria value="#{restaurantManagedBean.currentRestaurant.photos}" var="image" panelWidth="500" panelHeight="313">
-                    <p:graphicImage value="#{image}" width="100%"/>
-                </p:galleria>
-                <br />
-
-                <p:commandButton icon="ui-icon-trash" value="Delete Photos" actionListener="#{restaurantManagedBean.deletePhoto}" update="@form formUpdateRestaurant">
-                    <p:confirm header="Confirmation" message="Are you sure you want to delete all the current restaurant photos?" icon="ui-icon-alert" />
-                </p:commandButton>
-
-                
-                <br />
-                <br />
-
-                <p:outputLabel value="Upload Photos: (max 5 photos)" />&nbsp;
-                <br />
+                            <p:outputLabel for="numOfMediumTable" value="Number of medium tables (5-8 pax): " />
+                            <p:spinner id="numOfMediumTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfMediumTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
+                            <p:message for="numOfMediumTable" />
 
 
-                <p:fileUpload listener="#{restaurantManagedBean.handleFileUpload}" multiple="true" />
-                &nbsp;
+                            <p:outputLabel for="numOfLargeTable" value="Number of large tables (above 8 pax): " />
+                            <p:spinner id="numOfLargeTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfLargeTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
+                            <p:message for="numOfLargeTable" />
+                        </h:panelGrid>
+                    </p:panel>
+                </p:panel>
 
+                <p:panel>
+                    <p:galleria value="#{restaurantManagedBean.currentRestaurant.photos}" var="image" panelWidth="500" panelHeight="313">
+                        <p:graphicImage value="#{image}" width="100%"/>
+                    </p:galleria>
+                    <br />
+
+                    <p:commandButton icon="ui-icon-trash" value="Delete Photos" actionListener="#{restaurantManagedBean.deletePhoto}" update="@form formUpdateRestaurant">
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete all the current restaurant photos?" icon="ui-icon-alert" />
+                    </p:commandButton>
+
+
+                    <br />
+                    <br />
+
+                    <p:outputLabel value="Upload Photos: (max 5 photos)" />&nbsp;
+                    <br />
+
+
+                    <p:fileUpload listener="#{restaurantManagedBean.handleFileUpload}" multiple="true" />
+                    &nbsp;
+                </p:panel>
 
                 <p:commandButton id="update" value="Update" actionListener="#{restaurantManagedBean.updateRestaurant}" update="@form formUpdateRestaurant"/>
 
@@ -203,7 +189,7 @@
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
-                
+
             </h:form> 
         </h:panelGroup>
     </ui:define>
