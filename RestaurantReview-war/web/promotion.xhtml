@@ -42,6 +42,11 @@
                     <h:outputText value="#{promotion.content}" />
                 </p:column>
                 
+                
+                <p:column headerText="Photo" width="30%">
+                    <p:graphicImage url="#{promotion.photo}" style="max-width: 100%"/>
+                </p:column>
+                
                 <p:column headerText="Start Date" sortBy="#{promotion.startDate}" filterBy="#{promotion.startDate}" filterMatchMode="contains">
                     <h:outputText value="#{promotion.startDate}">
                         <f:convertDateTime pattern="MM/dd/yyyy"/> 
