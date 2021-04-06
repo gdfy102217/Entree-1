@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -83,11 +85,11 @@ public class DishManagementManagedBean implements Serializable
     {        
         try
         {
-            Dish dish = dishSessionBeanLocal.createNewDish(getNewDish(), getCurrentRestaurant().getId());
             if (filePath != null) 
             {
-                dish.setPhoto(filePath);
+                newDish.setPhoto(filePath);
             }
+            Dish dish = dishSessionBeanLocal.createNewDish(getNewDish(), getCurrentRestaurant().getId());
             getDishes().add(dish);
             if(getFilteredDishes() != null)
             {
@@ -145,9 +147,10 @@ public class DishManagementManagedBean implements Serializable
                 fileOutputStream.write(buffer, 0, a);
                 fileOutputStream.flush();
             }
-            newDish.setPhoto("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
+            filePath = ("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
             fileOutputStream.close();
             inputStream.close();
+            filePath = null;
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
         }
@@ -160,16 +163,17 @@ public class DishManagementManagedBean implements Serializable
     
     public void updatePhoto(FileUploadEvent event)
     {
-         try
+        try
         {
             String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
 //            newRestaurant.getPhotos().add("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
-            System.err.println("********** DishManagementManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
+            System.err.println("********** Demo03ManagedBean.handleFileUpload(): InitParameter: " + FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1"));
+            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
 //            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
             
             // add file path to the list
-//            newFilePaths.add(newFilePath);
-//            System.out.println("File Path size: " + newFilePaths.size());
+//            filePaths.add(newFilePath);
+//            System.out.println("File Path size: " + filePaths.size());
 
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);

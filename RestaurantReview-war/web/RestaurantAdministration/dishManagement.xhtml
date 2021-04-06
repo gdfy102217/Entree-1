@@ -43,7 +43,7 @@
                 </p:column>
 
                 <p:column headerText="Photo" width="30%">
-                    <p:graphicImage value="#{dish.photo}" width="100%"/>
+                    <p:graphicImage url="#{dish.photo}" style="max-width: 100%"/>
                 </p:column>
 
                 <p:column headerText="Price" sortBy="#{dish.price}" filterBy="#{dish.price}" filterMatchMode="contains" style="text-align: right;">
@@ -161,7 +161,7 @@
         
         <p:dialog id="dialogViewDish" widgetVar="dialogViewDish" header="View Dish Photo" closable="true">
             <h:outputLabel value="Photo: " />
-            <p:graphicImage value="#{dish.photo}" width="100%" />
+            <p:graphicImage url="#{dish.photo}" width="100%" />
         </p:dialog>
 
         <h:form id="formUpdateDish">
@@ -210,7 +210,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel value="Photo: " />&nbsp;
+                            <p:outputLabel value="Photos: " />&nbsp;
                         </p:column>
                         <br />
                         <p:messages  redisplay="false">
