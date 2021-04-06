@@ -16,6 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import util.exception.CustomerVoucherExpiredException;
 import util.exception.CustomerVoucherRedeemedException;
 
 /**
@@ -53,6 +54,10 @@ public class RedeemVoucherManagedBean implements Serializable{
         catch(CustomerVoucherRedeemedException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This voucher has been redeemed! ", null));
+        }
+        catch(CustomerVoucherExpiredException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This voucher is expired! ", null));
         }
         catch(Exception ex)
         {

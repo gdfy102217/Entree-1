@@ -59,8 +59,9 @@
                 </p:column>
 
                 <p:column headerText="Action">
-                    <p:commandButton oncomplete="PF('dialogViewPromotion').show()" icon="ui-icon-document" title="View">
-                        <f:setPropertyActionListener value="#{promotion}" target="#{promotionManagedBean.promotionToView}" />
+                    <p:commandButton actionListener="#{promotionManagedBean.viewPromotionPhoto}" oncomplete="PF('dialogViewPromotion').show()" icon="ui-icon-document" title="View">
+                        <f:attribute name="promotionToView" value="#{promotion}" />
+                        
                     </p:commandButton>
                     <p:commandButton actionListener="#{promotionManagedBean.doUpdatePromotion}" update="formUpdatePromotion" oncomplete="PF('dialogUpdatePromotion').show()" icon="ui-icon-pencil" title="Update">
                         <f:attribute name="promotionToUpdate" value="#{promotion}" />
@@ -162,10 +163,15 @@
 
         </h:form>
         
-        <p:dialog id="dialogViewPromotion" widgetVar="dialogViewPromotion" header="View Promotion Photo" closable="true">
-            <h:outputLabel value="Photo: " />
-            <p:graphicImage value="#{promotion.photo}" />
-        </p:dialog>
+        <h:form>
+        
+            <p:dialog id="dialogViewPromotion" widgetVar="dialogViewPromotion" header="View Promotion Photo" closable="true">
+                <h:outputLabel value="Photo: " />
+                <h:outputText value="#{promotionManagedBean.promotionToView.content}"/>
+                <p:graphicImage url="#{promotionManagedBean.promotionToView.photo}" />
+            </p:dialog>
+            
+        </h:form>
 
         <h:form id="formUpdatePromotion">
 

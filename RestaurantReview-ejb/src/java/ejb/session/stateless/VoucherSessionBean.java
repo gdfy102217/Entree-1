@@ -9,6 +9,7 @@ import entity.Customer;
 import entity.CustomerVoucher;
 import entity.Restaurant;
 import entity.Voucher;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -26,6 +27,7 @@ import javax.validation.ValidatorFactory;
 import util.exception.CreateNewCustomerVoucherException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerVoucherExistException;
+import util.exception.CustomerVoucherExpiredException;
 import util.exception.CustomerVoucherNotFoundException;
 import util.exception.CustomerVoucherRedeemedException;
 import util.exception.InputDataValidationException;
@@ -206,7 +208,8 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     }
     
     @Override
-    public void redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException
+    public void redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, 
+            RestaurantNotFoundException, CustomerVoucherRedeemedException, CustomerVoucherExpiredException
     {
         try 
         {
@@ -215,14 +218,16 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
             if (customerVoucherToRedeem.getRedeemed()) 
             {
                 throw new CustomerVoucherRedeemedException();
+            } 
+            else if (customerVoucherToRedeem.getVoucher().getExpiryDate().getTime() < new Date().getTime())
+            {
+                throw new CustomerVoucherExpiredException();
             }
             else
             {
-                System.out.println("Start redeem");
                 customerVoucherToRedeem.setRedeemed(true);
             }
             Double transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue();
-            System.out.println("Start credit");
             restaurant.setCreditAmount(restaurant.getCreditAmount() + transferCredit);
             
         }

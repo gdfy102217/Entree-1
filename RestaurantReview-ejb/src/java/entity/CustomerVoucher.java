@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Random;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,8 +30,8 @@ public class CustomerVoucher implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerVoucherId;
     
-    @Column(nullable = false)
     @NotNull
+    @Column(nullable = false)
     private Boolean redeemed;
     
     @FutureOrPresent

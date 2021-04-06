@@ -89,6 +89,11 @@ public class PromotionManagedBean implements Serializable{
         }
     }   
     
+    public void viewPromotionPhoto(ActionEvent event)
+    {
+        setPromotionToView((Promotion)event.getComponent().getAttributes().get("promotionToView"));
+    }
+    
     public void handleFileUpload(FileUploadEvent event)
     {
         try

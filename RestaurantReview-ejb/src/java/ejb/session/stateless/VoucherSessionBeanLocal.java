@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewCustomerVoucherException;
 import util.exception.CustomerVoucherExistException;
+import util.exception.CustomerVoucherExpiredException;
 import util.exception.CustomerVoucherNotFoundException;
 import util.exception.CustomerVoucherRedeemedException;
 import util.exception.InputDataValidationException;
@@ -38,6 +39,7 @@ public interface VoucherSessionBeanLocal {
 
     public CustomerVoucher retrieveCustomerVoucherBySixDigitCode(String sixDigitCode) throws CustomerVoucherNotFoundException;
 
-    public void redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException;
+    public void redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, 
+            RestaurantNotFoundException, CustomerVoucherRedeemedException, CustomerVoucherExpiredException;
     
 }
