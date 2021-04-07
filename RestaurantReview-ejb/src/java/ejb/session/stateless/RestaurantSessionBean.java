@@ -9,6 +9,8 @@ import entity.BankAccount;
 import entity.Dish;
 import entity.Restaurant;
 import entity.TableConfiguration;
+import entity.Transaction;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -25,6 +27,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.BankAccountNotFoundException;
 import util.exception.ChangePasswordException;
+import util.exception.CreateTransactionException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -47,6 +50,8 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
     @EJB
     private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
     
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
@@ -224,6 +229,43 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         catch(RestaurantNotFoundException ex)
         {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+        }
+    }
+    
+    @Override
+    public void cashOutCredit(Long restaurantId) 
+            throws UnknownPersistenceException, CreateTransactionException, RestaurantNotFoundException, InputDataValidationException
+    {
+        try
+        {
+            Restaurant restaurant = em.find(Restaurant.class, restaurantId);
+            
+            if(restaurant != null)
+            {
+                
+                Transaction newTransaction = new Transaction();
+                newTransaction.setPaidAmount(restaurant.getCreditAmount());
+                newTransaction.setTransactionDate(new Date(new Date().getTime() + (60 * 60 * 1000)));
+                
+                try
+                {
+                    transactionSessionBeanLocal.createCashOutTransaction(newTransaction, restaurantId);
+                    restaurant.setCreditAmount(0);
+                }
+                catch(CreateTransactionException ex)
+                {
+                    throw new CreateTransactionException("Failed to create new transaction!");
+                }
+                
+            }
+            else
+            {
+                throw new UnknownPersistenceException("Invalid Restaurant ID: " + restaurantId);
+            }
+        }
+        catch(UnknownPersistenceException ex)
+        {
+            throw new UnknownPersistenceException("Transaction failed!");
         }
     }
     

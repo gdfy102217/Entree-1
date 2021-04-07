@@ -32,6 +32,7 @@ import util.exception.BankAccountExistException;
 import util.exception.BankAccountNotFoundException;
 import util.exception.ChangePasswordException;
 import util.exception.CreateNewBankAccountException;
+import util.exception.CreateTransactionException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantNotFoundException;
@@ -106,13 +107,27 @@ public class RestaurantManagedBean implements Serializable {
         }
     }
     
-    public void createNewBankAccount(ActionEvent event){
-        try {
-            System.out.println("Ceate Bank Account!!!!!!!!!!!");
-            Long newBankAccountId = bankAccountSessionBeanLocal.createNewBankAccount(bankAccount, currentRestaurant.getUseId());
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bank account " + newBankAccountId + " registered successfully", null));  
-        } catch (UnknownPersistenceException | InputDataValidationException | CreateNewBankAccountException | BankAccountExistException ex) {
+//    public void createNewBankAccount(ActionEvent event){
+//        try {
+//            System.out.println("Ceate Bank Account!!!!!!!!!!!");
+//            Restaurant newRestaurant = bankAccountSessionBeanLocal.createNewBankAccount(bankAccount, currentRestaurant.getUseId());
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", newRestaurant);
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bank account " + newRestaurant.getBankAccount().getBankAccountId() + " registered successfully", null));  
+//        } catch (UnknownPersistenceException | InputDataValidationException | CreateNewBankAccountException | BankAccountExistException ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
+//        }
+//    }
+    
+    public void cashOut(ActionEvent event)
+    {
+        try
+        {
+            System.out.println("Cash Out!!!");
+            restaurantSessionBeanLocal.cashOutCredit(currentRestaurant.getId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cash out successfully!", null));
+        }
+        catch(UnknownPersistenceException | CreateTransactionException | RestaurantNotFoundException | InputDataValidationException ex)
+        {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
         }
     }

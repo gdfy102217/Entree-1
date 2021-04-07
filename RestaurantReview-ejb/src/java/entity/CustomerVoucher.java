@@ -47,8 +47,11 @@ public class CustomerVoucher implements Serializable {
     private Customer owner;
     @ManyToOne(optional = false)
     private Voucher voucher;
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Transaction transaction;
+    
+    @ManyToOne
+    private Restaurant restaurant;
 
     public CustomerVoucher() {
     }
@@ -153,6 +156,16 @@ public class CustomerVoucher implements Serializable {
 
     public void setTimeOfCreation(Date timeOfCreation) {
         this.timeOfCreation = timeOfCreation;
+    }
+
+    public Restaurant getRestaurant()
+    {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant)
+    {
+        this.restaurant = restaurant;
     }
     
 }

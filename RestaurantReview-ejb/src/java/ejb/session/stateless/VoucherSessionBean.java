@@ -206,7 +206,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     }
     
     @Override
-    public void redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException
+    public Restaurant redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException
     {
         try 
         {
@@ -220,10 +220,14 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
             {
                 System.out.println("Start redeem");
                 customerVoucherToRedeem.setRedeemed(true);
+                customerVoucherToRedeem.setRestaurant(restaurant);
+                Double transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue();
+                System.out.println("Start credit");
+                restaurant.setCreditAmount(restaurant.getCreditAmount() + transferCredit);
+                restaurant.getCustomerVouchers().add(customerVoucherToRedeem);
+                return restaurant;
             }
-            Double transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue();
-            System.out.println("Start credit");
-            restaurant.setCreditAmount(restaurant.getCreditAmount() + transferCredit);
+            
             
         }
         catch(CustomerVoucherNotFoundException ex)

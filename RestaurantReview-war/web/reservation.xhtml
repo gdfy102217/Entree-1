@@ -16,7 +16,6 @@
                 
                 <p:dataTable id="dataTableAllReservations" widgetVar="dataTableAllReservations" value="#{reservationManagedBean.selectedReservations}" var="reservation" 
                              rowKey="#{reservation.reservationId}" rowIndexVar="row" emptyMessage="No reservation found with given criteria"
-                             filteredValue="#{reservationManagedBean.filtedReservations}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                 
                     <p:column field="date" headerText="Reservation Date"
@@ -31,23 +30,22 @@
                         </h:outputText>
                     </p:column>
                     
-                    <p:column headerText="Time" sortBy="#{reservation.reservationTime}"
-                              filterBy="#{reservation.reservationTime}" filterMatchMode="contains">
+                    <p:column headerText="Time" sortBy="#{reservation.reservationTime}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.reservationTime}">
                             <f:convertDateTime pattern="HH:mm" type="localTime"/>
                         </h:outputText>
                     </p:column>
                     
                     
-                    <p:column headerText="Customer Name" sortBy="#{reservation.customer.lastName}" filterBy="#{reservation.customer.lastName}" filterMatchMode="contains">
+                    <p:column headerText="Customer Name" sortBy="#{reservation.customer.lastName}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.customer.lastName} #{reservation.customer.firstName}" />
                     </p:column>
                     
-                    <p:column headerText="No. Pax" sortBy="#{reservation.numOfPax}" filterBy="#{reservation.numOfPax}" filterMatchMode="contains">
+                    <p:column headerText="No. Pax" sortBy="#{reservation.numOfPax}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.numOfPax}" />
                     </p:column>
                     
-                    <p:column headerText="Table Size" sortBy="#{reservation.tableSizeAssigned}" filterBy="#{reservation.tableSizeAssigned}" filterMatchMode="contains">
+                    <p:column headerText="Table Size" sortBy="#{reservation.tableSizeAssigned}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.tableSizeAssigned}" />
                     </p:column>
                     

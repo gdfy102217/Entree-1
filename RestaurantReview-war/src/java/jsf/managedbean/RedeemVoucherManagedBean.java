@@ -46,8 +46,8 @@ public class RedeemVoucherManagedBean implements Serializable{
     {        
         try
         {
-            voucherSessionBeanLocal.redeemCustomerVoucher(sixDigitCode, currentRestaurant.getUseId());
-
+            Restaurant updatedRestaurant = voucherSessionBeanLocal.redeemCustomerVoucher(sixDigitCode, currentRestaurant.getUseId());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", updatedRestaurant);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Redeem voucher successfully", null));
         }
         catch(CustomerVoucherRedeemedException ex)

@@ -27,6 +27,12 @@
                         <h:outputText value="#{restaurantManagedBean.currentRestaurant.email}">
                         </h:outputText>
                         <br />
+                        
+                        <p:outputLabel value="Credit Amount: " />&nbsp;
+                        <h:outputText value="#{restaurantManagedBean.currentRestaurant.creditAmount}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                        <br />
                     </h:panelGrid>
 
                     <h:panelGrid columns="4" cellpadding="2">

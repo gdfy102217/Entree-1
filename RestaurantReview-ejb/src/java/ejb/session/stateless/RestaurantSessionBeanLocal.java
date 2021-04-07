@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.BankAccountNotFoundException;
 import util.exception.ChangePasswordException;
+import util.exception.CreateTransactionException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -42,5 +43,7 @@ public interface RestaurantSessionBeanLocal {
     public Long updateRestaurant(Restaurant restaurant) throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException;
 
     public Restaurant changePassword(Long restaurantId, String newPassword) throws ChangePasswordException;
+
+    public void cashOutCredit(Long restaurantId) throws UnknownPersistenceException, CreateTransactionException, RestaurantNotFoundException, InputDataValidationException;
     
 }

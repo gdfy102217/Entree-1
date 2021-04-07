@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerVoucher;
+import entity.Restaurant;
 import entity.Voucher;
 import java.util.List;
 import javax.ejb.Local;
@@ -38,6 +39,6 @@ public interface VoucherSessionBeanLocal {
 
     public CustomerVoucher retrieveCustomerVoucherBySixDigitCode(String sixDigitCode) throws CustomerVoucherNotFoundException;
 
-    public void redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException;
+    public Restaurant redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException;
     
 }
