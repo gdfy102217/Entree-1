@@ -72,7 +72,7 @@ public class BankAccountManagedBean implements Serializable
         try
         {
             System.out.println("Ceate Bank Account!!!!!!!!!!!");
-            Restaurant newRestaurant = bankAccountSessionBeanLocal.createNewBankAccount(getBankAccount(), getCurrentRestaurant().getUseId());
+            Restaurant newRestaurant = bankAccountSessionBeanLocal.createNewBankAccount(getBankAccount(), getCurrentRestaurant().getId());
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", newRestaurant);            
             bankAccount = newRestaurant.getBankAccount();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bank account " + newRestaurant.getBankAccount().getBankAccountId() + " registered successfully", null));
@@ -89,6 +89,8 @@ public class BankAccountManagedBean implements Serializable
         {
             System.out.println("Cash Out!!!");
             Long newTransactionId = restaurantSessionBeanLocal.cashOutCredit(currentRestaurant.getId());
+            Restaurant updatedRestaurant = restaurantSessionBeanLocal.retrieveRestaurantById(currentRestaurant.getId());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", updatedRestaurant);            
             creditAmount = new Double(0);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cash out successfully! With transaction ID: " + newTransactionId, null));
         }

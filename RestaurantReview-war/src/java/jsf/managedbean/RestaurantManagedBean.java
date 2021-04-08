@@ -57,13 +57,15 @@ public class RestaurantManagedBean implements Serializable {
     private String newPassword;
     private String confirmPasswod;
     
+    private Double creditAmount;
+    
     public RestaurantManagedBean() {
     }
     
     @PostConstruct
     public void postConstruct(){
         currentRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
-        
+        creditAmount = currentRestaurant.getCreditAmount();
         if (currentRestaurant.getBankAccount() == null)
         {
             bankAccount = new BankAccount();
@@ -225,6 +227,16 @@ public class RestaurantManagedBean implements Serializable {
     public void setConfirmPasswod(String confirmPasswod)
     {
         this.confirmPasswod = confirmPasswod;
+    }
+
+    public Double getCreditAmount()
+    {
+        return creditAmount;
+    }
+
+    public void setCreditAmount(Double creditAmount)
+    {
+        this.creditAmount = creditAmount;
     }
     
 }
