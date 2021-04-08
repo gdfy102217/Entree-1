@@ -6,9 +6,11 @@
 package jsf.managedbean;
 
 import ejb.session.stateless.BankAccountSessionBeanLocal;
+import ejb.session.stateless.RestaurantSessionBeanLocal;
 import entity.BankAccount;
 import entity.Restaurant;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -16,9 +18,12 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import util.exception.BankAccountExistException;
 import util.exception.CreateNewBankAccountException;
+import util.exception.CreateTransactionException;
 import util.exception.InputDataValidationException;
+import util.exception.RestaurantNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -26,19 +31,22 @@ import util.exception.UnknownPersistenceException;
  * @author zhiliangwang
  */
 @Named(value = "bankAccountManagedBean")
-@RequestScoped
-public class BankAccountManagedBean
+@ViewScoped
+public class BankAccountManagedBean implements Serializable
 {
 
     
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;    
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;  
+    
+    @EJB
+    private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
     
     
     private Restaurant currentRestaurant;
     private BankAccount bankAccount;
     
-    private Boolean disableCreateBtn;
+    private Double creditAmount;
     
     public BankAccountManagedBean()
     {
@@ -47,11 +55,10 @@ public class BankAccountManagedBean
     @PostConstruct
     public void postConstruct(){
         currentRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
-        
+        creditAmount = currentRestaurant.getCreditAmount();
         if (currentRestaurant.getBankAccount() == null)
         {
-            disableCreateBtn = false;
-            bankAccount = new BankAccount();
+            bankAccount = new BankAccount();           
         }
         else
         {
@@ -66,12 +73,26 @@ public class BankAccountManagedBean
         {
             System.out.println("Ceate Bank Account!!!!!!!!!!!");
             Restaurant newRestaurant = bankAccountSessionBeanLocal.createNewBankAccount(getBankAccount(), getCurrentRestaurant().getUseId());
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", newRestaurant);
-            disableCreateBtn = true;
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", newRestaurant);            
             bankAccount = newRestaurant.getBankAccount();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bank account " + newRestaurant.getBankAccount().getBankAccountId() + " registered successfully", null));
 //            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/bankAccountManagement.xhtml");
         } catch (UnknownPersistenceException | InputDataValidationException | CreateNewBankAccountException | BankAccountExistException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void cashOut(ActionEvent event)
+    {
+        try
+        {
+            System.out.println("Cash Out!!!");
+            Long newTransactionId = restaurantSessionBeanLocal.cashOutCredit(currentRestaurant.getId());
+            creditAmount = new Double(0);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cash out successfully! With transaction ID: " + newTransactionId, null));
+        }
+        catch(UnknownPersistenceException | CreateTransactionException | RestaurantNotFoundException | InputDataValidationException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
         }
@@ -96,14 +117,14 @@ public class BankAccountManagedBean
     {
         this.bankAccount = bankAccount;
     }
-    
-    public Boolean getDisableCreateBtn()
+
+    public Double getCreditAmount()
     {
-        return disableCreateBtn;
+        return creditAmount;
     }
 
-    public void setDisableCreateBtn(Boolean disableCreateBtn)
+    public void setCreditAmount(Double creditAmount)
     {
-        this.disableCreateBtn = disableCreateBtn;
+        this.creditAmount = creditAmount;
     }
 }

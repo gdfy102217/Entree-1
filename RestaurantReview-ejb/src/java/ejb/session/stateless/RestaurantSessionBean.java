@@ -233,7 +233,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     }
     
     @Override
-    public void cashOutCredit(Long restaurantId) 
+    public Long cashOutCredit(Long restaurantId) 
             throws UnknownPersistenceException, CreateTransactionException, RestaurantNotFoundException, InputDataValidationException
     {
         try
@@ -249,8 +249,9 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 
                 try
                 {
-                    transactionSessionBeanLocal.createCashOutTransaction(newTransaction, restaurantId);
+                    Long newTransactionId = transactionSessionBeanLocal.createCashOutTransaction(newTransaction, restaurantId);
                     restaurant.setCreditAmount(0);
+                    return newTransactionId;
                 }
                 catch(CreateTransactionException ex)
                 {

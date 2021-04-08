@@ -48,18 +48,18 @@
                     <p:messages  redisplay="false">
                         <p:autoUpdate />
                     </p:messages>
-                    <p:commandButton id="createBankAccount" value="Create" update="formBankDetail" disabled="#{bankAccountManagedBean.currentRestaurant.bankAccount != null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
-                    <p:commandButton id="updateBankAccount" value="Update" disabled="#{bankAccountManagedBean.currentRestaurant.bankAccount == null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="createBankAccount" value="Create" update="formBankDetail" disabled="#{bankAccountManagedBean.bankAccount.bankAccountId != null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="updateBankAccount" value="Update" disabled="#{bankAccountManagedBean.bankAccount.bankAccountId == null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
                 </p:panel>
 
                 <p:panel id="cashOutPanel" widgetVar="cashOutPanel" closable="true">
                 <p:outputLabel value="Credit Amount: " />&nbsp;
-                <h:outputText value="#{restaurantManagedBean.currentRestaurant.creditAmount}">
+                <h:outputText value="#{bankAccountManagedBean.creditAmount}">
                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                 </h:outputText>
                 <br />
                 
-                <p:commandButton id="cashOutBtn" value="Cash Out" update="formBankDetail" disabled="#{restaurantManagedBean.currentRestaurant.creditAmount == 0 || restaurantManagedBean.currentRestaurant.bankAccount == null }" actionListener="#{restaurantManagedBean.cashOut}"/>
+                <p:commandButton id="cashOutBtn" value="Cash Out" update="formBankDetail" disabled="#{bankAccountManagedBean.creditAmount== 0 || bankAccountManagedBean.bankAccount.bankAccountId == null }" actionListener="#{bankAccountManagedBean.cashOut}"/>
                 
             </p:panel>
                 

@@ -44,6 +44,6 @@ public interface RestaurantSessionBeanLocal {
 
     public Restaurant changePassword(Long restaurantId, String newPassword) throws ChangePasswordException;
 
-    public void cashOutCredit(Long restaurantId) throws UnknownPersistenceException, CreateTransactionException, RestaurantNotFoundException, InputDataValidationException;
+    public Long cashOutCredit(Long restaurantId) throws UnknownPersistenceException, CreateTransactionException, RestaurantNotFoundException, InputDataValidationException;
     
 }

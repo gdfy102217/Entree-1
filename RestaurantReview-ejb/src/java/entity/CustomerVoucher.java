@@ -54,6 +54,7 @@ public class CustomerVoucher implements Serializable {
     private Restaurant restaurant;
 
     public CustomerVoucher() {
+        redeemed = false;
     }
 
     public CustomerVoucher(Boolean redeemed, Date timeOfCreation) {

@@ -118,19 +118,19 @@ public class RestaurantManagedBean implements Serializable {
 //        }
 //    }
     
-    public void cashOut(ActionEvent event)
-    {
-        try
-        {
-            System.out.println("Cash Out!!!");
-            restaurantSessionBeanLocal.cashOutCredit(currentRestaurant.getId());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cash out successfully!", null));
-        }
-        catch(UnknownPersistenceException | CreateTransactionException | RestaurantNotFoundException | InputDataValidationException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
-        }
-    }
+//    public void cashOut(ActionEvent event)
+//    {
+//        try
+//        {
+//            System.out.println("Cash Out!!!");
+//            restaurantSessionBeanLocal.cashOutCredit(currentRestaurant.getId());
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cash out successfully!", null));
+//        }
+//        catch(UnknownPersistenceException | CreateTransactionException | RestaurantNotFoundException | InputDataValidationException ex)
+//        {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
+//        }
+//    }
 
     public Restaurant getCurrentRestaurant() {
         return currentRestaurant;
