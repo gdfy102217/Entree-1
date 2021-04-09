@@ -78,7 +78,7 @@
                 <br />
                 <br />
 
-                <p:panel visible="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation == true}" id="tableConfig" closable="true">
+                <p:panel visible="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation}" id="tableConfig">
                     <p:outputLabel value="Table Configuration" />&nbsp;
                     <br />
                     <p:outputLabel for="numOfSmallTable" value="Number of small tables (1-4 pax): " />&nbsp;
@@ -181,7 +181,7 @@
                 <br />
                 <br />
 
-                <p:commandButton id="register" value="Register" actionListener="#{restaurantRegisterManagedBean.createNewRestaurant}"/>
+                <p:commandButton id="register" value="Register" actionListener="#{restaurantRegisterManagedBean.createNewRestaurant}" update="formRegisterNewRestaurant"/>
 
             </h:form> 
         </h:panelGroup>

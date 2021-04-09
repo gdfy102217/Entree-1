@@ -7,52 +7,67 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-         <h:panelGroup>
+        <h:panelGroup>
             <article>
-                <h3>View Account Details</h3>
+                <h3>Account Details</h3>
             </article>
 
-            <h:form id="formUpdateRestaurant"> 
+            <h:form id="formBankDetail"> 
 
-                <p:messages id="messages" redisplay="false" closable="true" />
-        
-        
-        <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
+                <p:messages id="bankDetailMessages" redisplay="false"/>
 
 
-                    <p:outputLabel value="Add New Bank Account" />&nbsp;
-                    <br />
-                    <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
-                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.newBankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
-                        <f:validateLength minimum="1" />
-                    </p:inputText>
-                    <p:message for="bankAccountNumber" />
-                    &nbsp;
-                    <br />
+                <p:panel id="registerBankAccount" widgetVar="registerBankAccount" >
 
-                    <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
-                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.newBankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
-                        <f:validateLength minimum="1" />
-                    </p:inputText>
-                    <p:message for="nameOfBank" />
-                    &nbsp;
-                    <br />
+                    <h:panelGrid id="grid" columns="5" cellpadding="3">
+                        <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
+                        <p:inputText id="bankAccountNumber" value="#{bankAccountManagedBean.bankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
+                            <f:validateLength minimum="1" />
+                        </p:inputText>
+                        <p:message for="bankAccountNumber" />
+                        &nbsp;
+                        <br />
 
-                    <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
-                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.newBankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
-                        <f:validateLength minimum="1" />
-                    </p:inputText>
-                    <p:message for="nameOfOwner" />
-                    &nbsp;
-                    <br />
+                        <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
+                        <p:inputText id="nameOfBank" value="#{bankAccountManagedBean.bankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
+                            <f:validateLength minimum="1" />
+                        </p:inputText>
+                        <p:message for="nameOfBank" />
+                        &nbsp;
+                        <br />
+
+                        <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
+                        <p:inputText id="nameOfOwner" value="#{bankAccountManagedBean.bankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
+                            <f:validateLength minimum="1" />
+                        </p:inputText>
+                        <p:message for="nameOfOwner" />
+                        &nbsp;
+                        <br />
+
+                    </h:panelGrid>
                     <p:messages  redisplay="false">
                         <p:autoUpdate />
                     </p:messages>
-                    <p:commandButton id="createBankAccount" value="Create" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="createBankAccount" value="Create" update="formBankDetail" disabled="#{bankAccountManagedBean.bankAccount.bankAccountId != null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="updateBankAccount" value="Update" disabled="#{bankAccountManagedBean.bankAccount.bankAccountId == null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
                 </p:panel>
-         
+
+                <p:panel id="cashOutPanel" widgetVar="cashOutPanel" closable="true">
+                <p:outputLabel value="Credit Amount: " />&nbsp;
+                <h:outputText value="#{bankAccountManagedBean.creditAmount}">
+                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                </h:outputText>
+                <br />
+                
+                <p:commandButton id="cashOutBtn" value="Cash Out" update="formBankDetail" disabled="#{bankAccountManagedBean.creditAmount== 0 || bankAccountManagedBean.bankAccount.bankAccountId == null }" actionListener="#{bankAccountManagedBean.cashOut}"/>
+                
+            </p:panel>
+                
             </h:form>
-             </h:panelGroup>
+
+            
+
+        </h:panelGroup>
     </ui:define>
 
 </ui:composition>

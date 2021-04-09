@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.BankAccount;
+import entity.Restaurant;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.BankAccountExistException;
@@ -21,7 +22,7 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface BankAccountSessionBeanLocal {
 
-    public Long createNewBankAccount(BankAccount newBankAccount, Long restaurantId) throws UnknownPersistenceException, InputDataValidationException, CreateNewBankAccountException, BankAccountExistException;
+    public Restaurant createNewBankAccount(BankAccount newBankAccount, Long restaurantId) throws UnknownPersistenceException, InputDataValidationException, CreateNewBankAccountException, BankAccountExistException;
 
     public List<BankAccount> retrieveAllBankAccounts();
 

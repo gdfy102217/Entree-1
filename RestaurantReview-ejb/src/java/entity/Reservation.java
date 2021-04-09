@@ -6,6 +6,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -20,6 +23,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import util.enumeration.TableSize;
 
@@ -34,14 +38,16 @@ public class Reservation implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-    @Future
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date reservationTime;
+    @FutureOrPresent
+    private LocalDate reservationDate;
     
     @NotNull
     @Column(nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date timeOfCreation;
+    private LocalTime reservationTime;
+    
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime timeOfCreation;
     
     @NotNull
     @Column(nullable = false )
@@ -65,9 +71,10 @@ public class Reservation implements Serializable {
     public Reservation() {
     }
 
-    public Reservation(Date reservationTime, Date timeOfCreation, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
+    public Reservation(LocalDate reservationDate, LocalTime reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
+        this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
-        this.timeOfCreation = timeOfCreation;
+        this.timeOfCreation = LocalDateTime.now();
         this.numOfPax = numOfPax;
         this.tableSizeAssigned = tableSizeAssigned;
         this.remark = remark;
@@ -83,19 +90,19 @@ public class Reservation implements Serializable {
         this.reservationId = reservationId;
     }
 
-    public Date getReservationTime() {
-        return reservationTime;
+    public LocalDate getReservationDate() {
+        return reservationDate;
     }
 
-    public void setReservationTime(Date reservationTime) {
-        this.reservationTime = reservationTime;
+    public void setReservationDate(LocalDate reservationDate) {
+        this.reservationDate = reservationDate;
     }
 
-    public Date getTimeOfCreation() {
+    public LocalDateTime getTimeOfCreation() {
         return timeOfCreation;
     }
 
-    public void setTimeOfCreation(Date timeOfCreation) {
+    public void setTimeOfCreation(LocalDateTime timeOfCreation) {
         this.timeOfCreation = timeOfCreation;
     }
 
@@ -163,6 +170,16 @@ public class Reservation implements Serializable {
     @Override
     public String toString() {
         return "entity.Reservation[ id=" + reservationId + " ]";
+    }
+
+    public LocalTime getReservationTime()
+    {
+        return reservationTime;
+    }
+
+    public void setReservationTime(LocalTime reservationTime)
+    {
+        this.reservationTime = reservationTime;
     }
     
 }

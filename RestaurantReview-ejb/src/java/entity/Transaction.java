@@ -35,7 +35,7 @@ public class Transaction implements Serializable {
     @NotNull
     @Column(nullable = false)
     @Digits(integer = 5, fraction = 2)
-    private BigDecimal paidAmount;
+    private Double paidAmount;
     
     @NotNull
     @Column(nullable = false)
@@ -43,10 +43,10 @@ public class Transaction implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date transactionDate;
     
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Customer customer;
     
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Restaurant restaurant;
     
     @OneToOne
@@ -62,7 +62,7 @@ public class Transaction implements Serializable {
         customerVouchers = new ArrayList<>();
     }
 
-    public Transaction(BigDecimal paidAmount, Date transactionDate) {
+    public Transaction(Double paidAmount, Date transactionDate) {
         this.paidAmount = paidAmount;
         this.transactionDate = transactionDate;
     }
@@ -77,11 +77,11 @@ public class Transaction implements Serializable {
         this.transactionId = transactionId;
     }
 
-    public BigDecimal getPaidAmount() {
+    public Double getPaidAmount() {
         return paidAmount;
     }
 
-    public void setPaidAmount(BigDecimal paidAmount) {
+    public void setPaidAmount(Double paidAmount) {
         this.paidAmount = paidAmount;
     }
 

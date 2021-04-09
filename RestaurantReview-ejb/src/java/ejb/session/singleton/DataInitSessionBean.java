@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import entity.Voucher;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -141,10 +143,14 @@ public class DataInitSessionBean {
         newLocal = newLocal.plusDays(2);
         Date newDate = Date.from(newLocal.atZone(ZoneId.systemDefault()).toInstant());
         
+        LocalDate localDate = LocalDate.now();
+        
+        LocalTime localTime = LocalTime.now();
+        
         try
         {
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, currDate, 2, TableSize.SMALL, "noooo"), 1l, 3l, null);
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, currDate, 8, TableSize.MEDIUM, "noooo"), 2l, 3l, null);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, localTime, 2, TableSize.SMALL, "noooo"), 1l, 3l, null);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, localTime, 8, TableSize.MEDIUM, "noooo"), 2l, 3l, null);
         }
         catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {

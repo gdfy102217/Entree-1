@@ -11,15 +11,20 @@ import entity.Restaurant;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.SelectEvent;
 import util.exception.ReservationNotFoundException;
 
 /**
@@ -34,7 +39,9 @@ public class ReservationManagedBean implements Serializable
     @EJB
     private ReservationSessionBeanLocal reservationSessionBeanLocal;
     
-    private List<Reservation> reservations;
+    private List<Reservation> allReservations;
+    
+    private List<Reservation> selectedReservations;
     
     private Reservation selectedReservation;
     
@@ -42,9 +49,14 @@ public class ReservationManagedBean implements Serializable
     
     private List<Reservation> filtedReservations;
     
+    private LocalDate selectedDate;
+    
     public ReservationManagedBean()
     {
         selectedReservation = new Reservation();
+        selectedDate = LocalDate.now();
+        allReservations = new ArrayList<>();
+        selectedReservations = new ArrayList<>();
     }
     
     @PostConstruct
@@ -53,27 +65,16 @@ public class ReservationManagedBean implements Serializable
 
             Restaurant currRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
             System.out.println("current rest: " + currRestaurant.getName());
-            reservations = currRestaurant.getReservations();
+            allReservations = currRestaurant.getReservations();
             
+            for (Reservation res: allReservations)
+            {
+                if (res.getReservationDate().equals(getSelectedDate()))
+                {
+                    selectedReservations.add(res);
+                }
+            }
             
-//            List<Reservation> tempList = currRestaurant.getReservations();
-            
-            // Get today's reservation list only
-//            for(Reservation resev: tempList)
-//            {
-//                if(resev.getReservationTime().equals())
-//            }
-            
-            
-            
-//            List<Reservation> tempList = currRestaurant.getReservations();
-//            
-//            for (Reservation rest: tempList)
-//            {
-//                if(rest.getReservationTime().equals(rest))
-//            }
-            
-            //reservationSessionBeanLocal.retrieveReservationById(currRest.getId());
 
     }
     
@@ -84,6 +85,26 @@ public class ReservationManagedBean implements Serializable
 //        Long reservationIdToView = (Long)event.getComponent().getAttributes().get("reservationId");
 //        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("reservationIdToView", reservationIdToView);
         //FacesContext.getCurrentInstance().getExternalContext().redirect();
+    }
+    
+    public void getSelectedReservationByDate(SelectEvent<LocalDate> event)
+    {
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy,MM.dd");
+//        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", event.getObject().format(formatter)));
+        
+        
+        System.out.println("GET selected reservation called!!!!!!" + event.getObject().format(formatter));
+        selectedReservations.clear();
+        
+        for (Reservation res: allReservations)
+            {
+                if (res.getReservationDate().equals(getSelectedDate()))
+                {
+                    selectedReservations.add(res);
+                }
+            }
     }
     
     public boolean filterByDate(Object value, Object filter, Locale locale) 
@@ -106,14 +127,14 @@ public class ReservationManagedBean implements Serializable
         return status;
     }
     
-    public List<Reservation> getReservations()
+    public List<Reservation> getSelectedReservations()
     {
-        return reservations;
+        return selectedReservations;
     }
 
-    public void setReservations(List<Reservation> reservations)
+    public void setSelectedReservations(List<Reservation> selectedReservations)
     {
-        this.reservations = reservations;
+        this.selectedReservations = selectedReservations;
     }
 
     public Reservation getSelectedReservation()
@@ -145,6 +166,16 @@ public class ReservationManagedBean implements Serializable
     public void setFiltedReservations(List<Reservation> filtedReservations)
     {
         this.filtedReservations = filtedReservations;
+    }
+
+    public LocalDate getSelectedDate()
+    {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(LocalDate selectedDate)
+    {
+        this.selectedDate = selectedDate;
     }
 
 }

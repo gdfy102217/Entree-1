@@ -5,54 +5,53 @@
  */
 package ejb.session.stateless;
 
-import entity.BankAccount;
+import entity.Customer;
 import entity.Restaurant;
-import java.util.List;
+import entity.Transaction;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.BankAccountExistException;
-import util.exception.BankAccountNotFoundException;
-import util.exception.CreateNewBankAccountException;
+import util.exception.CreateTransactionException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
  *
- * @author fengyuan
+ * @author zhiliangwang
  */
 @Stateless
-public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
-
+public class TransactionSessionBean implements TransactionSessionBeanLocal
+{
+    
     @EJB
     private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
-    
+
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
-
+    
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    
-    public BankAccountSessionBean()
+
+    public TransactionSessionBean()
     {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
     
+    
     @Override
-    public Restaurant createNewBankAccount(BankAccount newBankAccount, Long restaurantId) 
-            throws UnknownPersistenceException, InputDataValidationException, CreateNewBankAccountException, BankAccountExistException
+    public Long createCashOutTransaction(Transaction newTransaction, Long restaurantId) 
+            throws CreateTransactionException, UnknownPersistenceException, RestaurantNotFoundException, InputDataValidationException
     {
-        Set<ConstraintViolation<BankAccount>>constraintViolations = validator.validate(newBankAccount);
+        Set<ConstraintViolation<Transaction>>constraintViolations = validator.validate(newTransaction);
         
         if(constraintViolations.isEmpty())
         {
@@ -60,13 +59,14 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             {
                 Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
                 
-                em.persist(newBankAccount);
-                newBankAccount.setRestaurant(restaurant);
-                restaurant.setBankAccount(newBankAccount);
+                em.persist(newTransaction);
+                newTransaction.setRestaurant(restaurant);                
+                newTransaction.setBankAccount(restaurant.getBankAccount());
+                restaurant.getTransactions().add(newTransaction);
                 
                 em.flush();
 
-                return restaurant;
+                return newTransaction.getTransactionId();
             }
             catch(PersistenceException ex)
             {
@@ -74,7 +74,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new BankAccountExistException();
+                        throw new CreateTransactionException();
                     }
                     else
                     {
@@ -88,58 +88,18 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             }
             catch(RestaurantNotFoundException ex)
             {
-                throw new CreateNewBankAccountException("An error has occurred while creating the new bank account: " + ex.getMessage());
+                throw new CreateTransactionException("An error has occurred while creating the new transaction: " + ex.getMessage());
             }
         }
         else
         {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
+                
     }
     
-    @Override
-    public List<BankAccount> retrieveAllBankAccounts()
-    {
-        Query query = em.createQuery("SELECT ba FROM BankAccount ba ORDER BY ba.bankAccountNumber ASC");        
-        List<BankAccount> bankAccounts = query.getResultList();
-        
-        for(BankAccount bankAccount:bankAccounts)
-        {
-//            reservation.getCategoryEntity();
-//            reservation.getTagEntities().size();
-        }
-        
-        return bankAccounts;
-    }
     
-    @Override
-    public BankAccount retrieveBankAccountById(Long bankAccountId) throws BankAccountNotFoundException
-    {
-        BankAccount bankAccount = em.find(BankAccount.class, bankAccountId);
-        
-        if(bankAccount != null)
-        {
-//            productEntity.getCategoryEntity();
-//            productEntity.getTagEntities().size();
-            
-            return bankAccount;
-        }
-        else
-        {
-            throw new BankAccountNotFoundException("BankAccount ID " + bankAccountId + " does not exist!");
-        }               
-    }
-    
-    @Override
-    public void deleteBankAccount(Long bankAccountId) throws BankAccountNotFoundException
-    {
-        BankAccount bankAccountToRemove = retrieveBankAccountById(bankAccountId);
-        
-        em.remove(bankAccountToRemove);
-
-    }
-    
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<BankAccount>>constraintViolations)
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Transaction>>constraintViolations)
     {
         String msg = "Input data validation error!:";
             
@@ -150,4 +110,5 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         
         return msg;
     }
+    
 }

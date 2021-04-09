@@ -80,6 +80,9 @@ public class Restaurant extends User implements Serializable {
     @OneToMany(mappedBy = "restaurant")
     private List<Transaction> transactions;
     
+    @OneToMany(mappedBy = "restaurant")
+    private List<CustomerVoucher> customerVouchers;
+    
     public Restaurant() {
         super();
         dishs = new ArrayList<>();
@@ -91,6 +94,8 @@ public class Restaurant extends User implements Serializable {
         this.photos = new ArrayList<>();
         this.creditAmount = 0.0;
         this.bankAccount = null;
+        customerVouchers = new ArrayList<>();
+        this.photos = new ArrayList<>();
     }
 
     public Restaurant(String email, String password, String name, String address, 
@@ -282,6 +287,16 @@ public class Restaurant extends User implements Serializable {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public List<CustomerVoucher> getCustomerVouchers()
+    {
+        return customerVouchers;
+    }
+
+    public void setCustomerVouchers(List<CustomerVoucher> customerVouchers)
+    {
+        this.customerVouchers = customerVouchers;
     }
     
 }
