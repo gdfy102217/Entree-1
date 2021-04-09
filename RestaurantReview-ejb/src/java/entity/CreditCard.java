@@ -103,6 +103,7 @@ public class CreditCard implements Serializable {
         this.nameOnCard = nameOnCard;
     }
 
+    @JsonBackReference
     public Customer getOwner() {
         return owner;
     }
