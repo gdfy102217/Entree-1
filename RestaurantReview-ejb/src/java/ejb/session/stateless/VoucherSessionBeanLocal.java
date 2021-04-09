@@ -40,6 +40,7 @@ public interface VoucherSessionBeanLocal {
 
     public CustomerVoucher retrieveCustomerVoucherBySixDigitCode(String sixDigitCode) throws CustomerVoucherNotFoundException;
 
-    public Restaurant redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException;
+    public Restaurant redeemCustomerVoucher(String sixDigitCode, Long restaurantId) 
+            throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException, CustomerVoucherExpiredException;
     
 }

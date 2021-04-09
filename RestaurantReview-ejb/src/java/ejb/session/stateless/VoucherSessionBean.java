@@ -210,7 +210,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     
     @Override
     public Restaurant redeemCustomerVoucher(String sixDigitCode, Long restaurantId) 
-            throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException
+            throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException, CustomerVoucherExpiredException
     {
         try 
         {
