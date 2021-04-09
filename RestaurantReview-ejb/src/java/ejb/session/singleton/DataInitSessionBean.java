@@ -188,7 +188,11 @@ public class DataInitSessionBean {
     {
         try
         {
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing", 5, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing1", 5, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing2", 4, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing3", 3, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing4", 2, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing5", 1, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
         }
         catch (UnknownPersistenceException | InputDataValidationException | ReviewExistException | CreateNewReviewException ex)
         {
