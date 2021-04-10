@@ -160,8 +160,7 @@
         </h:form>
         
         <p:dialog id="dialogViewDish" widgetVar="dialogViewDish" header="View Dish Photo" closable="true">
-            <h:outputLabel value="Photo: " />
-            <p:graphicImage url="#{dish.photo}" width="100%" />
+            <p:graphicImage url="#{dishManagementManagedBean.dishToView.photo}" width="100%" />
         </p:dialog>
 
         <h:form id="formUpdateDish">
@@ -210,7 +209,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel value="Photos: " />&nbsp;
+                            <p:outputLabel value="Photo: " />&nbsp;
                         </p:column>
                         <br />
                         <p:messages  redisplay="false">
