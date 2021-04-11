@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -64,10 +65,11 @@ public class CustomerResource
         }
     }
     
-    @Path("retrieveCustomerByEmail")
+    @Path("retrieveCustomerByEmail/{email}")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveCustomerByEmail(String email)
+    public Response retrieveCustomerByEmail(@PathParam("email") String email)
     {
         try
         {
