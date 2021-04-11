@@ -42,7 +42,7 @@ public class ReviewManagedBean implements Serializable {
     public void postConstruct()
     {
         setCurrentRestaurant((Restaurant) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant"));
-        setMyReviews(reviewSessionBeanLocal.retrieveReviewsByRestaurantId(getCurrentRestaurant().getUseId()));
+        setMyReviews(reviewSessionBeanLocal.retrieveReviewsByRestaurantId(getCurrentRestaurant().getUserId()));
 //        setPromotions(promotionSessionBeanLocal.retrieveAllPromotions());
     }
     

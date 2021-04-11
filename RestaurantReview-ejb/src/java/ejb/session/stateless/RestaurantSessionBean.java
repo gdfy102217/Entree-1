@@ -84,7 +84,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 
                 em.flush();
 
-                return newRestaurant.getUseId();
+                return newRestaurant.getUserId();
             }
             catch(PersistenceException ex)
             {
@@ -274,13 +274,13 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     public Long updateRestaurant(Restaurant restaurant) 
             throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException
     {
-        if(restaurant != null && restaurant.getUseId()!= null)
+        if(restaurant != null && restaurant.getUserId()!= null)
         {
             Set<ConstraintViolation<Restaurant>>constraintViolations = validator.validate(restaurant);
         
             if(constraintViolations.isEmpty())
             {
-                Restaurant restaurantToUpdate = retrieveRestaurantById(restaurant.getUseId());
+                Restaurant restaurantToUpdate = retrieveRestaurantById(restaurant.getUserId());
 
                 //alr done in Bank Account SB
 //                if(bankAccountId != null && (!restaurantToUpdate.getBankAccount().getBankAccountId().equals(bankAccountId)))
@@ -307,7 +307,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 restaurantToUpdate.setCreditAmount(restaurant.getCreditAmount());
                 restaurantToUpdate.setDescription(restaurant.getDescription());
                 
-                return restaurantToUpdate.getUseId();
+                return restaurantToUpdate.getUserId();
                 
             }
             else

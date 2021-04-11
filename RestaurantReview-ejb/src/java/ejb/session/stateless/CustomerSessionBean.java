@@ -56,7 +56,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 em.persist(newCustomer);
                 em.flush();
 
-                return newCustomer.getUseId();
+                return newCustomer.getUserId();
             }
             catch(PersistenceException ex)
             {

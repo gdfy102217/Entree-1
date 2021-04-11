@@ -77,7 +77,7 @@ public class RestaurantRegisterManagedBean implements Serializable
             //getNewRestaurant().setOpenTime(fileNames.size());
             System.out.println("!!!!!!!!!!!!!!!Total file upload: " + filePaths.size());
             Long newRestaurantId = restaurantSessionBeanLocal.createNewRestaurant(getNewRestaurant(), getNewTableConfiguration());
-            getNewRestaurant().setUseId(newRestaurantId);
+            getNewRestaurant().setUserId(newRestaurantId);
             
             
             

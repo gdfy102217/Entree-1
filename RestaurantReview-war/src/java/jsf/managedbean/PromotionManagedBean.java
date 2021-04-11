@@ -59,7 +59,7 @@ public class PromotionManagedBean implements Serializable{
     public void postConstruct()
     {
         currentRestaurant = (Restaurant) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
-        promotions = promotionSessionBeanLocal.retrievePromotionByRestaurantId(currentRestaurant.getUseId());
+        promotions = promotionSessionBeanLocal.retrievePromotionByRestaurantId(currentRestaurant.getUserId());
 //        setPromotions(promotionSessionBeanLocal.retrieveAllPromotions());
     }
     
@@ -71,7 +71,7 @@ public class PromotionManagedBean implements Serializable{
             {
                 newPromotion.setPhoto(filePath);
             }
-            Promotion p = promotionSessionBeanLocal.createNewPromotion(getNewPromotion(), getCurrentRestaurant().getUseId());
+            Promotion p = promotionSessionBeanLocal.createNewPromotion(getNewPromotion(), getCurrentRestaurant().getUserId());
             getPromotions().add(p);
             
             if(getFilteredPromotions() != null)

@@ -62,7 +62,6 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
                 Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
                 
                 em.persist(newPromotion);
-                newPromotion.setRestaurant(restaurant);
                 restaurant.getPromotions().add(newPromotion);
                 
                 em.flush();
