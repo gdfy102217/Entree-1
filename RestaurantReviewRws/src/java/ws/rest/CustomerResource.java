@@ -89,7 +89,7 @@ public class CustomerResource
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewCustomer(Customer newCustomer)
+    public Response createCustomer(Customer newCustomer)
     {
         if(newCustomer != null)
         {
@@ -120,12 +120,7 @@ public class CustomerResource
         }
     }
     
-    /**
-     *
-     * @param username
-     * @param password
-     * @return
-     */
+    
     @Path("customerLogin")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
