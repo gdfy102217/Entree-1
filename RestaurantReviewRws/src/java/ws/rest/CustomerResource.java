@@ -54,6 +54,16 @@ public class CustomerResource
         try
         {
             List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
+            
+            for(Customer customer: customers)
+            {
+                customer.getCreditCards().clear();
+                customer.getCustomerVouchers().clear();
+                customer.getReviews().clear();
+                customer.getTransactions().clear();
+                customer.getReservation().clear();
+            }
+            
 
             GenericEntity<List<Customer>> genericEntity = new GenericEntity<List<Customer>>(customers) {
             };
@@ -130,15 +140,22 @@ public class CustomerResource
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response customerLogin(@QueryParam("email") String username, @QueryParam("password") String password)
+    public Response customerLogin(@QueryParam("email") String username, 
+                                  @QueryParam("password") String password)
     {
         try
         {
             Customer customer = customerSessionBeanLocal.customerLogin(username, password);
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
 
-            customer.setPassword(null);
+//            customer.setPassword(null);
             //customer.setSalt(null);          
+            customer.getCreditCards().clear();
+            customer.getCustomerVouchers().clear();
+            customer.getReviews().clear();
+            customer.getTransactions().clear();
+            customer.getReservation().clear();
+            
             
             return Response.status(Status.OK).entity(customer).build();
         }
