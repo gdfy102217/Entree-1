@@ -30,7 +30,9 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.rest.CorsFilter.class);
         resources.add(ws.rest.CustomerResource.class);
+        resources.add(ws.rest.PromotionResource.class);
         resources.add(ws.rest.RestaurantResource.class);
+        resources.add(ws.rest.ReviewResource.class);
         resources.add(ws.rest.VoucherResource.class);
     }
     

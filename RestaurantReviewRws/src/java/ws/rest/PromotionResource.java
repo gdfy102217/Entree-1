@@ -5,12 +5,8 @@
  */
 package ws.rest;
 
-import ejb.session.stateless.RestaurantSessionBeanLocal;
-import entity.CustomerVoucher;
-import entity.Reservation;
-import entity.Restaurant;
-import entity.Review;
-import entity.Transaction;
+import ejb.session.stateless.PromotionSessionBeanLocal;
+import entity.Promotion;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,45 +21,41 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import util.exception.RestaurantUsernameExistException;
 
 /**
  * REST Web Service
  *
  * @author fengyuan
  */
-@Path("Restaurant")
-public class RestaurantResource {
+@Path("Promotion")
+public class PromotionResource {
 
-    RestaurantSessionBeanLocal restaurantSessionBeanLocal = lookupRestaurantSessionBeanLocal();
-    
+    PromotionSessionBeanLocal promotionSessionBeanLocal = lookupPromotionSessionBeanLocal();
+
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of RestaurantResource
+     * Creates a new instance of PromotionResource
      */
-    public RestaurantResource() {
+    public PromotionResource() {
     }
-    
-    @Path("retrieveAllRestaurants")
+
+    @Path("retrieveAllPromotions")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllRestaurants()
+    public Response retrieveAllPromotions()
     {
         try
         {
-            List<Restaurant> restaurants = restaurantSessionBeanLocal.retrieveAllRestaurants();
+            List<Promotion> promotions = promotionSessionBeanLocal.retrieveAllPromotions();
             
-            for (Restaurant restaurant: restaurants){
-                restaurant.setBankAccount(null);
-                restaurant.getReservations().clear();
-                restaurant.getReviews().clear();       
-                restaurant.getTransactions().clear();
-                restaurant.getCustomerVouchers().clear();;
+            for (Promotion p: promotions)
+            {
+                
             }
 
-            GenericEntity<List<Restaurant>> genericEntity = new GenericEntity<List<Restaurant>>(restaurants) {
+            GenericEntity<List<Promotion>> genericEntity = new GenericEntity<List<Promotion>>(promotions) {
             };
 
             return Response.status(Status.OK).entity(genericEntity).build();
@@ -74,15 +66,13 @@ public class RestaurantResource {
         }
     }
 
-    private RestaurantSessionBeanLocal lookupRestaurantSessionBeanLocal() {
+    private PromotionSessionBeanLocal lookupPromotionSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (RestaurantSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/RestaurantSessionBean!ejb.session.stateless.RestaurantSessionBeanLocal");
+            return (PromotionSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/PromotionSessionBean!ejb.session.stateless.PromotionSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
-
-    
 }

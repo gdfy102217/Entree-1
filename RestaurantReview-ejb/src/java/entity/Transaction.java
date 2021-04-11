@@ -6,7 +6,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +51,7 @@ public class Transaction implements Serializable {
     @OneToOne
     private CreditCard creditCard;
     
-    @OneToOne
+    @ManyToOne
     private BankAccount bankAccount;
     
     @OneToMany(mappedBy = "transaction")

@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -43,8 +45,8 @@ public class BankAccount implements Serializable {
     @OneToOne(mappedBy = "bankAccount", optional = false)
     private Restaurant restaurant;
     
-    @OneToOne(mappedBy = "bankAccount")
-    private Transaction transaction;
+    @OneToMany(mappedBy = "bankAccount")
+    private List<Transaction> transactions;
 
     public BankAccount() {
     }
@@ -97,13 +99,14 @@ public class BankAccount implements Serializable {
         this.nameOfOwner = nameOfOwner;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
+
     
    
 

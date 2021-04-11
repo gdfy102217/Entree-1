@@ -194,7 +194,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     @Override
     public List<Review> retrieveReviewsByRestaurantId(Long restaurantId)
     {
-        Query query = em.createQuery("SELECT r FROM Review r WHERE r.receiver.useId = :inRestaurantId ORDER BY r.reviewId ASC");
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.receiver.userId = :inRestaurantId ORDER BY r.reviewId ASC");
         query.setParameter("inRestaurantId", restaurantId);
         List<Review> reviews = query.getResultList();
         
@@ -204,7 +204,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     @Override
     public List<Review> retrieveReviewsByCustomerId(Long customerId)
     {
-        Query query = em.createQuery("SELECT r FROM Review r WHERE r.creater.useId = :inCustomerId ORDER BY r.reviewId ASC");
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.creater.userId = :inCustomerId ORDER BY r.reviewId ASC");
         query.setParameter("inCustomerId", customerId);
         List<Review> reviews = query.getResultList();
         
