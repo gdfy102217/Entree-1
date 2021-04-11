@@ -131,11 +131,11 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     }
     
     @Override
-    public Customer customerLogin(String username, String password) throws InvalidLoginCredentialException
+    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException
     {
         try
         {
-            Customer customer = retrieveCustomerByEmail(username);
+            Customer customer = retrieveCustomerByEmail(email);
             
             if(customer.getPassword().equals(password))
             {
@@ -144,12 +144,12 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             }
             else
             {
-                throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+                throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
             }
         }
         catch(CustomerNotFoundException ex)
         {
-            throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+            throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
         }
     }
     
