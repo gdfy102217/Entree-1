@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,7 +34,7 @@ import javax.ws.rs.core.Response.Status;
 public class CustomerResource 
 {
     CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
-
+    
     
     @Context
     private UriInfo context;
@@ -51,8 +52,18 @@ public class CustomerResource
     {
         try
         {
+            System.out.println("restrieveing ALL customers!!!!!");
             List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
-
+            
+            for(Customer c: customers) 
+            {
+                c.getCreditCards().clear();
+                c.getCustomerVouchers().clear();
+                c.getReviews().clear();
+                c.getTransactions().clear();
+                c.getReservations().clear();
+            }
+            
             GenericEntity<List<Customer>> genericEntity = new GenericEntity<List<Customer>>(customers) {
             };
 
@@ -64,19 +75,29 @@ public class CustomerResource
         }
     }
     
-    @Path("retrieveCustomerByEmail")
+
+    @Path("customerLogin")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveCustomerByEmail(String email)
+    public Response customerLogin(@QueryParam("email") String email,
+                                    @QueryParam("password") String password)
     {
         try
         {
-            Customer customer = customerSessionBeanLocal.retrieveCustomerByEmail(email);
+            Customer customer = customerSessionBeanLocal.customerLogin(email, password);
+            System.out.println("************** Customer: " + customer.getLastName() + "login via web service!");
 
-            GenericEntity<Customer> genericEntity = new GenericEntity<Customer>(customer) {
-            };
+            customer.getCreditCards().clear();
+            customer.getCustomerVouchers().clear();
+            customer.getReviews().clear();
+            customer.getTransactions().clear();
+            customer.getReservations().clear();
+            
+            
+//            GenericEntity<Customer> genericEntity = new GenericEntity<Customer>(customer) {
+//            };
 
-            return Response.status(Status.OK).entity(genericEntity).build();
+            return Response.status(Status.OK).entity(customer).build();
         }
         catch(Exception ex)
         {

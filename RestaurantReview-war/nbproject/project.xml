@@ -18,11 +18,11 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.Blitzer_1.0_10.classpath}</file>
+                    <file>${libs.javaee-web-api-8.0.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.Java_EE_Web_8_API_Library.classpath}</file>
+                    <file>${libs.Blitzer_1.0.10.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
