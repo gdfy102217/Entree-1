@@ -51,7 +51,7 @@ public class Transaction implements Serializable {
     @OneToOne
     private CreditCard creditCard;
     
-    @OneToOne
+    @ManyToOne
     private BankAccount bankAccount;
     
     @OneToMany(mappedBy = "transaction")

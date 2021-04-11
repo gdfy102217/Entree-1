@@ -68,11 +68,11 @@ public class Customer extends User implements Serializable {
     
 
     public Long getId() {
-        return super.getUseId();
+        return super.getUserId();
     }
 
     public void setId(Long id) {
-        super.setUseId(id);
+        super.setUserId(id);
     }
 
     public String getFirstName() {
@@ -144,7 +144,7 @@ public class Customer extends User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (super.getUseId() != null ? super.getUseId().hashCode() : 0);
+        hash += (super.getUserId() != null ? super.getUserId().hashCode() : 0);
         return hash;
     }
 

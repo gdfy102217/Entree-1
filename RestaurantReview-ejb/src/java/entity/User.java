@@ -25,7 +25,7 @@ public class User implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long useId;
+    private Long userId;
     
     @Column(nullable = false, unique = true, length = 128)
     @NotNull
@@ -45,12 +45,12 @@ public class User implements Serializable {
     }
 
 
-    public Long getUseId() {
-        return useId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUseId(Long useId) {
-        this.useId = useId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -74,18 +74,18 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (useId != null ? useId.hashCode() : 0);
+        hash += (userId != null ? userId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the useId fields are not set
+        // TODO: Warning - this method won't work in the case the userId fields are not set
         if (!(object instanceof User)) {
             return false;
         }
         User other = (User) object;
-        if ((this.useId == null && other.useId != null) || (this.useId != null && !this.useId.equals(other.useId))) {
+        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
             return false;
         }
         return true;
@@ -93,7 +93,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.User[ id=" + useId + " ]";
+        return "entity.User[ id=" + userId + " ]";
     }
     
 }

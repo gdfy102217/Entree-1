@@ -65,13 +65,13 @@ public class Restaurant extends User implements Serializable {
     private TableConfiguration tableConfiguration;
     
     
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany
     private List<Dish> dishs;
     
     @OneToMany(mappedBy = "restaurant")
     private List<Reservation> reservations;
     
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany
     private List<Promotion> promotions;
     
     @OneToMany(mappedBy = "receiver")
@@ -117,11 +117,11 @@ public class Restaurant extends User implements Serializable {
 
     
     public Long getId() {
-        return super.getUseId();
+        return super.getUserId();
     }
 
     public void setId(Long id) {
-        super.setUseId(id);
+        super.setUserId(id);
     }
 
     public String getName() {
