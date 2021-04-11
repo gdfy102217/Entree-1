@@ -114,7 +114,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     @Override
     public List<Restaurant> retrieveAllRestaurants()
     {
-        Query query = em.createQuery("SELECT r FROM Restaurant r ORDER BY r.useId ASC");        
+        Query query = em.createQuery("SELECT r FROM Restaurant r ORDER BY r.userId ASC");        
         List<Restaurant> restaurants = query.getResultList();
         
         for(Restaurant restaurant: restaurants)

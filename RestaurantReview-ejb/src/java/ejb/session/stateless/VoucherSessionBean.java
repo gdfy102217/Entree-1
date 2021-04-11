@@ -251,7 +251,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     @Override
     public List<CustomerVoucher> retrieveAllCustomerVouchersByCustomerId(Long customerId) throws CustomerVoucherNotFoundException
     {
-        Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.owner.useId = :inCustomerId ORDER BY cv.customerVoucherId ASC");
+        Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.owner.userId = :inCustomerId ORDER BY cv.customerVoucherId ASC");
         query.setParameter("inCustomerId", customerId);        
         
         try {

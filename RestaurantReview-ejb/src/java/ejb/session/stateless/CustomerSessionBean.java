@@ -86,7 +86,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     @Override
     public List<Customer> retrieveAllCustomers()
     {
-        Query query = em.createQuery("SELECT c FROM Customer c ORDER BY c.useId ASC");        
+        Query query = em.createQuery("SELECT c FROM Customer c ORDER BY c.userId ASC");        
         List<Customer> customers = query.getResultList();
         
 //        for(Customer customer: customers)

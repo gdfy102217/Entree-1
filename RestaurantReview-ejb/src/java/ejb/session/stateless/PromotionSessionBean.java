@@ -133,7 +133,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
     @Override
     public List<Promotion> retrievePromotionByRestaurantId(Long restaurantId)
     {
-        Query query = em.createQuery("SELECT p FROM Promotion p WHERE p.restaurant.useId = :inRestaurantId ORDER BY p.promotionId ASC");
+        Query query = em.createQuery("SELECT p FROM Promotion p WHERE p.restaurant.userId = :inRestaurantId ORDER BY p.promotionId ASC");
         query.setParameter("inRestaurantId", restaurantId);
         List<Promotion> promotions = query.getResultList();
         
