@@ -151,4 +151,29 @@ public class CustomerResource
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
+    
+    @Path("customerUpdate")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response customerUpdate(Customer customerToUpdate)
+    {
+        if(customerToUpdate != null)
+        {
+            try
+            {
+                Long customerToUpdateId = customerSessionBeanLocal.updateCustomer(customerToUpdate);
+
+                return Response.status(Response.Status.OK).entity(customerToUpdateId).build();
+            }				
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new customer request").build();
+        }
+    }
 }

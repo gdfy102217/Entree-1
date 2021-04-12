@@ -31,4 +31,5 @@ public interface CustomerSessionBeanLocal {
 
     public Long createNewCustomer(Customer newCustomer) throws UnknownPersistenceException, InputDataValidationException, CustomerUsernameExistException;
     
+    public Long updateCustomer(Customer customer) throws CustomerNotFoundException, InputDataValidationException;
 }

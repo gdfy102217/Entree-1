@@ -164,4 +164,33 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         
         return msg;
     }
+    
+    @Override
+    public Long updateCustomer(Customer customer) throws CustomerNotFoundException, InputDataValidationException
+    {
+        if(customer != null && customer.getId()!=null)
+        {
+            Set<ConstraintViolation<Customer>>constraintViolations = validator.validate(customer);
+        
+            if(constraintViolations.isEmpty())
+            {
+                Customer customerToUpdate = retrieveCustomerById(customer.getId());
+
+                    customerToUpdate.setFirstName(customer.getFirstName());
+                    customerToUpdate.setLastName(customer.getLastName());
+                    customerToUpdate.setEmail(customer.getEmail());
+                    customerToUpdate.setPhoneNumber(customer.getPhoneNumber());
+                    customerToUpdate.setPassword(customer.getPassword());
+                    return customerToUpdate.getId();
+            }
+            else
+            {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        }
+        else 
+        {
+            throw new CustomerNotFoundException("Customer ID not provided for customer to be updated");
+        }
+    }
 }
