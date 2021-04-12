@@ -35,7 +35,7 @@ public class Customer extends User implements Serializable {
     private Integer customerLevel;
 
     @OneToOne
-    private CreditCard creditCards;
+    private CreditCard creditCard;
     
 
     @OneToMany(mappedBy = "customer")
@@ -100,12 +100,12 @@ public class Customer extends User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public CreditCard getCreditCards() {
-        return creditCards;
+    public CreditCard getCreditCard() {
+        return creditCard;
     }
 
-    public void setCreditCards(CreditCard creditCards) {
-        this.creditCards = creditCards;
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 
     public List<Review> getReviews() {

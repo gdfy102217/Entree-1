@@ -82,7 +82,7 @@ public class ReservationResource {
         {
             Reservation reservation = reservationSessionBeanLocal.retrieveReservationForCustomer(customerId);
             //detach its customer with other entities
-            reservation.getCustomer().getCreditCards().clear();
+            reservation.getCustomer().getCreditCard().setOwner(null);
             reservation.getCustomer().getCustomerVouchers().clear();
             reservation.getCustomer().getReservations().clear();
             reservation.getCustomer().getReviews().clear();

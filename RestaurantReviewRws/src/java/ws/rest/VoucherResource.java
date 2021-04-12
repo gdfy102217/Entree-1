@@ -164,7 +164,7 @@ public class VoucherResource {
 //            cv.getTransaction().getCustomerVouchers().clear();
             cv.getVoucher().getCustomerVouchers().clear();
             cv.getOwner().getCustomerVouchers().clear();
-            cv.getOwner().getCreditCards().clear();
+            cv.getOwner().getCreditCard().setOwner(null);
             cv.getOwner().getCustomerVouchers().clear();
             cv.getOwner().getReservations().clear();
             cv.getOwner().getReviews().clear();

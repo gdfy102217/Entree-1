@@ -46,7 +46,7 @@ public class CreditCard implements Serializable {
     private String nameOnCard;
     
 
-    @OneToOne(mappedBy = "creditCards")
+    @OneToOne(mappedBy = "creditCard")
     private Customer owner;
     
     @OneToOne(mappedBy = "creditCard")

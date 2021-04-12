@@ -60,7 +60,7 @@ public class CustomerResource
             
             for(Customer c: customers) 
             {
-                c.getCreditCards().setOwner(null);
+                c.getCreditCard().setOwner(null);
                 c.getCustomerVouchers().clear();
                 c.getReviews().clear();
                 c.getTransactions().clear();
@@ -114,7 +114,7 @@ public class CustomerResource
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
             
             customer.getReservations().clear();
-            customer.getCreditCards().setOwner(null);
+            customer.getCreditCard().setOwner(null);
             customer.getCustomerVouchers().clear();
             customer.getReviews().clear();
             customer.getTransactions().clear();
@@ -146,7 +146,7 @@ public class CustomerResource
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getFirstName()+ " login");
             
             customer.getReservations().clear();
-            customer.getCreditCards().clear();
+            customer.getCreditCard().setOwner(null);
             customer.getCustomerVouchers().clear();
             customer.getReviews().clear();
             customer.getTransactions().clear();
