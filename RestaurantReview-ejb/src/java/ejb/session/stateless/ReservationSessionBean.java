@@ -149,6 +149,23 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
+    public Reservation retrieveReservationForCustomer(Long customerId) throws ReservationNotFoundException
+    {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.customer.userId = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        Reservation reservation = (Reservation) query.getSingleResult();
+        
+        if(reservation.getReservationId() != null)
+        {       
+            return reservation;
+        }
+        else
+        {
+            throw new ReservationNotFoundException("Reservation associated with customer ID " + customerId + " does not exist!");
+        }               
+    }
+    
+    @Override
     public void deleteReservation(Long reservationId) throws ReservationNotFoundException
     {
         Reservation reservationToRemove = retrieveReservationById(reservationId);
