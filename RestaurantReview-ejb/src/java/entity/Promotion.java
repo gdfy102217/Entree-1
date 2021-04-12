@@ -47,6 +47,8 @@ public class Promotion implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
 
+    @ManyToOne(optional = false)
+    private Restaurant restaurant;
 
     public Promotion() {
     }
@@ -132,6 +134,14 @@ public class Promotion implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+    
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
     
 }

@@ -18,6 +18,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -37,7 +38,6 @@ public class CustomerResource
 {
     CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
     
-    
     @Context
     private UriInfo context;
 
@@ -54,12 +54,11 @@ public class CustomerResource
     {
         try
         {
-            System.out.println("restrieveing ALL customers!!!!!");
             List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
             
             for(Customer c: customers) 
             {
-                c.getCreditCards().clear();
+                c.getCreditCards().setOwner(null);
                 c.getCustomerVouchers().clear();
                 c.getReviews().clear();
                 c.getTransactions().clear();
@@ -101,12 +100,6 @@ public class CustomerResource
         }
     }
     
-    /**
-     *
-     * @param username
-     * @param password
-     * @return
-     */
     @Path("customerLogin")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -119,7 +112,7 @@ public class CustomerResource
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
             
             customer.getReservations().clear();
-            customer.getCreditCards().clear();
+            customer.getCreditCards().setOwner(null);
             customer.getCustomerVouchers().clear();
             customer.getReviews().clear();
             customer.getTransactions().clear();
@@ -139,6 +132,31 @@ public class CustomerResource
         }
     }
     
+    @Path("customerUpdate")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response customerUpdate(Customer customerToUpdate)
+    {
+        if(customerToUpdate != null)
+        {
+            try
+            {
+                Long customerToUpdateId = customerSessionBeanLocal.updateCustomer(customerToUpdate);
+
+                return Response.status(Response.Status.OK).entity(customerToUpdateId).build();
+            }				
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update customer request").build();
+        }
+    }
+            
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();

@@ -28,5 +28,7 @@ public interface ReservationSessionBeanLocal {
     public void deleteReservation(Long reservationId) throws ReservationNotFoundException;
 
     public Reservation retrieveReservationById(Long reservationId) throws ReservationNotFoundException;
+
+    public Reservation retrieveReservationForCustomer(Long customerId) throws ReservationNotFoundException;
     
 }

@@ -45,7 +45,8 @@ public class CreditCard implements Serializable {
     @Column(nullable = false, length = 128)
     private String nameOnCard;
     
-    @ManyToOne(optional = false)
+
+    @OneToOne(mappedBy = "creditCards")
     private Customer owner;
     
     @OneToOne(mappedBy = "creditCard")
@@ -60,7 +61,6 @@ public class CreditCard implements Serializable {
         this.expiryDate = expiryDate;
         this.nameOnCard = nameOnCard;
     }
-    
     
     
     public Long getCreditCardId() {

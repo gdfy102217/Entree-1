@@ -5,8 +5,8 @@
  */
 package ws.rest;
 
-import ejb.session.stateless.ReviewSessionBeanLocal;
-import entity.Review;
+import ejb.session.stateless.CreditCardSessionBeanLocal;
+import entity.CreditCard;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +20,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,43 +30,44 @@ import javax.ws.rs.core.Response.Status;
  *
  * @author fengyuan
  */
-@Path("Review")
-public class ReviewResource {
+@Path("CreditCard/{customerId}")
+public class CreditCardResource {
 
-    ReviewSessionBeanLocal reviewSessionBeanLocal = lookupReviewSessionBeanLocal();
+    CreditCardSessionBeanLocal creditCardSessionBeanLocal = lookupCreditCardSessionBeanLocal();
 
+    
     @Context
     private UriInfo context;
+    
+    @PathParam("customerId")
+    private Long customerId;
 
     /**
-     * Creates a new instance of ReviewResource
+     * Creates a new instance of CreditCardResource
      */
-    public ReviewResource() {
+    public CreditCardResource() {
     }
     
-    @Path("retrieveMyReviews/{customerId}")
+    @Path("retrieveMyCreditCards")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveMyReviews(@PathParam("customerId") Long CustomerId)
+    public Response retrieveMyCreditCards()
     {
         try
         {
-            List<Review> myReviews = reviewSessionBeanLocal.retrieveReviewsByCustomerId(CustomerId);
+            List<CreditCard> myCreditCards = creditCardSessionBeanLocal.retrieveCreditCardsByCustomerId(customerId);
             
-            if (myReviews.isEmpty())
+            if (myCreditCards.isEmpty())
             {
-                return Response.status(Status.UNAUTHORIZED).entity("No Reviews Found").build();
+                return Response.status(Status.UNAUTHORIZED).entity("No Credit Cards Found!").build();
             }
             
-            for (Review r: myReviews)
+            for (CreditCard cc: myCreditCards)
             {
-                r.setCreater(null);
-                r.getReplies().clear();
-                r.setOriginalReview(null);
-                r.setReceiver(null);
+                cc.setOwner(null);
             }
 
-            GenericEntity<List<Review>> genericEntity = new GenericEntity<List<Review>>(myReviews) {
+            GenericEntity<List<CreditCard>> genericEntity = new GenericEntity<List<CreditCard>>(myCreditCards) {
             };
 
             return Response.status(Status.OK).entity(genericEntity).build();
@@ -78,20 +78,19 @@ public class ReviewResource {
         }
     }
     
-    @Path("createNewReview/{customerId}")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewReview(Review newReview, @PathParam("customerId") Long customerId, @QueryParam("restaurantId") Long restaurantId)
+    public Response createNewCreditCard(CreditCard newCreditCard)
     {
-        if(newReview != null)
+        if(newCreditCard != null)
         {
             try
             {
-                Review newReviewCreated = reviewSessionBeanLocal.createNewReviewForRestaurant(newReview, customerId, restaurantId);
+                creditCardSessionBeanLocal.createNewCreditCard(newCreditCard, customerId);
 
-                return Response.status(Response.Status.OK).entity(newReviewCreated.getReviewId()).build();
-            }				
+                return Response.status(Response.Status.OK).entity(newCreditCard.getCreditCardId()).build();
+            }
             catch(Exception ex)
             {
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
@@ -99,19 +98,18 @@ public class ReviewResource {
         }
         else
         {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new review request").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new credit card request").build();
         }
     }
 
-    private ReviewSessionBeanLocal lookupReviewSessionBeanLocal() {
+    private CreditCardSessionBeanLocal lookupCreditCardSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (ReviewSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/ReviewSessionBean!ejb.session.stateless.ReviewSessionBeanLocal");
+            return (CreditCardSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/CreditCardSessionBean!ejb.session.stateless.CreditCardSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
 
-    
 }
