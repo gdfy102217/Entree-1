@@ -7,12 +7,14 @@ package ws.rest;
 
 import ejb.session.stateless.CreditCardSessionBeanLocal;
 import entity.CreditCard;
+import entity.CustomerVoucher;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -20,6 +22,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -99,6 +102,59 @@ public class CreditCardResource {
         else
         {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new credit card request").build();
+        }
+    }
+    
+    @Path("viewCreditCardDetails")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response viewCreditCardDetails(@QueryParam("creditCardId") Long creditCardId)
+    {
+        try
+        {
+            CreditCard creditCard = creditCardSessionBeanLocal.retrieveCreditCardById(creditCardId);
+
+            creditCard.getTransaction().setCreditCard(null);
+            creditCard.getTransaction().getBankAccount().getTransactions().clear();
+            creditCard.getTransaction().setCustomer(null);
+            creditCard.getTransaction().setRestaurant(null);
+            for (CustomerVoucher cv: creditCard.getTransaction().getCustomerVouchers())
+            {
+                cv.setTransaction(null);
+            }
+
+
+            GenericEntity<CreditCard> genericEntity = new GenericEntity<CreditCard>(creditCard) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response deleteCreditCard(@QueryParam("creditCardId") Long creditCardId)
+    {
+        if(creditCardId != null)
+        {
+            try
+            {
+                creditCardSessionBeanLocal.deleteCreditCard(creditCardId);
+
+                return Response.status(Response.Status.OK).entity(creditCardId).build();
+            }
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid delete credit card request").build();
         }
     }
 
