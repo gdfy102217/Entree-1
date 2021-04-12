@@ -40,7 +40,7 @@ public class ReviewResource {
     ReviewSessionBeanLocal reviewSessionBeanLocal = lookupReviewSessionBeanLocal();
 
     @Context
-    private UriInfo context;
+    private UriInfo context; 
 
     /**
      * Creates a new instance of ReviewResource
@@ -65,8 +65,6 @@ public class ReviewResource {
             for (Review r: myReviews)
             {
                 r.setCreater(null);
-                r.getReplies().clear();
-                r.setOriginalReview(null);
                 r.setReceiver(null);
             }
 
@@ -113,15 +111,7 @@ public class ReviewResource {
 //            reservation.getRestaurant().setBankAccount(null);
 //            reservation.getRestaurant().setPassword(null);
 
-            review.setReceiver(null);
-            review.setOriginalReview(null);
-            for (Review r: review.getReplies())
-            {
-                r.setCreater(null);
-                r.setReceiver(null);
-                r.setOriginalReview(null);
-                r.getReplies().clear();
-            }
+
                      
             return Response.status(Status.OK).entity(review).build();
         }
@@ -245,5 +235,5 @@ public class ReviewResource {
         }
     }
 
-    
+   
 }

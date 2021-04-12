@@ -95,11 +95,6 @@ public class RestaurantResource {
             {
                 review.setReceiver(null);
                 review.setCreater(null);
-                review.setOriginalReview(null);
-                for (Review reply: review.getReplies())
-                {
-                    reply.setOriginalReview(null);
-                }
             }
 
             restaurant.getTransactions().clear();
