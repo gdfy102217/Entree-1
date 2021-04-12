@@ -111,15 +111,7 @@ public class ReviewResource {
 //            reservation.getRestaurant().setBankAccount(null);
 //            reservation.getRestaurant().setPassword(null);
 
-            review.setReceiver(null);
-            review.setOriginalReview(null);
-            for (Review r: review.getReplies())
-            {
-                r.setCreater(null);
-                r.setReceiver(null);
-                r.setOriginalReview(null);
-                r.getReplies().clear();
-            }
+
                      
             return Response.status(Status.OK).entity(review).build();
         }
