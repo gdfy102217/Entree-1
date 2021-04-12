@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
@@ -143,8 +145,9 @@ public class VoucherResource {
         {
             CustomerVoucher cv = voucherSessionBeanLocal.retrieveCustomerVoucherById(customerVoucherId);
             
-            cv.setRestaurant(null);
             cv.setTransaction(null);
+            cv.setVoucher(null);
+            cv.setRestaurant(null);
         
 //            cv.getRestaurant().getTransactions().clear();
 //            cv.getRestaurant().getReviews().clear();
@@ -152,6 +155,7 @@ public class VoucherResource {
 //            cv.getRestaurant().getPromotions().clear();
 //            cv.getRestaurant().getDishs().clear();
 //            cv.getRestaurant().getCustomerVouchers().clear();
+//            cv.getRestaurant().setTableConfiguration(null);
 //            cv.getRestaurant().setBankAccount(null);
 //            cv.getRestaurant().setPassword(null);
 
@@ -162,7 +166,6 @@ public class VoucherResource {
 //            cv.getTransaction().setRestaurant(null);
             
 //            cv.getTransaction().getCustomerVouchers().clear();
-            cv.getVoucher().getCustomerVouchers().clear();
             cv.getOwner().getCustomerVouchers().clear();
             cv.getOwner().getCreditCard().setOwner(null);
             cv.getOwner().getCustomerVouchers().clear();
@@ -170,6 +173,7 @@ public class VoucherResource {
             cv.getOwner().getReviews().clear();
             cv.getOwner().getTransactions().clear();
             cv.getOwner().setPassword(null);
+            
 
             GenericEntity<CustomerVoucher> genericEntity = new GenericEntity<CustomerVoucher>(cv) {
             };
