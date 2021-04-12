@@ -60,7 +60,7 @@ public class CustomerResource
             
             for(Customer c: customers) 
             {
-                c.getCreditCards().clear();
+                c.getCreditCard().setOwner(null);
                 c.getCustomerVouchers().clear();
                 c.getReviews().clear();
                 c.getTransactions().clear();
@@ -78,19 +78,26 @@ public class CustomerResource
         }
     }
 
-    @PUT
+    @Path("createNewCustomer")
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public Response createNewCustomer(Customer newCustomer)
     {
         if(newCustomer != null)
         {
             try
             {
-                Long newCustomerId = customerSessionBeanLocal.createNewCustomer(newCustomer);
+                Customer customerToCreate = new Customer();
+                customerToCreate.setEmail(newCustomer.getEmail());
+                customerToCreate.setPassword(newCustomer.getPassword());
+                customerToCreate.setFirstName("");
+                customerToCreate.setLastName("");
+                customerToCreate.setPhoneNumber("");
+                Long newCustomerId = customerSessionBeanLocal.createNewCustomer(customerToCreate);
 
                 return Response.status(Response.Status.OK).entity(newCustomerId).build();
-            }				
+            }
             catch(Exception ex)
             {
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
@@ -114,7 +121,7 @@ public class CustomerResource
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
             
             customer.getReservations().clear();
-            customer.getCreditCards().clear();
+            customer.getCreditCard().setOwner(null);
             customer.getCustomerVouchers().clear();
             customer.getReviews().clear();
             customer.getTransactions().clear();
@@ -134,11 +141,11 @@ public class CustomerResource
         }
     }
     
-    @Path("retrieveCustomerById")
+    @Path("retrieveCustomerById/{customerId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveCustomerById(@QueryParam("customerId") Long customerId)
+    public Response retrieveCustomerById(@PathParam("customerId") Long customerId)
     {
         try
         {
@@ -146,7 +153,7 @@ public class CustomerResource
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getFirstName()+ " login");
             
             customer.getReservations().clear();
-            customer.getCreditCards().clear();
+            customer.getCreditCard().setOwner(null);
             customer.getCustomerVouchers().clear();
             customer.getReviews().clear();
             customer.getTransactions().clear();
@@ -166,7 +173,7 @@ public class CustomerResource
         }
     }
     
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response customerUpdate(Customer customerToUpdate)
@@ -178,7 +185,7 @@ public class CustomerResource
                 Long customerToUpdateId = customerSessionBeanLocal.updateCustomer(customerToUpdate);
 
                 return Response.status(Response.Status.OK).entity(customerToUpdateId).build();
-            }				
+            }
             catch(Exception ex)
             {
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();

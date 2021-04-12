@@ -35,4 +35,6 @@ public interface ReviewSessionBeanLocal {
 
     public Review createNewReviewForCustomer(Review newReview, Long createrId, Long receiverId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, ReviewExistException;
 
+    public Long updateReview(Review review) throws InputDataValidationException, ReviewNotFoundException;
+
 }

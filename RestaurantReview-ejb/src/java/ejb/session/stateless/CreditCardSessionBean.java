@@ -63,7 +63,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
                 
                 em.persist(newCreditCard);
                 newCreditCard.setOwner(customer);
-                customer.getCreditCards().add(newCreditCard);
+                customer.setCreditCard(newCreditCard);
                 
                 em.flush();
 

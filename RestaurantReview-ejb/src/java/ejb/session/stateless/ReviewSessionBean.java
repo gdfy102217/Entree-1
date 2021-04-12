@@ -212,6 +212,39 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     @Override
+    public Long updateReview(Review review) throws InputDataValidationException, ReviewNotFoundException
+    {
+        if(review != null && review.getReviewId()!= null)
+        {
+            Set<ConstraintViolation<Review>>constraintViolations = validator.validate(review);
+        
+            if(constraintViolations.isEmpty())
+            {
+                Review reviewToUpdate = retrieveReviewById(review.getReviewId());
+
+                    reviewToUpdate.setContent(review.getContent());
+                    reviewToUpdate.setNumOfLikes(review.getNumOfLikes());
+                    reviewToUpdate.setOriginalReview(review.getOriginalReview());
+                    reviewToUpdate.setPhotos(review.getPhotos());
+                    reviewToUpdate.setRating(review.getRating());
+                    reviewToUpdate.setCreater(review.getCreater());
+                    reviewToUpdate.setReceiver(review.getReceiver());
+                    reviewToUpdate.setReplies(review.getReplies());
+                    reviewToUpdate.setTimeOfCreation(review.getTimeOfCreation());
+                    return reviewToUpdate.getReviewId();
+            }
+            else
+            {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        }
+        else 
+        {
+            throw new ReviewNotFoundException("Review ID not provided for review to be updated");
+        }
+    }
+    
+    @Override
     public void deleteReview(Long reviewId) throws ReviewNotFoundException
     {
         Review reviewToRemove = retrieveReviewById(reviewId);

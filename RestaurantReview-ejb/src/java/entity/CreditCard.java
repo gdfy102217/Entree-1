@@ -45,7 +45,8 @@ public class CreditCard implements Serializable {
     @Column(nullable = false, length = 128)
     private String nameOnCard;
     
-    @ManyToOne(optional = false)
+
+    @OneToOne(mappedBy = "creditCard")
     private Customer owner;
     
     @OneToOne(mappedBy = "creditCard")
