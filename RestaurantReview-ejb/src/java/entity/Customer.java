@@ -55,6 +55,7 @@ public class Customer extends User implements Serializable {
         reviews = new ArrayList<>();
         transactions =  new ArrayList<>();
         customerVouchers = new ArrayList<>();
+        this.customerLevel = 1;
     }
 
 

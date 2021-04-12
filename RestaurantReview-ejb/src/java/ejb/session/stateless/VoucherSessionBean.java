@@ -189,6 +189,24 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     }
     
     @Override
+    public CustomerVoucher retrieveCustomerVoucherById(Long customerVoucherId) throws CustomerVoucherNotFoundException
+    {
+        CustomerVoucher customerVoucher = em.find(CustomerVoucher.class, customerVoucherId);
+        
+        if(customerVoucher != null)
+        {
+//            productEntity.getCategoryEntity();
+//            productEntity.getTagEntities().size();
+            
+            return customerVoucher;
+        }
+        else
+        {
+            throw new CustomerVoucherNotFoundException("Customer Voucher ID " + customerVoucherId + " does not exist!");
+        }               
+    }
+    
+    @Override
     public CustomerVoucher retrieveCustomerVoucherBySixDigitCode(String sixDigitCode) throws CustomerVoucherNotFoundException
     {
         Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.sixDigitCode = :inSixDigitCode");
