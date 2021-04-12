@@ -153,6 +153,14 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         }
     }
     
+    @Override
+    public void changePassword(String newPassword, Long customerId) throws CustomerNotFoundException
+    {
+        Customer customerToChangePassword = retrieveCustomerById(customerId);
+        
+        customerToChangePassword.setPassword(newPassword);
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Customer>>constraintViolations)
     {
         String msg = "Input data validation error!:";

@@ -17,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
@@ -91,6 +92,31 @@ public class ReservationResource {
         catch(Exception ex)
         {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createNewReservation(Reservation newReservation, @QueryParam("customerId") Long customerId,
+            @QueryParam("restaurantId") Long restaurantId, @QueryParam("Dish") List<Long> dishId)
+    {
+        if(newReservation != null)
+        {
+            try
+            {
+                Reservation reservation = reservationSessionBeanLocal.createNewReservation(newReservation, customerId, restaurantId, dishId);
+
+                return Response.status(Response.Status.OK).entity(reservation.getReservationId()).build();
+            }				
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new reservation request").build();
         }
     }
 

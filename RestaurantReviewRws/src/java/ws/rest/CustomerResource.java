@@ -18,6 +18,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -37,7 +38,6 @@ public class CustomerResource
 {
     CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
     
-    
     @Context
     private UriInfo context;
 
@@ -54,7 +54,6 @@ public class CustomerResource
     {
         try
         {
-            System.out.println("restrieveing ALL customers!!!!!");
             List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
             
             for(Customer c: customers) 
@@ -136,6 +135,33 @@ public class CustomerResource
         catch(Exception ex)
         {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("changePassword/{customerId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response changePassword(@PathParam("customerId") Long customerId, @QueryParam("newPassword") String newPassword)
+    {
+        if(customerId != null)
+        {
+            try
+            {
+                System.out.println("Customer ID:" + customerId);
+                System.out.println("New Password:" + newPassword);
+                customerSessionBeanLocal.changePassword(newPassword, customerId);
+
+                return Response.status(Response.Status.OK).entity("Change password successfully!").build();
+            }				
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new customer request").build();
         }
     }
     

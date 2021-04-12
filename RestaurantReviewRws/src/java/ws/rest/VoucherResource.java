@@ -53,11 +53,11 @@ public class VoucherResource {
     @Path("retrieveMyCustomerVouchers/{customerId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveMyCustomerVouchers(@PathParam("customerId") Long CustomerId)
+    public Response retrieveMyCustomerVouchers(@PathParam("customerId") Long customerId)
     {
         try
         {
-            List<CustomerVoucher> myVouchers = voucherSessionBeanLocal.retrieveAllCustomerVouchersByCustomerId(CustomerId);
+            List<CustomerVoucher> myVouchers = voucherSessionBeanLocal.retrieveAllCustomerVouchersByCustomerId(customerId);
             
             for(CustomerVoucher cv: myVouchers)
             {
@@ -93,6 +93,28 @@ public class VoucherResource {
             }
 
             GenericEntity<List<Voucher>> genericEntity = new GenericEntity<List<Voucher>>(vouchers) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("retrieveVoucherDetails/{voucherId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveVoucherDetails(@PathParam("voucherId") Long voucherId)
+    {
+        try
+        {
+            Voucher voucher = voucherSessionBeanLocal.retrieveVoucherById(voucherId);
+            
+            voucher.getCustomerVouchers().clear();
+
+            GenericEntity<Voucher> genericEntity = new GenericEntity<Voucher>(voucher) {
             };
 
             return Response.status(Status.OK).entity(genericEntity).build();

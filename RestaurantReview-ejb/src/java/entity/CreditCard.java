@@ -62,7 +62,6 @@ public class CreditCard implements Serializable {
     }
     
     
-    
     public Long getCreditCardId() {
         return creditCardId;
     }
