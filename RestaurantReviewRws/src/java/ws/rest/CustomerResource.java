@@ -25,6 +25,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 
 /**
@@ -124,6 +125,38 @@ public class CustomerResource
             return Response.status(Status.OK).entity(customer).build();
         }
         catch(InvalidLoginCredentialException ex)
+        {
+            return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("retrieveCustomerById")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveCustomerById(@QueryParam("customerId") Long customerId)
+    {
+        try
+        {
+            Customer customer = customerSessionBeanLocal.retrieveCustomerById(customerId);
+            System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getFirstName()+ " login");
+            
+            customer.getReservations().clear();
+            customer.getCreditCards().clear();
+            customer.getCustomerVouchers().clear();
+            customer.getReviews().clear();
+            customer.getTransactions().clear();
+
+            customer.setPassword(null);
+            //customer.setSalt(null);          
+            
+            return Response.status(Status.OK).entity(customer).build();
+        }
+        catch(CustomerNotFoundException ex)
         {
             return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
         }
