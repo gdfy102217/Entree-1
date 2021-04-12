@@ -56,6 +56,7 @@ public class Customer extends User implements Serializable {
         transactions =  new ArrayList<>();
         customerVouchers = new ArrayList<>();
         this.customerLevel = 1;
+        this.creditCard = new CreditCard();
     }
 
 

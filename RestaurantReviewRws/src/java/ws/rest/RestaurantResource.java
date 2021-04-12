@@ -6,9 +6,11 @@
 package ws.rest;
 
 import ejb.session.stateless.RestaurantSessionBeanLocal;
+import entity.Customer;
 import entity.Promotion;
 import entity.Restaurant;
 import entity.Review;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +59,7 @@ public class RestaurantResource {
             for (Restaurant restaurant: restaurants){
                 restaurant.setBankAccount(null);
                 restaurant.getReservations().clear();
-                restaurant.getReviews().clear();       
+                restaurant.getReviews().clear();
                 restaurant.getTransactions().clear();
                 restaurant.getCustomerVouchers().clear();
             }
@@ -84,6 +86,7 @@ public class RestaurantResource {
             Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
 
             restaurant.setBankAccount(null);
+            restaurant.setPassword(null);
             restaurant.getReservations().clear();
             
             for (Promotion promotion: restaurant.getPromotions())
@@ -91,11 +94,31 @@ public class RestaurantResource {
                 promotion.setRestaurant(null);
             }
             
+            List<Review> dummyReviewList = new ArrayList<>();
             for (Review review: restaurant.getReviews())
             {
-                review.setReceiver(null);
-                review.setCreater(null);
+                Review dummyReview = new Review();
+                
+                Restaurant dummyReceiver = new Restaurant();
+                dummyReceiver.setName(review.getReceiver().getName());
+                dummyReceiver.setId(review.getReceiver().getId());
+                dummyReview.setReceiver(dummyReceiver);
+                
+                Customer dummyCreater = new Customer();
+                dummyCreater.setId(review.getCreater().getId());
+                dummyCreater.setFirstName(review.getCreater().getFirstName());
+                dummyCreater.setLastName(review.getCreater().getLastName());
+                dummyReview.setCreater(dummyCreater);
+                
+                dummyReview.setContent(review.getContent());
+                dummyReview.setNumOfLikes(review.getNumOfLikes());
+                dummyReview.setRating(review.getRating());
+                dummyReview.setPhotos(review.getPhotos());
+                dummyReview.setTimeOfCreation(review.getTimeOfCreation());
+                
+                dummyReviewList.add(dummyReview);
             }
+            restaurant.setReviews(dummyReviewList);
 
             restaurant.getTransactions().clear();
             restaurant.getCustomerVouchers().clear();

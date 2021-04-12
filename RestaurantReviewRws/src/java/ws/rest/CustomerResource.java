@@ -79,7 +79,7 @@ public class CustomerResource
     }
 
     @Path("createNewCustomer")
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response createNewCustomer(Customer newCustomer)
@@ -120,7 +120,7 @@ public class CustomerResource
             customer.getReviews().clear();
             customer.getTransactions().clear();
 
-            customer.setPassword(null);
+//            customer.setPassword(null);
             //customer.setSalt(null);         
             
             return Response.status(Status.OK).entity(customer).build();
@@ -151,7 +151,7 @@ public class CustomerResource
             customer.getReviews().clear();
             customer.getTransactions().clear();
 
-            customer.setPassword(null);
+//            customer.setPassword(null);
             //customer.setSalt(null);          
             
             return Response.status(Status.OK).entity(customer).build();

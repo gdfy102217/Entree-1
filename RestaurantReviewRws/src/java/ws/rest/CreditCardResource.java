@@ -7,7 +7,9 @@ package ws.rest;
 
 import ejb.session.stateless.CreditCardSessionBeanLocal;
 import entity.CreditCard;
+import entity.Customer;
 import entity.CustomerVoucher;
+import entity.Transaction;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,7 +69,11 @@ public class CreditCardResource {
             
             for (CreditCard cc: myCreditCards)
             {
-                cc.setOwner(null);
+                Customer dummyCustomer = new Customer();
+                dummyCustomer.setId(customerId);
+                dummyCustomer.setFirstName(cc.getOwner().getFirstName());
+                dummyCustomer.setLastName(cc.getOwner().getLastName());
+                cc.setOwner(dummyCustomer);
             }
 
             GenericEntity<List<CreditCard>> genericEntity = new GenericEntity<List<CreditCard>>(myCreditCards) {
@@ -81,6 +87,7 @@ public class CreditCardResource {
         }
     }
     
+    @Path("createNewCreditCard")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -114,15 +121,19 @@ public class CreditCardResource {
         {
             CreditCard creditCard = creditCardSessionBeanLocal.retrieveCreditCardById(creditCardId);
 
-            creditCard.getTransaction().setCreditCard(null);
-            creditCard.getTransaction().getBankAccount().getTransactions().clear();
-            creditCard.getTransaction().setCustomer(null);
-            creditCard.getTransaction().setRestaurant(null);
-            for (CustomerVoucher cv: creditCard.getTransaction().getCustomerVouchers())
-            {
-                cv.setTransaction(null);
+            if (creditCard.getTransaction() != null) {
+                Transaction dummyTransaction = new Transaction();
+                dummyTransaction.setPaidAmount(creditCard.getTransaction().getPaidAmount());
+                dummyTransaction.setTransactionDate(creditCard.getTransaction().getTransactionDate());
+                dummyTransaction.setTransactionId(creditCard.getTransaction().getTransactionId());
             }
-
+            
+            Customer dummyCustomer = new Customer();
+            dummyCustomer.setId(customerId);
+            dummyCustomer.setFirstName(creditCard.getOwner().getFirstName());
+            dummyCustomer.setLastName(creditCard.getOwner().getLastName());
+            creditCard.setOwner(dummyCustomer);
+            
 
             GenericEntity<CreditCard> genericEntity = new GenericEntity<CreditCard>(creditCard) {
             };

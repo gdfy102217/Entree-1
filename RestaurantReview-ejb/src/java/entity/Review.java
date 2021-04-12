@@ -49,7 +49,7 @@ public class Review implements Serializable {
     private Customer creater;
     
     @ManyToOne
-    private User receiver;
+    private Restaurant receiver;
     
     public Review() {
       
@@ -148,11 +148,11 @@ public class Review implements Serializable {
         this.creater = creater;
     }
 
-    public User getReceiver() {
+    public Restaurant getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public void setReceiver(Restaurant receiver) {
         this.receiver = receiver;
     }
     

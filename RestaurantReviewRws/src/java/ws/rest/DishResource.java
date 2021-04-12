@@ -24,6 +24,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.DishNotFoundException;
 
 /**
  * REST Web Service
@@ -68,6 +69,36 @@ public class DishResource {
             };
 
             return Response.status(Status.OK).entity(genericEntity).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    /**
+     *
+     * @param dishId
+     * @return
+     */
+    @Path("retrieveDishDetails")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveDishDetails(@QueryParam("dishId") Long dishId)
+    {
+        try
+        {
+            Dish dish = dishSessionBeanLocal.retrieveDishById(dishId);
+            
+            GenericEntity<Dish> genericEntity = new GenericEntity<Dish>(dish) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
+        } 
+        catch(DishNotFoundException ex)
+        {
+            return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
         }
         catch(Exception ex)
         {

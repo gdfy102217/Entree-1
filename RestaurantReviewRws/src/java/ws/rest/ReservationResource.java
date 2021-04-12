@@ -6,7 +6,9 @@
 package ws.rest;
 
 import ejb.session.stateless.ReservationSessionBeanLocal;
+import entity.Customer;
 import entity.Reservation;
+import entity.Restaurant;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,23 +84,18 @@ public class ReservationResource {
         try
         {
             Reservation reservation = reservationSessionBeanLocal.retrieveReservationForCustomer(customerId);
-            //detach its customer with other entities
-            reservation.getCustomer().getCreditCard().setOwner(null);
-            reservation.getCustomer().getCustomerVouchers().clear();
-            reservation.getCustomer().getReservations().clear();
-            reservation.getCustomer().getReviews().clear();
-            reservation.getCustomer().getTransactions().clear();
-            reservation.getCustomer().setPassword(null);
+            
+            Customer dummyCustomer = new Customer();
+            dummyCustomer.setId(customerId);
+            dummyCustomer.setFirstName(reservation.getCustomer().getFirstName());
+            dummyCustomer.setLastName(reservation.getCustomer().getLastName());
+            reservation.setCustomer(dummyCustomer);
             
             //detach its restaurant with other entities
-            reservation.getRestaurant().getTransactions().clear();
-            reservation.getRestaurant().getReviews().clear();
-            reservation.getRestaurant().getReservations().clear();
-            reservation.getRestaurant().getPromotions().clear();
-            reservation.getRestaurant().getDishes().clear();
-            reservation.getRestaurant().getCustomerVouchers().clear();
-            reservation.getRestaurant().setBankAccount(null);
-            reservation.getRestaurant().setPassword(null);
+            Restaurant dummyRestaurant = new Restaurant();
+            dummyRestaurant.setId(reservation.getRestaurant().getId());
+            dummyRestaurant.setName(reservation.getRestaurant().getName());
+            reservation.setRestaurant(dummyRestaurant);
                      
             return Response.status(Status.OK).entity(reservation).build();
         }

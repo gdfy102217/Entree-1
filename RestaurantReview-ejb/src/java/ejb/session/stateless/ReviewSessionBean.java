@@ -105,59 +105,6 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-    
-    @Override
-    public Review createNewReviewForCustomer(Review newReview, Long createrId, Long receiverId) 
-            throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, ReviewExistException
-    {
-        Set<ConstraintViolation<Review>>constraintViolations = validator.validate(newReview);
-        
-        if(constraintViolations.isEmpty())
-        {
-            try
-            {
-                Customer creater = customerSessionBeanLocal.retrieveCustomerById(createrId);
-                Customer receiver = customerSessionBeanLocal.retrieveCustomerById(receiverId);
-                
-                em.persist(newReview); 
-                newReview.setCreater(creater);
-                creater.getReviews().add(newReview);
-                newReview.setReceiver(receiver);
-                receiver.getReviews().add(newReview);
-                
-                em.flush();
-
-                return newReview;
-            }
-            catch(PersistenceException ex)
-            {
-                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
-                {
-                    if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
-                    {
-                        throw new ReviewExistException();
-                    }
-                    else
-                    {
-                        throw new UnknownPersistenceException(ex.getMessage());
-                    }
-                }
-                else
-                {
-                    throw new UnknownPersistenceException(ex.getMessage());
-                }
-            }
-            catch(CustomerNotFoundException ex)
-            {
-                throw new CreateNewReviewException("An error has occurred while creating the new review: " + ex.getMessage());
-            }
-        }
-        else
-        {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-        }
-    }
-    
     @Override
     public List<Review> retrieveAllReviews()
     {
