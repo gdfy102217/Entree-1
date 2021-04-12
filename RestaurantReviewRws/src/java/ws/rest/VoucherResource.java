@@ -102,7 +102,7 @@ public class VoucherResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-
+    
     private VoucherSessionBeanLocal lookupVoucherSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
