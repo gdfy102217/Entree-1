@@ -51,14 +51,8 @@ public class Review implements Serializable {
     @ManyToOne
     private User receiver;
     
-    @OneToMany(mappedBy = "originalReview")
-    private List<Review> replies;
-    
-    @ManyToOne
-    private Review originalReview;
-
     public Review() {
-        replies = new ArrayList<>();
+      
     }
 
     public Review(String content, Integer rating, List<String> photos) {
@@ -110,22 +104,7 @@ public class Review implements Serializable {
     public void setNumOfLikes(Integer numOfLikes) {
         this.numOfLikes = numOfLikes;
     }
-    
-    public List<Review> getReplies() {
-        return replies;
-    }
 
-    public void setReplies(List<Review> replies) {
-        this.replies = replies;
-    }
-
-    public Review getOriginalReview() {
-        return originalReview;
-    }
-
-    public void setOriginalReview(Review originalReview) {
-        this.originalReview = originalReview;
-    }
 
     
     @Override

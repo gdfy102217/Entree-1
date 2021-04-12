@@ -63,8 +63,6 @@ public class ReviewResource {
             for (Review r: myReviews)
             {
                 r.setCreater(null);
-                r.getReplies().clear();
-                r.setOriginalReview(null);
                 r.setReceiver(null);
             }
 
