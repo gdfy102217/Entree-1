@@ -67,7 +67,7 @@ public class DishManagementManagedBean implements Serializable
     {
         currentRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
         //setDishes(dishSessionBeanLocal.retrieveAllDishesForParticularRestaurant(currentRestaurant.getId()));
-        dishes = currentRestaurant.getDishs();
+        dishes = currentRestaurant.getDishes();
     }
     
     

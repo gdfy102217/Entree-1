@@ -62,7 +62,7 @@ public class DishSessionBean implements DishSessionBeanLocal {
                 Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
                 
                 em.persist(newDish);
-                restaurant.getDishs().add(newDish);
+                restaurant.getDishes().add(newDish);
                 
                 em.flush();
 

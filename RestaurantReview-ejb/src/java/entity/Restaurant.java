@@ -66,7 +66,7 @@ public class Restaurant extends User implements Serializable {
     
     
     @OneToMany
-    private List<Dish> dishs;
+    private List<Dish> dishes;
     
     @OneToMany(mappedBy = "restaurant")
     private List<Reservation> reservations;
@@ -85,7 +85,7 @@ public class Restaurant extends User implements Serializable {
     
     public Restaurant() {
         super();
-        dishs = new ArrayList<>();
+        dishes = new ArrayList<>();
         reservations = new ArrayList<>();
         promotions = new ArrayList<>();
         reviews = new ArrayList<>();
@@ -188,12 +188,12 @@ public class Restaurant extends User implements Serializable {
         this.tableConfiguration = tableConfiguration;
     }
 
-    public List<Dish> getDishs() {
-        return dishs;
+    public List<Dish> getDishes() {
+        return dishes;
     }
 
-    public void setDishs(List<Dish> dishs) {
-        this.dishs = dishs;
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     public List<Promotion> getPromotions() {
