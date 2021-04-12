@@ -94,7 +94,7 @@ public class ReservationResource {
             reservation.getRestaurant().getReviews().clear();
             reservation.getRestaurant().getReservations().clear();
             reservation.getRestaurant().getPromotions().clear();
-            reservation.getRestaurant().getDishs().clear();
+            reservation.getRestaurant().getDishes().clear();
             reservation.getRestaurant().getCustomerVouchers().clear();
             reservation.getRestaurant().setBankAccount(null);
             reservation.getRestaurant().setPassword(null);

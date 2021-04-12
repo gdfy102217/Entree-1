@@ -7,9 +7,9 @@
     <context-param>
         <param-name>alternatedocroot_1</param-name>
     <!--for Windows uncomment below path and comment out mac path-->
-        <!--<param-value>C:/glassfish-5.1.0-uploadedfiles/uploadedFiles</param-value>--> 
+        <param-value>C:/glassfish-5.1.0-uploadedfiles/uploadedFiles</param-value> 
     <!--for MAC uncomment below path and comment out windows path-->
-        <param-value>/Applications/glassfish-5.1.0-uploadedFiles</param-value>
+<!--        <param-value>/Applications/glassfish-5.1.0-uploadedFiles</param-value>-->
     </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

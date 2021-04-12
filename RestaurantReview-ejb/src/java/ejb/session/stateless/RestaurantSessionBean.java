@@ -119,7 +119,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         for(Restaurant restaurant: restaurants)
         {
-            restaurant.getDishs().size();
+            restaurant.getDishes().size();
             restaurant.getPromotions().size();
             restaurant.getReservations().size();
             restaurant.getReviews().size();
@@ -136,7 +136,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         if(restaurant != null)
         {
-            restaurant.getDishs().size();
+            restaurant.getDishes().size();
             restaurant.getReservations().size();
             return restaurant;
         }
@@ -171,7 +171,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         for(Restaurant restaurant:restaurants)
         {
-            restaurant.getDishs().size();
+            restaurant.getDishes().size();
             restaurant.getPromotions().size();
             restaurant.getReservations().size();
             restaurant.getReviews().size();
