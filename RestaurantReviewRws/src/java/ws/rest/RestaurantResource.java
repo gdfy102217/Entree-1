@@ -6,12 +6,9 @@
 package ws.rest;
 
 import ejb.session.stateless.RestaurantSessionBeanLocal;
-import entity.CustomerVoucher;
 import entity.Promotion;
-import entity.Reservation;
 import entity.Restaurant;
 import entity.Review;
-import entity.Transaction;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +25,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import util.exception.RestaurantUsernameExistException;
 
 /**
  * REST Web Service
@@ -63,7 +59,7 @@ public class RestaurantResource {
                 restaurant.getReservations().clear();
                 restaurant.getReviews().clear();       
                 restaurant.getTransactions().clear();
-                restaurant.getCustomerVouchers().clear();;
+                restaurant.getCustomerVouchers().clear();
             }
 
             GenericEntity<List<Restaurant>> genericEntity = new GenericEntity<List<Restaurant>>(restaurants) {

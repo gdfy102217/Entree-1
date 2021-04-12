@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -80,9 +81,24 @@ public class ReservationResource {
         try
         {
             Reservation reservation = reservationSessionBeanLocal.retrieveReservationForCustomer(customerId);
-            reservation.setCustomer(null);
-            reservation.setRestaurant(null);
+            //detach its customer with other entities
+            reservation.getCustomer().getCreditCards().clear();
+            reservation.getCustomer().getCustomerVouchers().clear();
+            reservation.getCustomer().getReservations().clear();
+            reservation.getCustomer().getReviews().clear();
+            reservation.getCustomer().getTransactions().clear();
+            reservation.getCustomer().setPassword(null);
             
+            //detach its restaurant with other entities
+            reservation.getRestaurant().getTransactions().clear();
+            reservation.getRestaurant().getReviews().clear();
+            reservation.getRestaurant().getReservations().clear();
+            reservation.getRestaurant().getPromotions().clear();
+            reservation.getRestaurant().getDishs().clear();
+            reservation.getRestaurant().getCustomerVouchers().clear();
+            reservation.getRestaurant().setBankAccount(null);
+            reservation.getRestaurant().setPassword(null);
+                     
             return Response.status(Status.OK).entity(reservation).build();
         }
         catch(ReservationNotFoundException ex)
@@ -117,6 +133,31 @@ public class ReservationResource {
         else
         {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new reservation request").build();
+        }
+    }
+    
+    @DELETE
+    @Path("deleteReservation")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteReservation(@QueryParam("reservationId") Long reservationId)
+    {
+        if(reservationId != null)
+        {
+            try
+            {
+                reservationSessionBeanLocal.deleteReservation(reservationId);
+
+                return Response.status(Response.Status.OK).entity("Reservation No." + reservationId + " is deleted!").build();
+            }
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid delete reservation request").build();
         }
     }
 
