@@ -37,8 +37,9 @@ public class Customer extends User implements Serializable {
     @OneToMany(mappedBy = "owner")
     private List<CreditCard> creditCards;
     
-    @OneToOne(mappedBy = "customer")
-    private Reservation reservation;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Reservation> reservations;
     
     @OneToMany(mappedBy = "creater")
     private List<Review> reviews;
@@ -107,14 +108,6 @@ public class Customer extends User implements Serializable {
         this.creditCards = creditCards;
     }
 
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
-    }
-
     public List<Review> getReviews() {
         return reviews;
     }
@@ -172,6 +165,16 @@ public class Customer extends User implements Serializable {
 
     public void setCustomerLevel(Integer customerLevel) {
         this.customerLevel = customerLevel;
+    }
+
+    public List<Reservation> getReservations()
+    {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations)
+    {
+        this.reservations = reservations;
     }
     
 }

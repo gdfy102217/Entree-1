@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -35,7 +36,7 @@ import util.exception.InvalidLoginCredentialException;
 public class CustomerResource 
 {
     CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
-
+    
     
     @Context
     private UriInfo context;
@@ -53,8 +54,18 @@ public class CustomerResource
     {
         try
         {
+            System.out.println("restrieveing ALL customers!!!!!");
             List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
-
+            
+            for(Customer c: customers) 
+            {
+                c.getCreditCards().clear();
+                c.getCustomerVouchers().clear();
+                c.getReviews().clear();
+                c.getTransactions().clear();
+                c.getReservations().clear();
+            }
+            
             GenericEntity<List<Customer>> genericEntity = new GenericEntity<List<Customer>>(customers) {
             };
 
@@ -65,27 +76,7 @@ public class CustomerResource
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
-    @Path("retrieveCustomerByEmail")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveCustomerByEmail(String email)
-    {
-        try
-        {
-            Customer customer = customerSessionBeanLocal.retrieveCustomerByEmail(email);
 
-            GenericEntity<Customer> genericEntity = new GenericEntity<Customer>(customer) {
-            };
-
-            return Response.status(Status.OK).entity(genericEntity).build();
-        }
-        catch(Exception ex)
-        {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-        }
-    }
-    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -109,23 +100,7 @@ public class CustomerResource
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new customer request").build();
         }
     }
-
-    private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
-        try {
-            javax.naming.Context c = new InitialContext();
-            return (CustomerSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
     
-    /**
-     *
-     * @param username
-     * @param password
-     * @return
-     */
     @Path("customerLogin")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -136,6 +111,12 @@ public class CustomerResource
         {
             Customer customer = customerSessionBeanLocal.customerLogin(username, password);
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
+            
+            customer.getReservations().clear();
+            customer.getCreditCards().clear();
+            customer.getCustomerVouchers().clear();
+            customer.getReviews().clear();
+            customer.getTransactions().clear();
 
             customer.setPassword(null);
             //customer.setSalt(null);          
@@ -173,7 +154,17 @@ public class CustomerResource
         }
         else
         {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new customer request").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update customer request").build();
+        }
+    }
+            
+    private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
         }
     }
 }

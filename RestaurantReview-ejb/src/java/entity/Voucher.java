@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,8 +39,7 @@ public class Voucher implements Serializable {
     @NotNull
     @Column(nullable = false)
     @FutureOrPresent
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date expiryDate;
+    private LocalDate expiryDate;
     
     @NotNull
     @Column(nullable = false)
@@ -69,7 +69,7 @@ public class Voucher implements Serializable {
         customerVouchers = new ArrayList<>();
     }
 
-    public Voucher(String title, Date expiryDate, BigDecimal amountRedeemable, BigDecimal price, Boolean validity, String content) {
+    public Voucher(String title, LocalDate expiryDate, BigDecimal amountRedeemable, BigDecimal price, Boolean validity, String content) {
         this.title = title;
         this.expiryDate = expiryDate;
         this.amountRedeemable = amountRedeemable;
@@ -96,11 +96,11 @@ public class Voucher implements Serializable {
         this.title = title;
     }
 
-    public Date getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 
