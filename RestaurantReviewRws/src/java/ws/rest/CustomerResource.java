@@ -88,13 +88,7 @@ public class CustomerResource
         {
             try
             {
-                Customer customerToCreate = new Customer();
-                customerToCreate.setEmail(newCustomer.getEmail());
-                customerToCreate.setPassword(newCustomer.getPassword());
-                customerToCreate.setFirstName("");
-                customerToCreate.setLastName("");
-                customerToCreate.setPhoneNumber("");
-                Long newCustomerId = customerSessionBeanLocal.createNewCustomer(customerToCreate);
+                Long newCustomerId = customerSessionBeanLocal.createNewCustomer(newCustomer);
 
                 return Response.status(Response.Status.OK).entity(newCustomerId).build();
             }
@@ -150,7 +144,6 @@ public class CustomerResource
         try
         {
             Customer customer = customerSessionBeanLocal.retrieveCustomerById(customerId);
-            System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getFirstName()+ " login");
             
             customer.getReservations().clear();
             customer.getCreditCard().setOwner(null);
