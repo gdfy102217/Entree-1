@@ -36,7 +36,7 @@ import util.exception.InvalidLoginCredentialException;
 public class CustomerResource 
 {
     CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
-
+    
     
     @Context
     private UriInfo context;
@@ -47,26 +47,36 @@ public class CustomerResource
     public CustomerResource() {
     }
 
-//    @Path("retrieveAllCustomers")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response retrieveAllCustomers()
-//    {
-//        try
-//        {
-//            List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
-//
-//            GenericEntity<List<Customer>> genericEntity = new GenericEntity<List<Customer>>(customers) {
-//            };
-//
-//            return Response.status(Status.OK).entity(genericEntity).build();
-//        }
-//        catch(Exception ex)
-//        {
-//            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-//        }
-//    }
-     
+    @Path("retrieveAllCustomers")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllCustomers()
+    {
+        try
+        {
+            System.out.println("restrieveing ALL customers!!!!!");
+            List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
+            
+            for(Customer c: customers) 
+            {
+                c.getCreditCards().clear();
+                c.getCustomerVouchers().clear();
+                c.getReviews().clear();
+                c.getTransactions().clear();
+                c.getReservations().clear();
+            }
+            
+            GenericEntity<List<Customer>> genericEntity = new GenericEntity<List<Customer>>(customers) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -108,7 +118,7 @@ public class CustomerResource
             Customer customer = customerSessionBeanLocal.customerLogin(username, password);
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
             
-            customer.setReservation(null);
+            customer.getReservations().clear();
             customer.getCreditCards().clear();
             customer.getCustomerVouchers().clear();
             customer.getReviews().clear();

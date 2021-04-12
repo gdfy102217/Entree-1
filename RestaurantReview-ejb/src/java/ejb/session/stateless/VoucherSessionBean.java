@@ -9,6 +9,7 @@ import entity.Customer;
 import entity.CustomerVoucher;
 import entity.Restaurant;
 import entity.Voucher;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -220,7 +221,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
             {
                 throw new CustomerVoucherRedeemedException();
             } 
-            else if (customerVoucherToRedeem.getVoucher().getExpiryDate().getTime() < new Date().getTime())
+            else if (customerVoucherToRedeem.getVoucher().getExpiryDate().isBefore(LocalDate.now()))
             {
                 throw new CustomerVoucherExpiredException();
             }

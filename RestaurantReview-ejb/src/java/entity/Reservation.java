@@ -16,6 +16,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.FutureOrPresent;
@@ -60,7 +62,8 @@ public class Reservation implements Serializable {
     @OneToOne(optional = false)
     private Restaurant restaurant;
     
-    @OneToOne(optional = false)
+ 
+    @ManyToOne
     private Customer customer;
 
     public Reservation() {

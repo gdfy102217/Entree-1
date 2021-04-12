@@ -69,7 +69,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
                 
                 em.persist(newReservation);
                 newReservation.setCustomer(customer);
-                customer.setReservation(newReservation);
+                customer.getReservations().add(newReservation);
                 newReservation.setRestaurant(restaurant);
                 restaurant.getReservations().add(newReservation);
                 

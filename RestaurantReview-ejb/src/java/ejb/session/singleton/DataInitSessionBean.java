@@ -160,9 +160,12 @@ public class DataInitSessionBean {
     
     private void initializeVoucherData() 
     {
+        LocalDate localDate = LocalDate.now().plusMonths(3);
+        
         try
         {
-            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Voucher1", new Date(new Date().getTime() + (24 * 60 * 60 * 1000)), new BigDecimal(10.00), new BigDecimal(10.00), true, "for testing"));
+            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Voucher1", localDate, new BigDecimal(10.00), new BigDecimal(9.00), true, "for testing"));
+            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Voucher2", localDate, new BigDecimal(50.00), new BigDecimal(45.00), true, "for testing"));
         }
         catch (UnknownPersistenceException | InputDataValidationException | VoucherExistException ex)
         {
