@@ -6,26 +6,25 @@
 package ws.rest;
 
 import ejb.session.stateless.RestaurantSessionBeanLocal;
-import entity.CustomerVoucher;
-import entity.Reservation;
+import entity.Promotion;
 import entity.Restaurant;
 import entity.Review;
-import entity.Transaction;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import util.exception.RestaurantUsernameExistException;
 
 /**
  * REST Web Service
@@ -60,10 +59,54 @@ public class RestaurantResource {
                 restaurant.getReservations().clear();
                 restaurant.getReviews().clear();       
                 restaurant.getTransactions().clear();
-                restaurant.getCustomerVouchers().clear();;
+                restaurant.getCustomerVouchers().clear();
             }
 
             GenericEntity<List<Restaurant>> genericEntity = new GenericEntity<List<Restaurant>>(restaurants) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("retrieveRestaurantDetails")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveRestaurantDetails(@QueryParam("restaurantId") Long restaurantId)
+    {
+        try
+        {
+            Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
+
+            restaurant.setBankAccount(null);
+            restaurant.getReservations().clear();
+            
+            for (Promotion promotion: restaurant.getPromotions())
+            {
+                promotion.setRestaurant(null);
+            }
+            
+            for (Review review: restaurant.getReviews())
+            {
+                review.setReceiver(null);
+                review.setCreater(null);
+                review.setOriginalReview(null);
+                for (Review reply: review.getReplies())
+                {
+                    reply.setOriginalReview(null);
+                }
+            }
+
+            restaurant.getTransactions().clear();
+            restaurant.getCustomerVouchers().clear();
+
+
+            GenericEntity<Restaurant> genericEntity = new GenericEntity<Restaurant>(restaurant) {
             };
 
             return Response.status(Status.OK).entity(genericEntity).build();
