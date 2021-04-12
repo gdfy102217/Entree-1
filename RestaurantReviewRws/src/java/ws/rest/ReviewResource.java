@@ -40,7 +40,7 @@ public class ReviewResource {
     ReviewSessionBeanLocal reviewSessionBeanLocal = lookupReviewSessionBeanLocal();
 
     @Context
-    private UriInfo context;
+    private UriInfo context; 
 
     /**
      * Creates a new instance of ReviewResource
