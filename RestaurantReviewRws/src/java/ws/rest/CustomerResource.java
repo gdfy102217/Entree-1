@@ -100,12 +100,6 @@ public class CustomerResource
         }
     }
     
-    /**
-     *
-     * @param username
-     * @param password
-     * @return
-     */
     @Path("customerLogin")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -138,21 +132,19 @@ public class CustomerResource
         }
     }
     
-    @Path("changePassword/{customerId}")
+    @Path("customerUpdate")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response changePassword(@PathParam("customerId") Long customerId, @QueryParam("newPassword") String newPassword)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response customerUpdate(Customer customerToUpdate)
     {
-        if(customerId != null)
+        if(customerToUpdate != null)
         {
             try
             {
-                System.out.println("Customer ID:" + customerId);
-                System.out.println("New Password:" + newPassword);
-                customerSessionBeanLocal.changePassword(newPassword, customerId);
+                Long customerToUpdateId = customerSessionBeanLocal.updateCustomer(customerToUpdate);
 
-                return Response.status(Response.Status.OK).entity("Change password successfully!").build();
+                return Response.status(Response.Status.OK).entity(customerToUpdateId).build();
             }				
             catch(Exception ex)
             {
@@ -161,10 +153,10 @@ public class CustomerResource
         }
         else
         {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new customer request").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update customer request").build();
         }
     }
-    
+            
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();

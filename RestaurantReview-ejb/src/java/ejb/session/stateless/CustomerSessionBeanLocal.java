@@ -33,4 +33,5 @@ public interface CustomerSessionBeanLocal {
 
     public void changePassword(String newPassword, Long customerId) throws CustomerNotFoundException;
     
+    public Long updateCustomer(Customer customer) throws CustomerNotFoundException, InputDataValidationException;
 }
