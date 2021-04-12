@@ -224,12 +224,10 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
 
                     reviewToUpdate.setContent(review.getContent());
                     reviewToUpdate.setNumOfLikes(review.getNumOfLikes());
-                    reviewToUpdate.setOriginalReview(review.getOriginalReview());
                     reviewToUpdate.setPhotos(review.getPhotos());
                     reviewToUpdate.setRating(review.getRating());
                     reviewToUpdate.setCreater(review.getCreater());
                     reviewToUpdate.setReceiver(review.getReceiver());
-                    reviewToUpdate.setReplies(review.getReplies());
                     reviewToUpdate.setTimeOfCreation(review.getTimeOfCreation());
                     return reviewToUpdate.getReviewId();
             }
