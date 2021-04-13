@@ -46,6 +46,7 @@ public class Reservation implements Serializable {
     @Column(nullable = false)
     private LocalDateTime timeOfCreation;
     
+    
     @NotNull
     @Column(nullable = false )
     @Digits(integer = 2, fraction = 0)
