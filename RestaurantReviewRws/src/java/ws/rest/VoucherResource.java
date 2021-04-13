@@ -6,24 +6,20 @@
 package ws.rest;
 
 import ejb.session.stateless.VoucherSessionBeanLocal;
+import entity.Customer;
 import entity.CustomerVoucher;
+import entity.Restaurant;
+import entity.Transaction;
 import entity.Voucher;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -65,10 +61,33 @@ public class VoucherResource {
             
             for(CustomerVoucher cv: myVouchers)
             {
-                cv.setOwner(null);
-                cv.setVoucher(null);
-                cv.setRestaurant(null);
-                cv.setTransaction(null);
+                Customer dummyCustomer = new Customer();
+                dummyCustomer.setFirstName(cv.getOwner().getFirstName());
+                dummyCustomer.setLastName(cv.getOwner().getLastName());
+                cv.setOwner(dummyCustomer);
+            
+                Voucher dummyVoucher = new Voucher();
+                dummyVoucher.setTitle(cv.getVoucher().getTitle());
+                dummyVoucher.setContent(cv.getVoucher().getContent());
+                cv.setVoucher(dummyVoucher);
+                
+                Restaurant dummyRestaurant = new Restaurant();
+                if (cv.getRestaurant() != null) {
+                    dummyRestaurant.setName(cv.getRestaurant().getName());
+                    cv.setRestaurant(dummyRestaurant);
+                } else {
+                    cv.setRestaurant(null);
+                }
+
+                Transaction dummyTransaction = new Transaction();
+                if (cv.getTransaction() != null) {
+                    dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
+                    dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
+                    dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
+                    cv.setTransaction(dummyTransaction);
+                } else {
+                    cv.setTransaction(null);
+                }
             }
 
             GenericEntity<List<CustomerVoucher>> genericEntity = new GenericEntity<List<CustomerVoucher>>(myVouchers) {
@@ -118,10 +137,33 @@ public class VoucherResource {
             
             for (CustomerVoucher cv: voucher.getCustomerVouchers())
             {
-                cv.setOwner(null);
-                cv.setRestaurant(null);
-                cv.setTransaction(null);
-                cv.setVoucher(null);
+                Customer dummyCustomer = new Customer();
+                dummyCustomer.setFirstName(cv.getOwner().getFirstName());
+                dummyCustomer.setLastName(cv.getOwner().getLastName());
+                cv.setOwner(dummyCustomer);
+            
+                Voucher dummyVoucher = new Voucher();
+                dummyVoucher.setTitle(cv.getVoucher().getTitle());
+                dummyVoucher.setContent(cv.getVoucher().getContent());
+                cv.setVoucher(dummyVoucher);
+                
+                Restaurant dummyRestaurant = new Restaurant();
+                if (cv.getRestaurant() != null) {
+                    dummyRestaurant.setName(cv.getRestaurant().getName());
+                    cv.setRestaurant(dummyRestaurant);
+                } else {
+                    cv.setRestaurant(null);
+                }
+                
+                Transaction dummyTransaction = new Transaction();
+                if (cv.getTransaction() != null) {
+                    dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
+                    dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
+                    dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
+                    cv.setTransaction(dummyTransaction);
+                } else {
+                    cv.setTransaction(null);
+                }
             }
 
             GenericEntity<Voucher> genericEntity = new GenericEntity<Voucher>(voucher) {
@@ -145,35 +187,34 @@ public class VoucherResource {
         {
             CustomerVoucher cv = voucherSessionBeanLocal.retrieveCustomerVoucherById(customerVoucherId);
             
-            cv.setTransaction(null);
-            cv.setVoucher(null);
-            cv.setRestaurant(null);
-        
-//            cv.getRestaurant().getTransactions().clear();
-//            cv.getRestaurant().getReviews().clear();
-//            cv.getRestaurant().getReservations().clear();
-//            cv.getRestaurant().getPromotions().clear();
-//            cv.getRestaurant().getDishs().clear();
-//            cv.getRestaurant().getCustomerVouchers().clear();
-//            cv.getRestaurant().setTableConfiguration(null);
-//            cv.getRestaurant().setBankAccount(null);
-//            cv.getRestaurant().setPassword(null);
+            Transaction dummyTransaction = new Transaction();
+            if (cv.getTransaction() != null) {
+                dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
+                dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
+                dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
+                cv.setTransaction(dummyTransaction);
+            } else {
+                cv.setTransaction(null);
+            }
+            
+            Voucher dummyVoucher = new Voucher();
+            dummyVoucher.setTitle(cv.getVoucher().getTitle());
+            dummyVoucher.setContent(cv.getVoucher().getContent());
+            cv.setVoucher(dummyVoucher);
+
+            Restaurant dummyRestaurant = new Restaurant();
+            if (cv.getRestaurant() != null) {
+                dummyRestaurant.setName(cv.getRestaurant().getName());
+                cv.setRestaurant(dummyRestaurant);
+            } else {
+                cv.setRestaurant(null);
+            }
 
             
-//            cv.getTransaction().setBankAccount(null);
-//            cv.getTransaction().setCreditCard(null);
-//            cv.getTransaction().setCustomer(null);
-//            cv.getTransaction().setRestaurant(null);
-            
-//            cv.getTransaction().getCustomerVouchers().clear();
-            cv.getOwner().getCustomerVouchers().clear();
-            cv.getOwner().getCreditCard().setOwner(null);
-            cv.getOwner().getCustomerVouchers().clear();
-            cv.getOwner().getReservations().clear();
-            cv.getOwner().getReviews().clear();
-            cv.getOwner().getTransactions().clear();
-            cv.getOwner().setPassword(null);
-            
+            Customer dummyCustomer = new Customer();
+            dummyCustomer.setFirstName(cv.getOwner().getFirstName());
+            dummyCustomer.setLastName(cv.getOwner().getLastName());
+            cv.setOwner(dummyCustomer);
 
             GenericEntity<CustomerVoucher> genericEntity = new GenericEntity<CustomerVoucher>(cv) {
             };

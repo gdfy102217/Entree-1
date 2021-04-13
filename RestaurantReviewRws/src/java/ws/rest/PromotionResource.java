@@ -6,7 +6,9 @@
 package ws.rest;
 
 import ejb.session.stateless.PromotionSessionBeanLocal;
+import entity.Customer;
 import entity.Promotion;
+import entity.Restaurant;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +54,10 @@ public class PromotionResource {
             
             for (Promotion p: promotions)
             {
-                p.setRestaurant(null);
+                Restaurant dummyRestaurant = new Restaurant();
+                dummyRestaurant.setId(p.getRestaurant().getId());
+                dummyRestaurant.setName(p.getRestaurant().getName());
+                p.setRestaurant(dummyRestaurant);
             }
 
             GenericEntity<List<Promotion>> genericEntity = new GenericEntity<List<Promotion>>(promotions) {

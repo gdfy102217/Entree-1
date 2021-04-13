@@ -5,12 +5,14 @@
  */
 package ejb.session.singleton;
 
+import ejb.session.stateless.CreditCardSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ReservationSessionBeanLocal;
 import ejb.session.stateless.RestaurantSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.TableConfigurationSessionBeanLocal;
 import ejb.session.stateless.VoucherSessionBeanLocal;
+import entity.CreditCard;
 import entity.Customer;
 import entity.Reservation;
 import entity.CustomerVoucher;
@@ -21,8 +23,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import entity.Voucher;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -33,9 +39,11 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.enumeration.TableSize;
+import util.exception.CreateNewCreditCardException;
 import util.exception.CreateNewReservationException;
 import util.exception.CreateNewCustomerVoucherException;
 import util.exception.CreateNewReviewException;
+import util.exception.CreditCardExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerUsernameExistException;
 import util.exception.CustomerVoucherExistException;
@@ -53,6 +61,9 @@ import util.exception.VoucherNotFoundException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "CreditCardSessionBeanLocal")
+    private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
 
     @EJB
     private ReservationSessionBeanLocal reservationSessionBeanLocal;
@@ -75,6 +86,8 @@ public class DataInitSessionBean {
     
     @EJB
     private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
+    
+    
     
     private Long restaurantIdToTest;
     private Long customerIdToTest;
@@ -177,10 +190,19 @@ public class DataInitSessionBean {
     {
         try
         {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
+            String strDate = "10/23";
+            Date newDate = sdf.parse(strDate);
+//            LocalDate localDate = LocalDate.parse(strDate);
+             
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
+            
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", newDate, "Cust One"), 1L);
+            
         }
-        catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerVoucherExistException  ex)
+        catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerVoucherExistException |
+                CreateNewCreditCardException | CreditCardExistException | ParseException ex)
         {
             ex.printStackTrace();
         }

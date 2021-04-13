@@ -5,7 +5,10 @@
  */
 package ws.rest;
 
+import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
+import entity.Customer;
+import entity.Restaurant;
 import entity.Review;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,7 +40,10 @@ import util.exception.ReviewNotFoundException;
 @Path("Review")
 public class ReviewResource {
 
+    CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
+
     ReviewSessionBeanLocal reviewSessionBeanLocal = lookupReviewSessionBeanLocal();
+    
 
     @Context
     private UriInfo context; 
@@ -62,10 +68,18 @@ public class ReviewResource {
                 return Response.status(Status.UNAUTHORIZED).entity("No Reviews Found").build();
             }
             
+            Customer dummyCreater = new Customer();
+            dummyCreater.setId(CustomerId); 
+            dummyCreater.setFirstName(customerSessionBeanLocal.retrieveCustomerById(CustomerId).getFirstName());
+            dummyCreater.setLastName(customerSessionBeanLocal.retrieveCustomerById(CustomerId).getLastName());
+            
             for (Review r: myReviews)
             {
-                r.setCreater(null);
-                r.setReceiver(null);
+                r.setCreater(dummyCreater);
+                Restaurant dummyReceiver = new Restaurant();
+                dummyReceiver.setId(r.getReceiver().getId());
+                dummyReceiver.setName(r.getReceiver().getName());
+                r.setReceiver(dummyReceiver);
             }
 
             GenericEntity<List<Review>> genericEntity = new GenericEntity<List<Review>>(myReviews) {
@@ -94,32 +108,16 @@ public class ReviewResource {
         {
             Review review = reviewSessionBeanLocal.retrieveReviewById(reviewId);
             
-            //detach its customer with other entities
-            review.getCreater().getCustomerVouchers().clear();
-            review.getCreater().getReservations().clear();
-            review.getCreater().getReviews().clear();
-            review.getCreater().getTransactions().clear();
-            review.getCreater().setPassword(null);
+            Customer dummyCreater = new Customer();
+            dummyCreater.setId(review.getCreater().getId()); 
+            dummyCreater.setFirstName(review.getCreater().getFirstName());
+            dummyCreater.setLastName(review.getCreater().getLastName());
+            review.setCreater(dummyCreater);
             
-            //detach its restaurant with other entities
-//            reservation.getRestaurant().getTransactions().clear();
-//            reservation.getRestaurant().getReviews().clear();
-//            reservation.getRestaurant().getReservations().clear();
-//            reservation.getRestaurant().getPromotions().clear();
-//            reservation.getRestaurant().getDishs().clear();
-//            reservation.getRestaurant().getCustomerVouchers().clear();
-//            reservation.getRestaurant().setBankAccount(null);
-//            reservation.getRestaurant().setPassword(null);
-
-            review.setReceiver(null);
-            review.setOriginalReview(null);
-            for (Review r: review.getReplies())
-            {
-                r.setCreater(null);
-                r.setReceiver(null);
-                r.setOriginalReview(null);
-                r.getReplies().clear();
-            }
+            Restaurant dummyReceiver = new Restaurant();
+            dummyReceiver.setId(review.getReceiver().getId());
+            dummyReceiver.setName(review.getReceiver().getName());
+            review.setReceiver(dummyReceiver);
                      
             return Response.status(Status.OK).entity(review).build();
         }
@@ -157,32 +155,7 @@ public class ReviewResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new review request").build();
         }
     }
-    
-    @Path("replyReview/{createrId}")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response replyReview(Review newReply, @PathParam("createrId") Long createrId, @QueryParam("receiverId") Long receiverId)
-    {
-        if(newReply != null)
-        {
-            try
-            {
-                Review newReviewCreated = reviewSessionBeanLocal.createNewReviewForCustomer(newReply, createrId, receiverId);
 
-                return Response.status(Response.Status.OK).entity(newReviewCreated.getReviewId()).build();
-            }				
-            catch(Exception ex)
-            {
-                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-            }
-        }
-        else
-        {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new reply request").build();
-        }
-    }
-    
     @Path("reviewUpdate")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -208,11 +181,11 @@ public class ReviewResource {
         }
     }
     
-    @PUT
+    @DELETE
     @Path("deleteReview")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response updateReview(Review reviewToUpdate, @QueryParam("reviewId") Long reviewId)
+    public Response deleteReview(@QueryParam("reviewId") Long reviewId)
     {
         if(reviewId != null)
         {
@@ -237,6 +210,16 @@ public class ReviewResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (ReviewSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/ReviewSessionBean!ejb.session.stateless.ReviewSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionBeanLocal) c.lookup("java:global/RestaurantReview/RestaurantReview-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

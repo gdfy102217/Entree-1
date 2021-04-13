@@ -79,7 +79,7 @@ public class CustomerResource
     }
 
     @Path("createNewCustomer")
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response createNewCustomer(Customer newCustomer)
@@ -88,13 +88,7 @@ public class CustomerResource
         {
             try
             {
-                Customer customerToCreate = new Customer();
-                customerToCreate.setEmail(newCustomer.getEmail());
-                customerToCreate.setPassword(newCustomer.getPassword());
-                customerToCreate.setFirstName("");
-                customerToCreate.setLastName("");
-                customerToCreate.setPhoneNumber("");
-                Long newCustomerId = customerSessionBeanLocal.createNewCustomer(customerToCreate);
+                Long newCustomerId = customerSessionBeanLocal.createNewCustomer(newCustomer);
 
                 return Response.status(Response.Status.OK).entity(newCustomerId).build();
             }
@@ -126,7 +120,7 @@ public class CustomerResource
             customer.getReviews().clear();
             customer.getTransactions().clear();
 
-            customer.setPassword(null);
+//            customer.setPassword(null);
             //customer.setSalt(null);         
             
             return Response.status(Status.OK).entity(customer).build();
@@ -150,7 +144,6 @@ public class CustomerResource
         try
         {
             Customer customer = customerSessionBeanLocal.retrieveCustomerById(customerId);
-            System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getFirstName()+ " login");
             
             customer.getReservations().clear();
             customer.getCreditCard().setOwner(null);
@@ -158,7 +151,7 @@ public class CustomerResource
             customer.getReviews().clear();
             customer.getTransactions().clear();
 
-            customer.setPassword(null);
+//            customer.setPassword(null);
             //customer.setSalt(null);          
             
             return Response.status(Status.OK).entity(customer).build();
