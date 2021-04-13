@@ -32,7 +32,7 @@ public interface ReservationSessionBeanLocal {
 
     public Reservation retrieveReservationById(Long reservationId) throws ReservationNotFoundException;
 
-    public Reservation retrieveReservationForCustomer(Long customerId) throws ReservationNotFoundException;
+    public List<Reservation> retrieveReservationForCustomer(Long customerId) throws ReservationNotFoundException;
 
     public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException;
 
