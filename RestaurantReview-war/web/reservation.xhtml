@@ -30,10 +30,11 @@
                         </h:outputText>
                     </p:column>
                     
-                    <p:column headerText="Time" sortBy="#{reservation.reservationTime}" filterMatchMode="contains">
-                        <h:outputText value="#{reservation.reservationTime}">
-                            <f:convertDateTime pattern="HH:mm" type="localTime"/>
+                    <p:column headerText="Time" sortBy="#{reservation.reservationTime}">
+                        <h:outputText value="#{reservation.reservationTime}">         
                         </h:outputText>
+                        
+                      
                     </p:column>
                     
                     

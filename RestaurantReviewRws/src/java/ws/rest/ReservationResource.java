@@ -124,7 +124,8 @@ public class ReservationResource {
     {
         try
         {
-            System.out.println(restaurantId);
+            System.out.println("!!!!");
+            int[] availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
             
             List<Integer> availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
             
