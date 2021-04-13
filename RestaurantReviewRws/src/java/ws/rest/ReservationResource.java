@@ -10,7 +10,9 @@ import entity.Customer;
 import entity.Reservation;
 import entity.Restaurant;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,9 +118,9 @@ public class ReservationResource {
         
     @Path("retrieveRestaurantAvailableTableByTime")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") long date, @QueryParam("time") long time)
+    public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") Date date, @QueryParam("time") Double time)
     {
         try
         {
@@ -150,10 +152,12 @@ public class ReservationResource {
     public Response createNewReservation(Reservation newReservation, @QueryParam("customerId") Long customerId,
             @QueryParam("restaurantId") Long restaurantId)
     {
+        
         if(newReservation != null)
         {
             try
             {
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 Reservation reservation = reservationSessionBeanLocal.createNewReservation(newReservation, customerId, restaurantId);
 
                 return Response.status(Response.Status.OK).entity(reservation.getReservationId()).build();

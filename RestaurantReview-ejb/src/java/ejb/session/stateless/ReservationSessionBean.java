@@ -147,12 +147,11 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-    public int[] retrieveAvailableTableByTime(Long restaurantId, long date, long time) throws RestaurantNotFoundException
+    public int[] retrieveAvailableTableByTime(Long restaurantId, Date date, Double time) throws RestaurantNotFoundException
     {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
-        LocalDate d = new Date(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        Double t = Double.valueOf(time);
-        List<Reservation> reservationList = retrieveReservationsByRestaurantId(restaurantId, d, t);
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        List<Reservation> reservationList = retrieveReservationsByRestaurantId(restaurantId, localDate, time);
         
         int numOfLargeAvailable = tc.getNumOfLargeTable();
         int numOfMediumAvailable = tc.getNumOfMediumTable();
