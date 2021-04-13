@@ -10,7 +10,9 @@ import entity.Customer;
 import entity.Reservation;
 import entity.Restaurant;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,12 +120,11 @@ public class ReservationResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") long date, @QueryParam("time") long time)
+    public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") String date, @QueryParam("time") double time)
     {
         try
         {
             int[] availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
-            System.out.println(Arrays.toString(availabilityArr));
             
             JsonObject availabilityJson = Json.createObjectBuilder()
                     .add("numOfLargeTable", availabilityArr[0])
