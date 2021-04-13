@@ -149,8 +149,8 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-
-    public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException{
+    public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
+    {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
