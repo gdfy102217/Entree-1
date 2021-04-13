@@ -124,20 +124,15 @@ public class ReservationResource {
     {
         try
         {
-            int[] availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
+            System.out.println(restaurantId);
             
-            JsonObject availabilityJson = Json.createObjectBuilder()
-                    .add("numOfLargeTable", availabilityArr[0])
-                    .add("numOfMediumTable", availabilityArr[1])
-                    .add("numOfSmallTable", availabilityArr[2])
-                    .build();
+            List<Integer> availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
             
-            System.out.println(availabilityJson.toString());
-            
-//            GenericEntity<JsonObject> genericEntity = new GenericEntity<JsonObject>(res) {
-//            };
+            System.out.println(availabilityArr.get(0));
+            GenericEntity<List<Integer>> genericEntity = new GenericEntity<List<Integer>>(availabilityArr) {
+            };
 
-            return Response.status(Status.OK).entity(availabilityJson).build();
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(Exception ex)
         {
