@@ -152,6 +152,11 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     {
         CreditCard creditCardToRemove = retrieveCreditCardById(creditCardId);
         
+        creditCardToRemove.getTransaction().setCreditCard(null);
+        creditCardToRemove.getOwner().setCreditCard(null);
+        creditCardToRemove.setOwner(null);
+        creditCardToRemove.setTransaction(null);
+        
         em.remove(creditCardToRemove);
 
     }

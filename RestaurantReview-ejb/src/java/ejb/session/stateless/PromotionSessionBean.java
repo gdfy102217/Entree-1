@@ -175,6 +175,9 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
     {
         Promotion promotionToRemove = retrievePromotionById(promotionId);
         
+        promotionToRemove.getRestaurant().getPromotions().remove(promotionToRemove);
+        promotionToRemove.setRestaurant(new Restaurant());
+        
         em.remove(promotionToRemove);
 
     }

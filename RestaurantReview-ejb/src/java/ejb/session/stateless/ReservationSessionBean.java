@@ -170,6 +170,11 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     {
         Reservation reservationToRemove = retrieveReservationById(reservationId);
         
+        reservationToRemove.getCustomer().getReservations().remove(reservationToRemove);
+        reservationToRemove.setCustomer(new Customer());
+        reservationToRemove.getRestaurant().getReservations().remove(reservationToRemove);
+        reservationToRemove.setRestaurant(new Restaurant());
+        
         em.remove(reservationToRemove);
     }
     
