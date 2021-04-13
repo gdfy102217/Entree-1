@@ -149,7 +149,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     
     @Override
 
-    public int[] retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
+    public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
 
     {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
@@ -175,7 +175,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
             }
         }
         
-        return new int[] {numOfLargeAvailable, numOfMediumAvailable, numOfSmallAvailable};
+        return new List<Integer>(numOfLargeAvailable, numOfMediumAvailable, numOfSmallAvailable);
     }
     
     @Override
