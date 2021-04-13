@@ -11,6 +11,8 @@ import entity.Review;
 import entity.User;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -117,7 +119,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
             try
             {
                 Customer creater = customerSessionBeanLocal.retrieveCustomerById(createrId);
-                Customer receiver = customerSessionBeanLocal.retrieveCustomerById(receiverId);
+                Restaurant receiver = restaurantSessionBeanLocal.retrieveRestaurantById(receiverId);
                 
                 em.persist(newReview); 
                 newReview.setCreater(creater);
@@ -147,10 +149,10 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
             }
-            catch(CustomerNotFoundException ex)
+            catch(CustomerNotFoundException|RestaurantNotFoundException ex)
             {
                 throw new CreateNewReviewException("An error has occurred while creating the new review: " + ex.getMessage());
-            }
+            } 
         }
         else
         {

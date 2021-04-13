@@ -21,7 +21,7 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface ReservationSessionBeanLocal {
 
-    public Reservation createNewReservation(Reservation newReservation, Long customerId, Long restaurantId, List<Long> dishIds) throws UnknownPersistenceException, InputDataValidationException, CreateNewReservationException, ReservationExistException;
+    public Reservation createNewReservation(Reservation newReservation, Long customerId, Long restaurantId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReservationException, ReservationExistException;
 
     public List<Reservation> retrieveAllReservations();
 

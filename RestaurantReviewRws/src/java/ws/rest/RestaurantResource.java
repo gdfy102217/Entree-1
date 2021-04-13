@@ -94,7 +94,11 @@ public class RestaurantResource {
             for (Review review: restaurant.getReviews())
             {
                 review.setReceiver(null);
-                review.setCreater(null);
+                review.getCreater().setCreditCard(null);
+                review.getCreater().setReservations(null);
+                review.getCreater().setReviews(null);
+                review.getCreater().setTransactions(null);
+                review.getCreater().setCustomerVouchers(null);
             }
 
             restaurant.getTransactions().clear();

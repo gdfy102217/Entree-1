@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.Customer;
 import entity.Reservation;
 import entity.Restaurant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -55,7 +56,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-    public Reservation createNewReservation(Reservation newReservation, Long customerId, Long restaurantId, List<Long> dishIds) 
+    public Reservation createNewReservation(Reservation newReservation, Long customerId, Long restaurantId) 
             throws UnknownPersistenceException, InputDataValidationException, CreateNewReservationException, ReservationExistException
     {
         Set<ConstraintViolation<Reservation>>constraintViolations = validator.validate(newReservation);
@@ -66,21 +67,13 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
             {
                 Customer customer = customerSessionBeanLocal.retrieveCustomerById(customerId);
                 Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
-                
+                newReservation.setTimeOfCreation(LocalDateTime.now());
                 em.persist(newReservation);
                 newReservation.setCustomer(customer);
                 customer.getReservations().add(newReservation);
                 newReservation.setRestaurant(restaurant);
                 restaurant.getReservations().add(newReservation);
                 
-                if(dishIds != null && (!dishIds.isEmpty()))
-                {
-                    for(Long dishId:dishIds)
-                    {
-//                        Dish dish = dishSessionBeanLocal.retrieveDishByDishId(dishId);
-//                        newReservation.getPreOrderDishs().add(dish);
-                    }
-                }
                 
                 em.flush();
 
