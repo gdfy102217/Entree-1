@@ -41,6 +41,8 @@ public class Review implements Serializable {
     
     private Integer numOfLikes;
     
+    private Integer numOfDislikes;
+    
     @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date timeOfCreation;
@@ -60,6 +62,7 @@ public class Review implements Serializable {
         this.rating = rating;
         this.photos = photos;
         this.numOfLikes = 0;
+        this.numOfDislikes = 0;
         this.timeOfCreation = new Date(new Date().getTime() + 1000);
     }
     
@@ -103,6 +106,14 @@ public class Review implements Serializable {
 
     public void setNumOfLikes(Integer numOfLikes) {
         this.numOfLikes = numOfLikes;
+    }
+
+    public Integer getNumOfDislikes() {
+        return numOfDislikes;
+    }
+
+    public void setNumOfDislikes(Integer numOfDislikes) {
+        this.numOfDislikes = numOfDislikes;
     }
 
 

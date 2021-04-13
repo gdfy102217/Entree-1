@@ -40,11 +40,12 @@ public class Reservation implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-    private LocalTime reservationTime;
+    private Double reservationTime;
     
     @NotNull
     @Column(nullable = false)
     private LocalDateTime timeOfCreation;
+    
     
     @NotNull
     @Column(nullable = false )
@@ -69,7 +70,7 @@ public class Reservation implements Serializable {
     public Reservation() {
     }
 
-    public Reservation(LocalDate reservationDate, LocalTime reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
+    public Reservation(LocalDate reservationDate, Double reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.timeOfCreation = LocalDateTime.now();
@@ -170,12 +171,12 @@ public class Reservation implements Serializable {
         return "entity.Reservation[ id=" + reservationId + " ]";
     }
 
-    public LocalTime getReservationTime()
+    public Double getReservationTime()
     {
         return reservationTime;
     }
 
-    public void setReservationTime(LocalTime reservationTime)
+    public void setReservationTime(Double reservationTime)
     {
         this.reservationTime = reservationTime;
     }

@@ -113,13 +113,13 @@ public class ReservationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response createNewReservation(Reservation newReservation, @QueryParam("customerId") Long customerId,
-            @QueryParam("restaurantId") Long restaurantId, @QueryParam("Dish") List<Long> dishId)
+            @QueryParam("restaurantId") Long restaurantId)
     {
         if(newReservation != null)
         {
             try
             {
-                Reservation reservation = reservationSessionBeanLocal.createNewReservation(newReservation, customerId, restaurantId, dishId);
+                Reservation reservation = reservationSessionBeanLocal.createNewReservation(newReservation, customerId, restaurantId);
 
                 return Response.status(Response.Status.OK).entity(reservation.getReservationId()).build();
             }				
