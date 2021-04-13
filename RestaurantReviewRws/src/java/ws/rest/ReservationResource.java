@@ -11,6 +11,7 @@ import entity.Reservation;
 import entity.Restaurant;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -87,23 +88,35 @@ public class ReservationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveMyReservationForCustomer(@QueryParam("customerId") Long customerId)
     {
+        List<Reservation> reservations = new ArrayList<>();
         try
         {
-            Reservation reservation = reservationSessionBeanLocal.retrieveReservationForCustomer(customerId);
+            System.out.println("!!!!!");
+            reservations = reservationSessionBeanLocal.retrieveReservationForCustomer(customerId);
             
-            Customer dummyCustomer = new Customer();
-            dummyCustomer.setId(customerId);
-            dummyCustomer.setFirstName(reservation.getCustomer().getFirstName());
-            dummyCustomer.setLastName(reservation.getCustomer().getLastName());
-            reservation.setCustomer(dummyCustomer);
+            for(Reservation res: reservations)
+            {
+                res.setCustomer(null);
+                res.setRestaurant(null);
+            }
+            
+            
+//            Customer dummyCustomer = new Customer();
+//            dummyCustomer.setId(customerId);
+//            dummyCustomer.setFirstName(reservation.getCustomer().getFirstName());
+//            dummyCustomer.setLastName(reservation.getCustomer().getLastName());
+//            reservation.setCustomer(dummyCustomer);
             
             //detach its restaurant with other entities
-            Restaurant dummyRestaurant = new Restaurant();
-            dummyRestaurant.setId(reservation.getRestaurant().getId());
-            dummyRestaurant.setName(reservation.getRestaurant().getName());
-            reservation.setRestaurant(dummyRestaurant);
+//            Restaurant dummyRestaurant = new Restaurant();
+//            dummyRestaurant.setId(reservation.getRestaurant().getId());
+//            dummyRestaurant.setName(reservation.getRestaurant().getName());
+//            reservation.setRestaurant(dummyRestaurant);
                      
-            return Response.status(Status.OK).entity(reservation).build();
+            GenericEntity<List<Reservation>> genericEntity = new GenericEntity<List<Reservation>>(reservations) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(ReservationNotFoundException ex)
         {
