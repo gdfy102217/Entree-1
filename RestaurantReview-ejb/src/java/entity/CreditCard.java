@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,8 +39,7 @@ public class CreditCard implements Serializable {
     @NotNull
     @Column(nullable = false)
     @FutureOrPresent
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date expiryDate;
+    private LocalDate expiryDate;
     
     @NotNull
     @Column(nullable = false, length = 128)
@@ -55,7 +55,7 @@ public class CreditCard implements Serializable {
     public CreditCard() {
     }
 
-    public CreditCard(String cardNumber, String cvv, Date expiryDate, String nameOnCard) {
+    public CreditCard(String cardNumber, String cvv, LocalDate expiryDate, String nameOnCard) {
         this.cardNumber = cardNumber;
         this.cvv = cvv;
         this.expiryDate = expiryDate;
@@ -87,11 +87,11 @@ public class CreditCard implements Serializable {
         this.cvv = cvv;
     }
 
-    public Date getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 

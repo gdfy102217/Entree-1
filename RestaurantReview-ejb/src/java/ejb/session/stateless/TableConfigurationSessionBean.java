@@ -114,7 +114,7 @@ public class TableConfigurationSessionBean implements TableConfigurationSessionB
             throw new TableConfigurationNotFoundException("TableConfiguration ID " + tableConfigurationId + " does not exist!");
         }               
     }
-    
+
     @Override
     public void deleteTableConfiguration(Long tableConfigurationId) throws TableConfigurationNotFoundException
     {

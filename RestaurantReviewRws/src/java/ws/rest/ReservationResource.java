@@ -9,9 +9,13 @@ import ejb.session.stateless.ReservationSessionBeanLocal;
 import entity.Customer;
 import entity.Reservation;
 import entity.Restaurant;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
@@ -102,6 +106,37 @@ public class ReservationResource {
         catch(ReservationNotFoundException ex)
         {
             return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+        }
+        catch(Exception ex)
+        {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+        
+    @Path("retrieveRestaurantAvailableTableByTime")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") long date, @QueryParam("time") long time)
+    {
+        try
+        {
+            int[] availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
+            System.out.println(Arrays.toString(availabilityArr));
+            
+            JsonObject availabilityJson = Json.createObjectBuilder()
+                    .add("numOfLargeTable", availabilityArr[0])
+                    .add("numOfMediumTable", availabilityArr[1])
+                    .add("numOfSmallTable", availabilityArr[2])
+                    .build();
+            
+            System.out.println(availabilityJson.toString());
+            
+//            GenericEntity<JsonObject> genericEntity = new GenericEntity<JsonObject>(res) {
+//            };
+
+            return Response.status(Status.OK).entity(availabilityJson).build();
         }
         catch(Exception ex)
         {

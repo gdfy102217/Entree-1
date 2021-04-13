@@ -6,12 +6,15 @@
 package ejb.session.stateless;
 
 import entity.Reservation;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewReservationException;
 import util.exception.InputDataValidationException;
 import util.exception.ReservationExistException;
 import util.exception.ReservationNotFoundException;
+import util.exception.RestaurantNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -30,5 +33,9 @@ public interface ReservationSessionBeanLocal {
     public Reservation retrieveReservationById(Long reservationId) throws ReservationNotFoundException;
 
     public Reservation retrieveReservationForCustomer(Long customerId) throws ReservationNotFoundException;
+
+    public int[] retrieveAvailableTableByTime(Long restaurantId, long date, long time) throws RestaurantNotFoundException;
+
+    public List<Reservation> retrieveReservationsByRestaurantId(Long restaurantId, LocalDate date, Double reservationTime);
     
 }

@@ -8,7 +8,11 @@ package ejb.session.stateless;
 import entity.Customer;
 import entity.Reservation;
 import entity.Restaurant;
+import entity.TableConfiguration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -21,6 +25,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.TableSize;
 import util.exception.CreateNewReservationException;
 import util.exception.CustomerNotFoundException;
 import util.exception.DeleteReservationException;
@@ -42,7 +47,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
 
     @EJB
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-
+    
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
 
@@ -121,6 +126,50 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
         }
         
         return reservations;
+    }
+    
+    @Override
+    public List<Reservation> retrieveReservationsByRestaurantId(Long restaurantId, LocalDate date, Double reservationTime)
+    {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.restaurant.userId = :inRestaurantId AND r.reservationDate = :inDate AND r.reservationTime = :inReservationTime");
+        query.setParameter("inRestaurantId", restaurantId);
+        query.setParameter("inReservationTime", reservationTime);
+        query.setParameter("inDate", date);
+        List<Reservation> reservations = query.getResultList();
+        
+        for(Reservation reservation:reservations)
+        {
+//            reservation.getCategoryEntity();
+//            reservation.getTagEntities().size();
+        }
+        
+        return reservations;
+    }
+    
+    @Override
+    public int[] retrieveAvailableTableByTime(Long restaurantId, long date, long time) throws RestaurantNotFoundException
+    {
+        TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
+        LocalDate d = new Date(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Double t = Double.valueOf(time);
+        List<Reservation> reservationList = retrieveReservationsByRestaurantId(restaurantId, d, t);
+        
+        int numOfLargeAvailable = tc.getNumOfLargeTable();
+        int numOfMediumAvailable = tc.getNumOfMediumTable();
+        int numOfSmallAvailable = tc.getNumOfSmallTable();
+        
+        for (Reservation r: reservationList)
+        {
+            if (r.getTableSizeAssigned().equals(TableSize.LARGE)) {
+                numOfLargeAvailable -= 1;
+            } else if (r.getTableSizeAssigned().equals(TableSize.MEDIUM)) {
+                numOfMediumAvailable -= 1;
+            } else if (r.getTableSizeAssigned().equals(TableSize.SMALL)) {
+                numOfSmallAvailable -= 1;
+            }
+        }
+        
+        return new int[] {numOfLargeAvailable, numOfMediumAvailable, numOfSmallAvailable};
     }
     
     @Override

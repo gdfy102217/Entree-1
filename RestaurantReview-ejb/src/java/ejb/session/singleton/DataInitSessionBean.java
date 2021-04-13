@@ -193,12 +193,12 @@ public class DataInitSessionBean {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
             String strDate = "10/23";
             Date newDate = sdf.parse(strDate);
-//            LocalDate localDate = LocalDate.parse(strDate);
+            LocalDate localDate = newDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
              
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
             
-            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", newDate, "Cust One"), 1L);
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", localDate, "Cust One"), 1L);
             
         }
         catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerVoucherExistException |
