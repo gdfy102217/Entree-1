@@ -170,12 +170,10 @@ public class DataInitSessionBean {
         
         LocalDate localDate = LocalDate.now();
         
-        Double localTime = 19.5;
-        
         try
         {
-            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, localTime, 2, TableSize.SMALL, "noooo"), 1l, 3l);
-            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, localTime, 8, TableSize.MEDIUM, "noooo"), 2l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, 13.5, 2, TableSize.SMALL, "noooo"), 1l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, 21.0, 8, TableSize.MEDIUM, "noooo"), 2l, 3l);
         }
         catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {
