@@ -120,12 +120,11 @@ public class ReservationResource {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") Date date, @QueryParam("time") Double time)
+    public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") String date, @QueryParam("time") double time)
     {
         try
         {
             int[] availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
-            System.out.println(Arrays.toString(availabilityArr));
             
             JsonObject availabilityJson = Json.createObjectBuilder()
                     .add("numOfLargeTable", availabilityArr[0])

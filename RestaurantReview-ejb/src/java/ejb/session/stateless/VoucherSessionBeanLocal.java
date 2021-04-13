@@ -28,7 +28,7 @@ import util.exception.VoucherNotFoundException;
 @Local
 public interface VoucherSessionBeanLocal {
 
-    public CustomerVoucher createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException;
+    public Long createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException;
 
     public Voucher createNewVoucher(Voucher newVoucher) throws UnknownPersistenceException, InputDataValidationException, VoucherExistException;
 

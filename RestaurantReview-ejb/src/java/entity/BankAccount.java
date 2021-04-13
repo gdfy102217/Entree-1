@@ -46,7 +46,7 @@ public class BankAccount implements Serializable {
     private Restaurant restaurant;
     
     @OneToMany(mappedBy = "bankAccount")
-    private List<Transaction> transactions;
+    private List<SaleTransaction> transactions;
 
     public BankAccount() {
     }
@@ -99,11 +99,11 @@ public class BankAccount implements Serializable {
         this.nameOfOwner = nameOfOwner;
     }
 
-    public List<Transaction> getTransactions() {
+    public List<SaleTransaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(List<SaleTransaction> transactions) {
         this.transactions = transactions;
     }
 
