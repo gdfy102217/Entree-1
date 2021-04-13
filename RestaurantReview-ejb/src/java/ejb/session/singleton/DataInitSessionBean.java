@@ -112,10 +112,10 @@ public class DataInitSessionBean {
         {
             initializeVoucherData();
         }
-        if(em.find(CustomerVoucher.class, 1l) == null)
-        {
-            initializeCustomerVoucherData();
-        }
+//        if(em.find(CustomerVoucher.class, 1l) == null)
+//        {
+//            initializeCustomerVoucherData();
+//        }
         if(em.find(Review.class, 1l) == null)
         {
             initializeReviewData();
@@ -125,12 +125,24 @@ public class DataInitSessionBean {
     
     private void initializeCustomerData()
     {
+        
+        
         try
         {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
+            String strDate = "10/23";
+            Date newDate = sdf.parse(strDate);
+            LocalDate localDate = newDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
             this.customerIdToTest = customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Customer", "One", "12345678"));
             customerSessionBeanLocal.createNewCustomer(new Customer("custotwo@test.com", "password", "Customer", "Two", "87654321"));
+            
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", localDate, "Cust One"), 1L);
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("9999888877776666", "123", localDate, "Cust Two"), 2L);
+            
         }
-        catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException ex)
+        catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException |
+                CreateNewCreditCardException | CreditCardExistException | ParseException ex)
         {
             ex.printStackTrace();
         }
@@ -193,16 +205,15 @@ public class DataInitSessionBean {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
             String strDate = "10/23";
             Date newDate = sdf.parse(strDate);
-            LocalDate localDate = newDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
              
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
-            
-            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", localDate, "Cust One"), 1L);
+           
             
         }
         catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerVoucherExistException |
-                CreateNewCreditCardException | CreditCardExistException | ParseException ex)
+               ParseException ex)
         {
             ex.printStackTrace();
         }
