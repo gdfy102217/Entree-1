@@ -9,12 +9,14 @@ import entity.Customer;
 import entity.CustomerVoucher;
 import entity.Restaurant;
 import entity.SaleTransaction;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -156,6 +158,16 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
                 
+    }
+    
+    @Override
+    public List<SaleTransaction> retrieveTransactionsByCustomerId(Long customerId)
+    {
+        Query query = em.createQuery("SELECT st FROM SaleTransaction st WHERE st.customer.userId = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        List<SaleTransaction> saleTransactions = query.getResultList();
+        
+        return saleTransactions;
     }
     
     

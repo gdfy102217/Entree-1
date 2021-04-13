@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.CustomerVoucher;
 import entity.SaleTransaction;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateTransactionException;
 import util.exception.InputDataValidationException;
@@ -24,5 +25,7 @@ public interface SaleTransactionSessionBeanLocal
     public Long createCashOutTransaction(SaleTransaction newTransaction, Long restaurantId) throws CreateTransactionException, UnknownPersistenceException, RestaurantNotFoundException, InputDataValidationException;
 
     public Long createTransactionForVoucher(SaleTransaction newTransaction, Long customerId, CustomerVoucher customerVoucher) throws CreateTransactionException, UnknownPersistenceException, InputDataValidationException;
+
+    public List<SaleTransaction> retrieveTransactionsByCustomerId(Long customerId);
     
 }
