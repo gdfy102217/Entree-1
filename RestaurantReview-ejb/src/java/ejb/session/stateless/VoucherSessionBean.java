@@ -130,6 +130,8 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
                 em.persist(newSaleTransaction);
                 newSaleTransaction.setCustomer(owner);
                 owner.getTransactions().add(newSaleTransaction);
+                newSaleTransaction.setCreditCard(owner.getCreditCard());
+                owner.getCreditCard().setTransaction(newSaleTransaction);
                 newSaleTransaction.getCustomerVouchers().add(newCustomerVoucher);
                 newCustomerVoucher.setTransaction(newSaleTransaction);
                 
