@@ -78,7 +78,7 @@ public class Restaurant extends User implements Serializable {
     private List<Review> reviews;
     
     @OneToMany(mappedBy = "restaurant")
-    private List<Transaction> transactions;
+    private List<SaleTransaction> transactions;
     
     @OneToMany(mappedBy = "restaurant")
     private List<CustomerVoucher> customerVouchers;
@@ -212,11 +212,11 @@ public class Restaurant extends User implements Serializable {
         this.reviews = reviews;
     }
 
-    public List<Transaction> getTransactions() {
+    public List<SaleTransaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(List<SaleTransaction> transactions) {
         this.transactions = transactions;
     }
     

@@ -47,7 +47,7 @@ public class CustomerVoucher implements Serializable {
     @ManyToOne(optional = false)
     private Voucher voucher;
     @ManyToOne
-    private Transaction transaction;
+    private SaleTransaction transaction;
     
     @ManyToOne
     private Restaurant restaurant;
@@ -96,11 +96,11 @@ public class CustomerVoucher implements Serializable {
         this.voucher = voucher;
     }
 
-    public Transaction getTransaction() {
+    public SaleTransaction getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(SaleTransaction transaction) {
         this.transaction = transaction;
     }
     

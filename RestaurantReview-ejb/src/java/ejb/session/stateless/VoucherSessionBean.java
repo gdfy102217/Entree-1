@@ -8,11 +8,15 @@ package ejb.session.stateless;
 import entity.Customer;
 import entity.CustomerVoucher;
 import entity.Restaurant;
+import entity.SaleTransaction;
 import entity.Voucher;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,6 +30,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreateNewCustomerVoucherException;
+import util.exception.CreateTransactionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerVoucherExistException;
 import util.exception.CustomerVoucherExpiredException;
@@ -43,6 +48,9 @@ import util.exception.VoucherNotFoundException;
  */
 @Stateless
 public class VoucherSessionBean implements VoucherSessionBeanLocal {
+
+    @EJB
+    private SaleTransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
@@ -103,7 +111,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     }
     
     @Override
-    public CustomerVoucher createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) 
+    public Long createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) 
             throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException
     {
         Set<ConstraintViolation<CustomerVoucher>> constraintViolations = validator.validate(newCustomerVoucher);
@@ -116,6 +124,15 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
                 Voucher voucher = retrieveVoucherById(voucherId);
                 
                 em.persist(newCustomerVoucher);
+                SaleTransaction newSaleTransaction = new SaleTransaction(voucher.getPrice().doubleValue(), new Date());
+                newSaleTransaction.setCustomerVouchers(new ArrayList<>());
+//                Long transactionId = transactionSessionBeanLocal.createTransactionForVoucher(newSaleTransaction, customerId, newCustomerVoucher);
+                em.persist(newSaleTransaction);
+                newSaleTransaction.setCustomer(owner);
+                owner.getTransactions().add(newSaleTransaction);
+                newSaleTransaction.getCustomerVouchers().add(newCustomerVoucher);
+                newCustomerVoucher.setTransaction(newSaleTransaction);
+                
                 newCustomerVoucher.setOwner(owner);
                 owner.getCustomerVouchers().add(newCustomerVoucher);
                 newCustomerVoucher.setVoucher(voucher);
@@ -124,7 +141,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
                 
                 em.flush();
 
-                return newCustomerVoucher;
+                return newSaleTransaction.getTransactionId();
             }
             catch(PersistenceException ex)
             {

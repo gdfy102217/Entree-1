@@ -50,7 +50,7 @@ public class CreditCard implements Serializable {
     private Customer owner;
     
     @OneToOne(mappedBy = "creditCard")
-    private Transaction transaction;
+    private SaleTransaction transaction;
 
     public CreditCard() {
     }
@@ -111,11 +111,11 @@ public class CreditCard implements Serializable {
         this.owner = owner;
     }
 
-    public Transaction getTransaction() {
+    public SaleTransaction getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(SaleTransaction transaction) {
         this.transaction = transaction;
     }
     

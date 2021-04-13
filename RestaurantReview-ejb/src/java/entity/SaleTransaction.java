@@ -19,12 +19,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 
 
 @Entity
-public class Transaction implements Serializable {
+public class SaleTransaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,7 +37,6 @@ public class Transaction implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-    @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date transactionDate;
     
@@ -57,11 +55,12 @@ public class Transaction implements Serializable {
     @OneToMany(mappedBy = "transaction")
     private List<CustomerVoucher> customerVouchers;
 
-    public Transaction() {
-        customerVouchers = new ArrayList<>();
+    public SaleTransaction() {
+        this.customerVouchers = new ArrayList<>();
     }
 
-    public Transaction(Double paidAmount, Date transactionDate) {
+    public SaleTransaction(Double paidAmount, Date transactionDate) {
+        super();
         this.paidAmount = paidAmount;
         this.transactionDate = transactionDate;
     }
@@ -145,10 +144,10 @@ public class Transaction implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the transactionId fields are not set
-        if (!(object instanceof Transaction)) {
+        if (!(object instanceof SaleTransaction)) {
             return false;
         }
-        Transaction other = (Transaction) object;
+        SaleTransaction other = (SaleTransaction) object;
         if ((this.transactionId == null && other.transactionId != null) || (this.transactionId != null && !this.transactionId.equals(other.transactionId))) {
             return false;
         }
