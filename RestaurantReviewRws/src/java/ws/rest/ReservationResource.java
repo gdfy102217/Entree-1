@@ -97,7 +97,14 @@ public class ReservationResource {
             for(Reservation res: reservations)
             {
                 res.setCustomer(null);
-                res.setRestaurant(null);
+                res.getRestaurant().setBankAccount(null);
+                res.getRestaurant().setDishes(null);
+                res.getRestaurant().setCustomerVouchers(null);
+                res.getRestaurant().setPromotions(null);
+                res.getRestaurant().setTableConfiguration(null);
+                res.getRestaurant().setReservations(null);
+                res.getRestaurant().setReviews(null);
+                res.getRestaurant().setTransactions(null);
             }
             
             
@@ -138,20 +145,22 @@ public class ReservationResource {
         try
         {
             System.out.println("!!!!");
-            int[] availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
+            List<Integer> availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
             
-            JsonObject availabilityJson = Json.createObjectBuilder()
-                    .add("numOfLargeTable", availabilityArr[0])
-                    .add("numOfMediumTable", availabilityArr[1])
-                    .add("numOfSmallTable", availabilityArr[2])
-                    .build();
             
-            System.out.println(availabilityJson.toString());
             
-//            GenericEntity<JsonObject> genericEntity = new GenericEntity<JsonObject>(res) {
-//            };
+//            JsonObject availabilityJson = Json.createObjectBuilder()
+//                    .add("numOfLargeTable", availabilityArr[0])
+//                    .add("numOfMediumTable", availabilityArr[1])
+//                    .add("numOfSmallTable", availabilityArr[2])
+//                    .build();
+            
+//            System.out.println(availabilityJson.toString());
+            
+          GenericEntity<List<Integer>> genericEntity = new GenericEntity<List<Integer>>(availabilityArr) {
+            };
 
-            return Response.status(Status.OK).entity(availabilityJson).build();
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(Exception ex)
         {
@@ -165,6 +174,8 @@ public class ReservationResource {
     public Response createNewReservation(Reservation newReservation, @QueryParam("customerId") Long customerId,
             @QueryParam("restaurantId") Long restaurantId)
     {
+        System.out.println("Create Reservation service called!!!!!!!!!");
+        
         if(newReservation != null)
         {
             try

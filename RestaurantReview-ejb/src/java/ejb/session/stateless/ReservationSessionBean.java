@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -148,7 +149,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-    public int[] retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
+    public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
     {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -171,7 +172,12 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
             }
         }
         
-        return new int[] {numOfLargeAvailable, numOfMediumAvailable, numOfSmallAvailable};
+        List<Integer> list = new ArrayList<>();
+        list.add(numOfSmallAvailable);
+        list.add(numOfMediumAvailable);
+        list.add(numOfLargeAvailable);
+        
+        return list;
     }
     
     @Override
