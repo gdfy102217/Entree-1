@@ -9,7 +9,7 @@ import ejb.session.stateless.CreditCardSessionBeanLocal;
 import entity.CreditCard;
 import entity.Customer;
 import entity.CustomerVoucher;
-import entity.Transaction;
+import entity.SaleTransaction;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,7 +122,7 @@ public class CreditCardResource {
             CreditCard creditCard = creditCardSessionBeanLocal.retrieveCreditCardById(creditCardId);
 
             if (creditCard.getTransaction() != null) {
-                Transaction dummyTransaction = new Transaction();
+                SaleTransaction dummyTransaction = new SaleTransaction();
                 dummyTransaction.setPaidAmount(creditCard.getTransaction().getPaidAmount());
                 dummyTransaction.setTransactionDate(creditCard.getTransaction().getTransactionDate());
                 dummyTransaction.setTransactionId(creditCard.getTransaction().getTransactionId());

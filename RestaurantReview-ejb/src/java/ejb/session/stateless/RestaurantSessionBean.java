@@ -9,7 +9,7 @@ import entity.BankAccount;
 import entity.Dish;
 import entity.Restaurant;
 import entity.TableConfiguration;
-import entity.Transaction;
+import entity.SaleTransaction;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +51,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     @EJB
     private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
     @EJB
-    private TransactionSessionBeanLocal transactionSessionBeanLocal;
+    private SaleTransactionSessionBeanLocal transactionSessionBeanLocal;
     
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
@@ -243,7 +243,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             if(restaurant != null)
             {
                 
-                Transaction newTransaction = new Transaction();
+                SaleTransaction newTransaction = new SaleTransaction();
                 newTransaction.setPaidAmount(restaurant.getCreditAmount());
                 newTransaction.setTransactionDate(new Date(new Date().getTime() + (60 * 60 * 1000)));
                 

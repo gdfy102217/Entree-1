@@ -7,7 +7,7 @@ package ejb.session.stateless;
 
 import entity.BankAccount;
 import entity.Restaurant;
-import entity.Transaction;
+import entity.SaleTransaction;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -138,7 +138,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         
         bankAccountToRemove.getRestaurant().setBankAccount(null);
         bankAccountToRemove.setRestaurant(new Restaurant());
-        for (Transaction t: bankAccountToRemove.getTransactions())
+        for (SaleTransaction t: bankAccountToRemove.getTransactions())
         {
             t.setBankAccount(null);
         }

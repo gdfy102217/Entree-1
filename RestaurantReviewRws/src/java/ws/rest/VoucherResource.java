@@ -9,7 +9,7 @@ import ejb.session.stateless.VoucherSessionBeanLocal;
 import entity.Customer;
 import entity.CustomerVoucher;
 import entity.Restaurant;
-import entity.Transaction;
+import entity.SaleTransaction;
 import entity.Voucher;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +22,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -61,32 +62,32 @@ public class VoucherResource {
             
             for(CustomerVoucher cv: myVouchers)
             {
-                Customer dummyCustomer = new Customer();
-                dummyCustomer.setFirstName(cv.getOwner().getFirstName());
-                dummyCustomer.setLastName(cv.getOwner().getLastName());
-                cv.setOwner(dummyCustomer);
+                if (cv.getOwner() != null) {
+                    Customer dummyCustomer = new Customer();
+                    dummyCustomer.setFirstName(cv.getOwner().getFirstName());
+                    dummyCustomer.setLastName(cv.getOwner().getLastName());
+                    cv.setOwner(dummyCustomer);
+                }
             
-                Voucher dummyVoucher = new Voucher();
-                dummyVoucher.setTitle(cv.getVoucher().getTitle());
-                dummyVoucher.setContent(cv.getVoucher().getContent());
-                cv.setVoucher(dummyVoucher);
+                if (cv.getVoucher() != null) {
+                    Voucher dummyVoucher = new Voucher();
+                    dummyVoucher.setTitle(cv.getVoucher().getTitle());
+                    dummyVoucher.setContent(cv.getVoucher().getContent());
+                    cv.setVoucher(dummyVoucher);
+                }
                 
-                Restaurant dummyRestaurant = new Restaurant();
                 if (cv.getRestaurant() != null) {
+                    Restaurant dummyRestaurant = new Restaurant();
                     dummyRestaurant.setName(cv.getRestaurant().getName());
                     cv.setRestaurant(dummyRestaurant);
-                } else {
-                    cv.setRestaurant(null);
                 }
 
-                Transaction dummyTransaction = new Transaction();
                 if (cv.getTransaction() != null) {
+                    SaleTransaction dummyTransaction = new SaleTransaction();
                     dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
                     dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
                     dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
                     cv.setTransaction(dummyTransaction);
-                } else {
-                    cv.setTransaction(null);
                 }
             }
 
@@ -137,32 +138,32 @@ public class VoucherResource {
             
             for (CustomerVoucher cv: voucher.getCustomerVouchers())
             {
-                Customer dummyCustomer = new Customer();
-                dummyCustomer.setFirstName(cv.getOwner().getFirstName());
-                dummyCustomer.setLastName(cv.getOwner().getLastName());
-                cv.setOwner(dummyCustomer);
+                if (cv.getOwner() != null) {
+                    Customer dummyCustomer = new Customer();
+                    dummyCustomer.setFirstName(cv.getOwner().getFirstName());
+                    dummyCustomer.setLastName(cv.getOwner().getLastName());
+                    cv.setOwner(dummyCustomer);
+                }
             
-                Voucher dummyVoucher = new Voucher();
-                dummyVoucher.setTitle(cv.getVoucher().getTitle());
-                dummyVoucher.setContent(cv.getVoucher().getContent());
-                cv.setVoucher(dummyVoucher);
-                
-                Restaurant dummyRestaurant = new Restaurant();
-                if (cv.getRestaurant() != null) {
-                    dummyRestaurant.setName(cv.getRestaurant().getName());
-                    cv.setRestaurant(dummyRestaurant);
-                } else {
-                    cv.setRestaurant(null);
+                if (cv.getVoucher() != null) {
+                    Voucher dummyVoucher = new Voucher();
+                    dummyVoucher.setTitle(cv.getVoucher().getTitle());
+                    dummyVoucher.setContent(cv.getVoucher().getContent());
+                    cv.setVoucher(dummyVoucher);
                 }
                 
-                Transaction dummyTransaction = new Transaction();
+                if (cv.getRestaurant() != null) {
+                    Restaurant dummyRestaurant = new Restaurant();
+                    dummyRestaurant.setName(cv.getRestaurant().getName());
+                    cv.setRestaurant(dummyRestaurant);
+                }
+                
                 if (cv.getTransaction() != null) {
+                    SaleTransaction dummyTransaction = new SaleTransaction();
                     dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
                     dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
                     dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
                     cv.setTransaction(dummyTransaction);
-                } else {
-                    cv.setTransaction(null);
                 }
             }
 
@@ -186,35 +187,33 @@ public class VoucherResource {
         try
         {
             CustomerVoucher cv = voucherSessionBeanLocal.retrieveCustomerVoucherById(customerVoucherId);
-            
-            Transaction dummyTransaction = new Transaction();
+
             if (cv.getTransaction() != null) {
+                SaleTransaction dummyTransaction = new SaleTransaction();
                 dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
                 dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
                 dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
                 cv.setTransaction(dummyTransaction);
-            } else {
-                cv.setTransaction(null);
             }
             
-            Voucher dummyVoucher = new Voucher();
-            dummyVoucher.setTitle(cv.getVoucher().getTitle());
-            dummyVoucher.setContent(cv.getVoucher().getContent());
-            cv.setVoucher(dummyVoucher);
+            if (cv.getVoucher() != null) {
+                cv.getVoucher().getCustomerVouchers().clear();
+            }
 
-            Restaurant dummyRestaurant = new Restaurant();
             if (cv.getRestaurant() != null) {
+                Restaurant dummyRestaurant = new Restaurant();
                 dummyRestaurant.setName(cv.getRestaurant().getName());
                 cv.setRestaurant(dummyRestaurant);
-            } else {
-                cv.setRestaurant(null);
             }
-
             
-            Customer dummyCustomer = new Customer();
-            dummyCustomer.setFirstName(cv.getOwner().getFirstName());
-            dummyCustomer.setLastName(cv.getOwner().getLastName());
-            cv.setOwner(dummyCustomer);
+            if (cv.getOwner() != null) {
+                Customer dummyCustomer = new Customer();
+                dummyCustomer.setFirstName(cv.getOwner().getFirstName());
+                dummyCustomer.setLastName(cv.getOwner().getLastName());
+                cv.setOwner(dummyCustomer);
+            }
+            
+            
 
             GenericEntity<CustomerVoucher> genericEntity = new GenericEntity<CustomerVoucher>(cv) {
             };
@@ -228,8 +227,8 @@ public class VoucherResource {
     }
     
     @Path("buyVoucher")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response buyVoucher(@QueryParam("voucherId") Long voucherId, @QueryParam("customerId") Long customerId)
     {
@@ -237,8 +236,9 @@ public class VoucherResource {
         {
             try
             {
-                CustomerVoucher cv = voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherId, customerId);
-                return Response.status(Response.Status.OK).entity(cv.getCustomerVoucherId()).build();
+                Long customerVoucherId = voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherId, customerId);
+                
+                return Response.status(Response.Status.OK).entity(customerVoucherId).build();
             }				
             catch(Exception ex)
             {
