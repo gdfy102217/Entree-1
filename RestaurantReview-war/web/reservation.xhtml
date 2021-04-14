@@ -7,17 +7,17 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        
+
         <div>
             <h3>Reservations Management</h3>
-            
+
             <h:form id="formAllReservations">
                 <p:messages id="messages" redisplay="false" closable="true" />
-                
+
                 <p:dataTable id="dataTableAllReservations" widgetVar="dataTableAllReservations" value="#{reservationManagedBean.selectedReservations}" var="reservation" 
                              rowKey="#{reservation.reservationId}" rowIndexVar="row" emptyMessage="No reservation found with given criteria"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
-                
+
                     <p:column field="date" headerText="Reservation Date"
                               filterBy="#{reservation.reservationDate}" filterMatchMode="contains">
                         <f:facet name="filter">
@@ -29,7 +29,7 @@
                             <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd" type="date" timeZone="Asia/Singapore"/>  
                         </h:outputText>
                     </p:column>
-                    
+
                     <p:column headerText="Time" sortBy="#{reservation.reservationTime}">
                         <h:outputText value="#{reservation.reservationTime - reservation.reservationTime%1}">
                             <f:convertNumber pattern = "#" />
@@ -42,37 +42,37 @@
                         
                       
                     </p:column>
-                    
-                    
+
+
                     <p:column headerText="Customer Name" sortBy="#{reservation.customer.lastName}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.customer.lastName} #{reservation.customer.firstName}" />
                     </p:column>
-                    
+
                     <p:column headerText="No. Pax" sortBy="#{reservation.numOfPax}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.numOfPax}" />
                     </p:column>
-                    
+
                     <p:column headerText="Table Size" sortBy="#{reservation.tableSizeAssigned}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.tableSizeAssigned}" />
                     </p:column>
-                    
+
                     <p:column headerText="Action">
                         <p:commandButton oncomplete="PF('dialogViewReservation').show()"  update="formViewReservation" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{reservation}" target="#{reservationManagedBean.selectedReservation}" />
                         </p:commandButton>
                     </p:column>
-                
+
                 </p:dataTable>
-                
-                
+
+
             </h:form>
-            
+
             <h:form id="formViewReservation">
-                
+
                 <p:dialog id="dialogViewReservation" widgetVar="dialogViewReservation" header="View Reseravtion" closable="true">
-                    
+
                     <p:panelGrid>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Reservation ID: " />                                
@@ -81,7 +81,7 @@
                                 <h:outputText value="#{reservationManagedBean.selectedReservation.reservationId}" />
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Customer Name: " />                                
@@ -90,7 +90,7 @@
                                 <h:outputText value="#{reservationManagedBean.selectedReservation.customer.lastName} #{reservationManagedBean.selectedReservation.customer.firstName}" />
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Reservation Date " />                                
@@ -101,7 +101,7 @@
                                 </h:outputText>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Reservation Time " />                                
@@ -117,7 +117,7 @@
                         <h:outputText value="0" />
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Number of Pax " />                                
@@ -126,7 +126,7 @@
                                 <h:outputText value="#{reservationManagedBean.selectedReservation.numOfPax}" />
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Table Size " />                                
@@ -135,7 +135,7 @@
                                 <h:outputText value="#{reservationManagedBean.selectedReservation.tableSizeAssigned}" />
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="Remarks: " />                                
@@ -144,19 +144,19 @@
                                 <h:outputText value="#{reservationManagedBean.selectedReservation.remark}" />
                             </p:column>
                         </p:row>
-                        
+
                     </p:panelGrid>
-                    
-                    
+
+
                 </p:dialog>
-                
-                
+
+
             </h:form>
-            
-            
+
+
         </div>
-        
-        
+
+
     </ui:define>
 
 </ui:composition>

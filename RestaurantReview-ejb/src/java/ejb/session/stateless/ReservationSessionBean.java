@@ -156,6 +156,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
     {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Date d = new Date();
         try
@@ -167,6 +168,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
         }
         List<Reservation> reservationList = retrieveReservationsByRestaurantId(restaurantId, d, time);
         
+
         
         int numOfLargeAvailable = tc.getNumOfLargeTable();
         int numOfMediumAvailable = tc.getNumOfMediumTable();
