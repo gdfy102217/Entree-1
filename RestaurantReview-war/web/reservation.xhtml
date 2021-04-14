@@ -26,13 +26,19 @@
                             </p:datePicker>
                         </f:facet>
                         <h:outputText value="#{reservation.reservationDate}">
-                            <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd" type="localDate"/>  
+                            <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd" type="date" timeZone="Asia/Singapore"/>  
                         </h:outputText>
                     </p:column>
                     
                     <p:column headerText="Time" sortBy="#{reservation.reservationTime}">
-                        <h:outputText value="#{reservation.reservationTime}">         
+                        <h:outputText value="#{reservation.reservationTime - reservation.reservationTime%1}">
+                            <f:convertNumber pattern = "#" />
                         </h:outputText>
+                        <h:outputText value=" : " />
+                        <h:outputText value="#{reservation.reservationTime%1*6}">
+                            <f:convertNumber pattern = "#" />
+                        </h:outputText>
+                        <h:outputText value="0" />
                         
                       
                     </p:column>
@@ -91,7 +97,7 @@
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{reservationManagedBean.selectedReservation.reservationDate}" >
-                                    <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd" type="localDate"/>  
+                                    <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd" type="date"/>  
                                 </h:outputText>
                             </p:column>
                         </p:row>
@@ -101,9 +107,14 @@
                                 <h:outputLabel value="Reservation Time " />                                
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{reservationManagedBean.selectedReservation.reservationTime}" >
-                                    <f:convertDateTime pattern="HH:mm" type="localTime"/>
-                                </h:outputText>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.reservationTime - reservationManagedBean.selectedReservation.reservationTime%1}">
+                            <f:convertNumber pattern = "#" />
+                        </h:outputText>
+                        <h:outputText value=" : " />
+                        <h:outputText value="#{reservationManagedBean.selectedReservation.reservationTime%1*6}">
+                            <f:convertNumber pattern = "#" />
+                        </h:outputText>
+                        <h:outputText value="0" />
                             </p:column>
                         </p:row>
                         

@@ -116,7 +116,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     @Override
     public List<CreditCard> retrieveCreditCardsByCustomerId(Long customerId)
     {
-        Query query = em.createQuery("SELECT cc FROM CreditCard cc WHERE cc.owner.userId = :inCustomerId");
+        Query query = em.createQuery("SELECT cc FROM CreditCard cc WHERE cc.owner.userId = :inCustomerId AND cc.deleted = fasle");
         query.setParameter("inCustomerId", customerId);
         List<CreditCard> creditCards = query.getResultList();
         
@@ -152,12 +152,14 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     {
         CreditCard creditCardToRemove = retrieveCreditCardById(creditCardId);
         
-        creditCardToRemove.getTransaction().setCreditCard(null);
-        creditCardToRemove.getOwner().setCreditCard(null);
-        creditCardToRemove.setOwner(null);
-        creditCardToRemove.setTransaction(null);
         
-        em.remove(creditCardToRemove);
+        creditCardToRemove.getOwner().setCreditCard(null);
+//        Customer owner = em.find(Customer.class, creditCardToRemove.getOwner().getUserId());
+//        owner.setCre/ditCard(null);
+//        creditCardToRemove.setTransaction(null);
+        
+        creditCardToRemove.setDeleted(true);
+//        em.remove(creditCardToRemove);
 
     }
     

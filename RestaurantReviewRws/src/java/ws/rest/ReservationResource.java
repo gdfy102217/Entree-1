@@ -11,6 +11,7 @@ import entity.Reservation;
 import entity.Restaurant;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -127,7 +128,10 @@ public class ReservationResource {
         }
         catch(ReservationNotFoundException ex)
         {
-            return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+            GenericEntity<List<Reservation>> genericEntity = new GenericEntity<List<Reservation>>(reservations) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(Exception ex)
         {
@@ -171,15 +175,17 @@ public class ReservationResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response createNewReservation(Reservation newReservation, @QueryParam("customerId") Long customerId,
-            @QueryParam("restaurantId") Long restaurantId)
+    public Response createNewReservation(Reservation newReservation)
     {
         System.out.println("Create Reservation service called!!!!!!!!!");
-        
+        System.out.println(newReservation);
         if(newReservation != null)
         {
             try
             {
+                Long customerId = newReservation.getCustomer().getUserId();
+                Long restaurantId = newReservation.getRestaurant().getUserId();
+                newReservation.setTimeOfCreation(LocalDateTime.now());
                 Reservation reservation = reservationSessionBeanLocal.createNewReservation(newReservation, customerId, restaurantId);
 
                 return Response.status(Response.Status.OK).entity(reservation.getReservationId()).build();
@@ -198,7 +204,7 @@ public class ReservationResource {
     @DELETE
     @Path("deleteReservation")
     @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteReservation(@QueryParam("reservationId") Long reservationId)
     {
         if(reservationId != null)
@@ -207,7 +213,8 @@ public class ReservationResource {
             {
                 reservationSessionBeanLocal.deleteReservation(reservationId);
 
-                return Response.status(Response.Status.OK).entity("Reservation No." + reservationId + " is deleted!").build();
+//                return Response.status(Response.Status.OK).entity("Reservation No." + reservationId + " is deleted!").build();
+                return Response.status(Response.Status.OK).build();
             }
             catch(Exception ex)
             {

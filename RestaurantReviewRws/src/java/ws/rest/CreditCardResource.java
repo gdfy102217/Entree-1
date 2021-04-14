@@ -121,12 +121,16 @@ public class CreditCardResource {
         {
             CreditCard creditCard = creditCardSessionBeanLocal.retrieveCreditCardById(creditCardId);
 
-            if (creditCard.getTransaction() != null) {
-                SaleTransaction dummyTransaction = new SaleTransaction();
-                dummyTransaction.setPaidAmount(creditCard.getTransaction().getPaidAmount());
-                dummyTransaction.setTransactionDate(creditCard.getTransaction().getTransactionDate());
-                dummyTransaction.setTransactionId(creditCard.getTransaction().getTransactionId());
-            }
+//            if (creditCard.getTransaction() != null) {
+//                SaleTransaction dummyTransaction = new SaleTransaction();
+//                dummyTransaction.setPaidAmount(creditCard.getTransaction().getPaidAmount());
+//                dummyTransaction.setTransactionDate(creditCard.getTransaction().getTransactionDate());
+//                dummyTransaction.setTransactionId(creditCard.getTransaction().getTransactionId());
+//            }
+            
+//            creditCard.set
+            
+//            creditCard.setOwner(owner);
             
             Customer dummyCustomer = new Customer();
             dummyCustomer.setId(customerId);

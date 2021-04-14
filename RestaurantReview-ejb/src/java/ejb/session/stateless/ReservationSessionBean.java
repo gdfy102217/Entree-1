@@ -9,6 +9,8 @@ import entity.Customer;
 import entity.Reservation;
 import entity.Restaurant;
 import entity.TableConfiguration;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -131,7 +135,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-    public List<Reservation> retrieveReservationsByRestaurantId(Long restaurantId, LocalDate date, Double reservationTime)
+    public List<Reservation> retrieveReservationsByRestaurantId(Long restaurantId, Date date, Double reservationTime)
     {
         Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.restaurant.userId = :inRestaurantId AND r.reservationDate = :inDate AND r.reservationTime = :inReservationTime");
         query.setParameter("inRestaurantId", restaurantId);
@@ -153,7 +157,14 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate d = LocalDate.parse(date, dtf);
+        Date d = new Date();
+        try
+        {
+            d = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (ParseException ex)
+        {
+            Logger.getLogger(ReservationSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         List<Reservation> reservationList = retrieveReservationsByRestaurantId(restaurantId, d, time);
         
         

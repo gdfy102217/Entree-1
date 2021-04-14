@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
@@ -46,8 +47,10 @@ public class CustomerVoucher implements Serializable {
     private Customer owner;
     @ManyToOne(optional = false)
     private Voucher voucher;
-    @ManyToOne
-    private SaleTransaction transaction;
+    
+    
+    @OneToOne(mappedBy = "customerVoucher")
+    private SaleTransaction saleTransaction;
     
     @ManyToOne
     private Restaurant restaurant;
@@ -96,12 +99,12 @@ public class CustomerVoucher implements Serializable {
         this.voucher = voucher;
     }
 
-    public SaleTransaction getTransaction() {
-        return transaction;
+    public SaleTransaction getSaleTransaction() {
+        return saleTransaction;
     }
 
-    public void setTransaction(SaleTransaction transaction) {
-        this.transaction = transaction;
+    public void setSaleTransaction(SaleTransaction saleTransaction) {
+        this.saleTransaction = saleTransaction;
     }
     
     

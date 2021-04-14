@@ -114,6 +114,23 @@ public class Restaurant extends User implements Serializable {
         this.closeTime = closeTime;
         this.bankAccount = null;
     }
+    
+    public Restaurant(String email, String password, String name, String address, 
+            String postalCode, String contactNumber, Boolean acceptReservation, 
+            String description, Integer openTime, Integer closeTime, List<String> photos) {
+        super(email, password);
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.contactNumber = contactNumber;
+        this.photos = photos;
+        this.acceptReservation = acceptReservation;
+        this.creditAmount = 0.0;
+        this.description = description;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.bankAccount = null;
+    }
 
     
     public Long getId() {

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
@@ -33,10 +35,16 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
     
+//    @NotNull
+//    @Column(nullable = false)
+//    @FutureOrPresent
+//    private LocalDate reservationDate;
+    
     @NotNull
     @Column(nullable = false)
-    @FutureOrPresent
-    private LocalDate reservationDate;
+//    @FutureOrPresent
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date reservationDate;
     
     @NotNull
     @Column(nullable = false)
@@ -70,7 +78,7 @@ public class Reservation implements Serializable {
     public Reservation() {
     }
 
-    public Reservation(LocalDate reservationDate, Double reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
+    public Reservation(Date reservationDate, Double reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.timeOfCreation = LocalDateTime.now();
@@ -89,11 +97,11 @@ public class Reservation implements Serializable {
         this.reservationId = reservationId;
     }
 
-    public LocalDate getReservationDate() {
+    public Date getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(LocalDate reservationDate) {
+    public void setReservationDate(Date reservationDate) {
         this.reservationDate = reservationDate;
     }
 

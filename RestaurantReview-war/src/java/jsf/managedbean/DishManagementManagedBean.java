@@ -150,7 +150,7 @@ public class DishManagementManagedBean implements Serializable
             filePath = ("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
             fileOutputStream.close();
             inputStream.close();
-            filePath = null;
+//            filePath = null;
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
         }
