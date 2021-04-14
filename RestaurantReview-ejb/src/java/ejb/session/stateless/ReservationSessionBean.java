@@ -153,6 +153,24 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
+    public List<Reservation> retrieveReservationsById(Long restaurantId)
+    {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.restaurant.userId = :inRestaurantId");
+        query.setParameter("inRestaurantId", restaurantId);
+//        query.setParameter("inReservationTime", reservationTime);
+//        query.setParameter("inDate", date);
+        List<Reservation> reservations = query.getResultList();
+        
+        for(Reservation reservation:reservations)
+        {
+//            reservation.getCategoryEntity();
+//            reservation.getTagEntities().size();
+        }
+        
+        return reservations;
+    }
+    
+    @Override
     public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
     {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();

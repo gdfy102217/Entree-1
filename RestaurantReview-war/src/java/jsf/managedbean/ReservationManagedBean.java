@@ -65,11 +65,12 @@ public class ReservationManagedBean implements Serializable
 
             Restaurant currRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
             System.out.println("current rest: " + currRestaurant.getName());
-            allReservations = currRestaurant.getReservations();
+            allReservations = reservationSessionBeanLocal.retrieveReservationsById(currRestaurant.getUserId());
+//             = currRestaurant.getReservations();
             
             for (Reservation res: allReservations)
             {
-                System.out.println(selectedDate);
+                System.out.println("TODAT's DATE!!!! " + selectedDate);
                 if (res.getReservationDate().equals(getSelectedDate()))
                 {
                     selectedReservations.add(res);
@@ -91,13 +92,16 @@ public class ReservationManagedBean implements Serializable
     
     public void getSelectedReservationByDate(SelectEvent<Date> event)
     {
-        
+        Restaurant currRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
         FacesContext facesContext = FacesContext.getCurrentInstance();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy,MM.dd");
 //        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", event.getObject().format(formatter)));
         
         
 //        System.out.println("GET selected reservation called!!!!!!" + event.getObject().format(formatter));
+        allReservations = reservationSessionBeanLocal.retrieveReservationsById(currRestaurant.getUserId());
+        System.out.println("Seleted Date: " + getSelectedDate());
+        System.out.println("Size: " + allReservations.size());
         selectedReservations.clear();
         
         for (Reservation res: allReservations)

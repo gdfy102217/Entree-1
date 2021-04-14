@@ -60,9 +60,10 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
             try
             {
                 Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
-                
+                newPromotion.setRestaurant(restaurant);
                 em.persist(newPromotion);
                 restaurant.getPromotions().add(newPromotion);
+                
                 
                 em.flush();
 
