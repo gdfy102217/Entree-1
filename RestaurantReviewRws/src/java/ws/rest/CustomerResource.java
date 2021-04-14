@@ -103,7 +103,7 @@ public class CustomerResource
     
     @Path("customerLogin")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response customerLogin(@QueryParam("email") String username, @QueryParam("password") String password)
     {
@@ -112,19 +112,24 @@ public class CustomerResource
             Customer customer = customerSessionBeanLocal.customerLogin(username, password);
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
             
-            customer.getReservations().clear();
+            if (customer.getReservations() != null) {
+                customer.getReservations().clear();
+            }
             if (customer.getCreditCard() != null) {
                 customer.getCreditCard().setOwner(null);
+                customer.getCreditCard().setTransaction(null);
             }
             
             customer.getCustomerVouchers().clear();
             customer.getReviews().clear();
             customer.getTransactions().clear();
-
-//            customer.setPassword(null);
-            //customer.setSalt(null);         
             
-            return Response.status(Status.OK).entity(customer).build();
+            System.out.println("Disassociation completed!");
+
+            GenericEntity<Customer> genericEntity = new GenericEntity<Customer>(customer) {
+            };
+            
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(InvalidLoginCredentialException ex)
         {
