@@ -7,6 +7,10 @@ package ws.rest;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.Customer;
+import entity.CustomerVoucher;
+import entity.Reservation;
+import entity.Review;
+import entity.SaleTransaction;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -112,17 +116,68 @@ public class CustomerResource
             Customer customer = customerSessionBeanLocal.customerLogin(username, password);
             System.out.println("********** CustomerResource.customerLogin(): Customer " + customer.getEmail() + " login");
             
-            if (customer.getReservations() != null) {
-                customer.getReservations().clear();
-            }
+            customer.getReservations().clear();
+            
             if (customer.getCreditCard() != null) {
                 customer.getCreditCard().setOwner(null);
-                customer.getCreditCard().setTransaction(null);
             }
             
-            customer.getCustomerVouchers().clear();
-            customer.getReviews().clear();
-            customer.getTransactions().clear();
+            for(CustomerVoucher cv:customer.getCustomerVouchers())
+            {
+                cv.setOwner(null);
+                cv.setSaleTransaction(null);
+                cv.setVoucher(null);
+                
+            }
+            
+            for(SaleTransaction st: customer.getTransactions())
+            {
+                st.setCreditCard(null);
+                st.setCustomer(null);
+                st.setCustomerVoucher(null);
+                st.setBankAccount(null);
+            }
+            
+            for(Review r: customer.getReviews())
+            {
+                r.setReceiver(null); 
+                r.setCreater(null);
+            }
+            
+            for(Reservation rv: customer.getReservations())
+            {
+                rv.setCustomer(null);
+                rv.setRestaurant(null);
+                rv.setTableSizeAssigned(null);
+                
+            }
+            
+//            customer.getCustomerVouchers().clear();
+//            customer.getReviews().clear();
+//            customer.getTransactions().clear();
+//            customer.getReservations().clear();
+            
+//            if (customer.getCustomerVouchers().size() > 0)
+//            {
+//                customer.getCustomerVouchers().clear();
+//            }
+            
+//            customer.getCustomerVouchers().clear();
+//            if (customer.getReviews().size() > 0)
+//            {
+//                customer.getReviews().clear();
+//            }
+//            
+//            if(customer.getTransactions().size() > 0)
+//            {
+//                customer.getTransactions().clear();
+//            }
+//            
+//            if(customer.getReservations().size() > 0)
+//            {
+//                customer.getReservations().clear();
+//            }
+             
             
             System.out.println("Disassociation completed!");
 

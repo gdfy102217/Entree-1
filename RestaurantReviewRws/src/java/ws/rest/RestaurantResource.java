@@ -7,9 +7,13 @@ package ws.rest;
 
 import ejb.session.stateless.RestaurantSessionBeanLocal;
 import entity.Customer;
+import entity.CustomerVoucher;
+import entity.Dish;
 import entity.Promotion;
+import entity.Reservation;
 import entity.Restaurant;
 import entity.Review;
+import entity.SaleTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -59,11 +63,41 @@ public class RestaurantResource {
             for (Restaurant restaurant: restaurants){
                 restaurant.setBankAccount(null);
                 restaurant.getReservations().clear();
-                restaurant.getReviews().clear();
                 restaurant.getTransactions().clear();
                 restaurant.getCustomerVouchers().clear();
+                
+                for(Promotion promo:restaurant.getPromotions()){
+                    promo.setRestaurant(null);
+                }
+//                for(Reservation res:restaurant.getReservations()){
+//                    res.setRestaurant(null);
+////                    res.setCustomer(customer);
+//                }
+                for(Review rw: restaurant.getReviews()){
+                    rw.setReceiver(null);
+                    Customer tempCust = new Customer();
+                    tempCust.setFirstName(rw.getCreater().getFirstName());
+                    tempCust.setLastName(rw.getCreater().getLastName());
+                    rw.setCreater(tempCust);
+                }
+//                for(SaleTransaction t: restaurant.getTransactions()){
+//                    t.setRestaurant(null);
+//                    
+//                }
+//                for(CustomerVoucher cv: restaurant.getCustomerVouchers()){
+//                    cv.setRestaurant(null);
+//                    cv.set
+//                }
+                
+                
+                
+                
+//                restaurant.getReservations().clear();
+//                restaurant.getReviews().clear();
+//                restaurant.getTransactions().clear();
+//                restaurant.getCustomerVouchers().clear();
             }
-
+            
             GenericEntity<List<Restaurant>> genericEntity = new GenericEntity<List<Restaurant>>(restaurants) {
             };
 

@@ -82,12 +82,12 @@ public class VoucherResource {
                     cv.setRestaurant(dummyRestaurant);
                 }
 
-                if (cv.getTransaction() != null) {
+                if (cv.getSaleTransaction() != null) {
                     SaleTransaction dummyTransaction = new SaleTransaction();
-                    dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
-                    dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
-                    dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
-                    cv.setTransaction(dummyTransaction);
+                    dummyTransaction.setTransactionId(cv.getSaleTransaction().getTransactionId());
+                    dummyTransaction.setTransactionDate(cv.getSaleTransaction().getTransactionDate());
+                    dummyTransaction.setPaidAmount(cv.getSaleTransaction().getPaidAmount());
+                    cv.setSaleTransaction(dummyTransaction);
                 }
             }
 
@@ -158,12 +158,12 @@ public class VoucherResource {
                     cv.setRestaurant(dummyRestaurant);
                 }
                 
-                if (cv.getTransaction() != null) {
+                if (cv.getSaleTransaction() != null) {
                     SaleTransaction dummyTransaction = new SaleTransaction();
-                    dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
-                    dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
-                    dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
-                    cv.setTransaction(dummyTransaction);
+                    dummyTransaction.setTransactionId(cv.getSaleTransaction().getTransactionId());
+                    dummyTransaction.setTransactionDate(cv.getSaleTransaction().getTransactionDate());
+                    dummyTransaction.setPaidAmount(cv.getSaleTransaction().getPaidAmount());
+                    cv.setSaleTransaction(dummyTransaction);
                 }
             }
 
@@ -188,12 +188,12 @@ public class VoucherResource {
         {
             CustomerVoucher cv = voucherSessionBeanLocal.retrieveCustomerVoucherById(customerVoucherId);
 
-            if (cv.getTransaction() != null) {
+            if (cv.getSaleTransaction() != null) {
                 SaleTransaction dummyTransaction = new SaleTransaction();
-                dummyTransaction.setTransactionId(cv.getTransaction().getTransactionId());
-                dummyTransaction.setTransactionDate(cv.getTransaction().getTransactionDate());
-                dummyTransaction.setPaidAmount(cv.getTransaction().getPaidAmount());
-                cv.setTransaction(dummyTransaction);
+                dummyTransaction.setTransactionId(cv.getSaleTransaction().getTransactionId());
+                dummyTransaction.setTransactionDate(cv.getSaleTransaction().getTransactionDate());
+                dummyTransaction.setPaidAmount(cv.getSaleTransaction().getPaidAmount());
+                cv.setSaleTransaction(dummyTransaction);
             }
             
             if (cv.getVoucher() != null) {

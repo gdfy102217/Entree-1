@@ -11,6 +11,8 @@ import entity.Reservation;
 import entity.Restaurant;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -87,27 +89,49 @@ public class ReservationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveMyReservationForCustomer(@QueryParam("customerId") Long customerId)
     {
+        List<Reservation> reservations = new ArrayList<>();
         try
         {
-            Reservation reservation = reservationSessionBeanLocal.retrieveReservationForCustomer(customerId);
+            System.out.println("!!!!!");
+            reservations = reservationSessionBeanLocal.retrieveReservationForCustomer(customerId);
             
-            Customer dummyCustomer = new Customer();
-            dummyCustomer.setId(customerId);
-            dummyCustomer.setFirstName(reservation.getCustomer().getFirstName());
-            dummyCustomer.setLastName(reservation.getCustomer().getLastName());
-            reservation.setCustomer(dummyCustomer);
+            for(Reservation res: reservations)
+            {
+                res.setCustomer(null);
+                res.getRestaurant().setBankAccount(null);
+                res.getRestaurant().setDishes(null);
+                res.getRestaurant().setCustomerVouchers(null);
+                res.getRestaurant().setPromotions(null);
+                res.getRestaurant().setTableConfiguration(null);
+                res.getRestaurant().setReservations(null);
+                res.getRestaurant().setReviews(null);
+                res.getRestaurant().setTransactions(null);
+            }
+            
+            
+//            Customer dummyCustomer = new Customer();
+//            dummyCustomer.setId(customerId);
+//            dummyCustomer.setFirstName(reservation.getCustomer().getFirstName());
+//            dummyCustomer.setLastName(reservation.getCustomer().getLastName());
+//            reservation.setCustomer(dummyCustomer);
             
             //detach its restaurant with other entities
-            Restaurant dummyRestaurant = new Restaurant();
-            dummyRestaurant.setId(reservation.getRestaurant().getId());
-            dummyRestaurant.setName(reservation.getRestaurant().getName());
-            reservation.setRestaurant(dummyRestaurant);
+//            Restaurant dummyRestaurant = new Restaurant();
+//            dummyRestaurant.setId(reservation.getRestaurant().getId());
+//            dummyRestaurant.setName(reservation.getRestaurant().getName());
+//            reservation.setRestaurant(dummyRestaurant);
                      
-            return Response.status(Status.OK).entity(reservation).build();
+            GenericEntity<List<Reservation>> genericEntity = new GenericEntity<List<Reservation>>(reservations) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(ReservationNotFoundException ex)
         {
-            return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+            GenericEntity<List<Reservation>> genericEntity = new GenericEntity<List<Reservation>>(reservations) {
+            };
+
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(Exception ex)
         {
@@ -118,26 +142,29 @@ public class ReservationResource {
         
     @Path("retrieveRestaurantAvailableTableByTime")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveRestaurantAvailableTableByTime(@QueryParam("restaurantId") Long restaurantId, @QueryParam("date") String date, @QueryParam("time") double time)
     {
         try
         {
-            int[] availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
+            System.out.println("!!!!");
+            List<Integer> availabilityArr = reservationSessionBeanLocal.retrieveAvailableTableByTime(restaurantId, date, time);
             
-            JsonObject availabilityJson = Json.createObjectBuilder()
-                    .add("numOfLargeTable", availabilityArr[0])
-                    .add("numOfMediumTable", availabilityArr[1])
-                    .add("numOfSmallTable", availabilityArr[2])
-                    .build();
             
-            System.out.println(availabilityJson.toString());
             
-//            GenericEntity<JsonObject> genericEntity = new GenericEntity<JsonObject>(res) {
-//            };
+//            JsonObject availabilityJson = Json.createObjectBuilder()
+//                    .add("numOfLargeTable", availabilityArr[0])
+//                    .add("numOfMediumTable", availabilityArr[1])
+//                    .add("numOfSmallTable", availabilityArr[2])
+//                    .build();
+            
+//            System.out.println(availabilityJson.toString());
+            
+          GenericEntity<List<Integer>> genericEntity = new GenericEntity<List<Integer>>(availabilityArr) {
+            };
 
-            return Response.status(Status.OK).entity(availabilityJson).build();
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(Exception ex)
         {
@@ -148,13 +175,17 @@ public class ReservationResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response createNewReservation(Reservation newReservation, @QueryParam("customerId") Long customerId,
-            @QueryParam("restaurantId") Long restaurantId)
+    public Response createNewReservation(Reservation newReservation)
     {
+        System.out.println("Create Reservation service called!!!!!!!!!");
+        System.out.println(newReservation);
         if(newReservation != null)
         {
             try
             {
+                Long customerId = newReservation.getCustomer().getUserId();
+                Long restaurantId = newReservation.getRestaurant().getUserId();
+                newReservation.setTimeOfCreation(LocalDateTime.now());
                 Reservation reservation = reservationSessionBeanLocal.createNewReservation(newReservation, customerId, restaurantId);
 
                 return Response.status(Response.Status.OK).entity(reservation.getReservationId()).build();
@@ -173,7 +204,7 @@ public class ReservationResource {
     @DELETE
     @Path("deleteReservation")
     @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteReservation(@QueryParam("reservationId") Long reservationId)
     {
         if(reservationId != null)
@@ -182,7 +213,8 @@ public class ReservationResource {
             {
                 reservationSessionBeanLocal.deleteReservation(reservationId);
 
-                return Response.status(Response.Status.OK).entity("Reservation No." + reservationId + " is deleted!").build();
+//                return Response.status(Response.Status.OK).entity("Reservation No." + reservationId + " is deleted!").build();
+                return Response.status(Response.Status.OK).build();
             }
             catch(Exception ex)
             {

@@ -31,6 +31,7 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -125,12 +126,24 @@ public class DataInitSessionBean {
     
     private void initializeCustomerData()
     {
+        
+        
         try
         {
-            this.customerIdToTest = customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Customer", "One", "12345678"));
-            customerSessionBeanLocal.createNewCustomer(new Customer("custotwo@test.com", "password", "Customer", "Two", "87654321"));
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
+            String strDate = "10/23";
+            Date newDate = sdf.parse(strDate);
+            LocalDate localDate = newDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
+            this.customerIdToTest = customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Yuan", "Feng", "82327342"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("custtwo@test.com", "password", "Nich", "Teo", "98435722"));
+            
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", newDate, "Cust One"), 1L);
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("9999888877776666", "123", newDate, "Cust Two"), 2L);
+            
         }
-        catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException ex)
+        catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException |
+                CreateNewCreditCardException | CreditCardExistException | ParseException ex)
         {
             ex.printStackTrace();
         }
@@ -140,8 +153,10 @@ public class DataInitSessionBean {
     {
         try
         {
-            this.restaurantIdToTest = restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Restaurant One", "kent Ridge 1","111111", "66666666", true, "This is test Restaurant One", 8, 23), new TableConfiguration(2,3,4));
-            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Restaurant Two", "kent Ridge 2","111111", "77777777", false, "This is test Restaurant Two", 9, 22), null);
+            List<String> photos = new ArrayList<>();
+
+            this.restaurantIdToTest = restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Entree Restaurant", "#01-11, Kensington Square","732424", "64896545", true, " A quaint eco-conscious eatery hidden within the quiet Kensington Square that impresses with its straightforward approach", 8, 23), new TableConfiguration(2,3,4));
+            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Hans Im gluck", "62 Orchard Rd, International Building","238887", "65436342", false, "Our German Burger Bar's Philosophy declares Hans of the well-loved tale, HANS IM GLÜCK. ", 9, 22), null);
         }
         catch (UnknownPersistenceException | InputDataValidationException | RestaurantUsernameExistException | TableConfigurationExistException ex)
         {
@@ -158,12 +173,10 @@ public class DataInitSessionBean {
         
         LocalDate localDate = LocalDate.now();
         
-        Double localTime = 19.5;
-        
         try
         {
-            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, localTime, 2, TableSize.SMALL, "noooo"), 1l, 3l);
-            reservationSessionBeanLocal.createNewReservation(new Reservation(localDate, localTime, 8, TableSize.MEDIUM, "noooo"), 2l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 19.5, 2, TableSize.SMALL, "Round table"), 1l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 1.5, 8, TableSize.MEDIUM, "Baby chair required"), 2l, 3l);
         }
         catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {
@@ -177,8 +190,8 @@ public class DataInitSessionBean {
         
         try
         {
-            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Voucher1", localDate, new BigDecimal(10.00), new BigDecimal(9.00), true, "for testing"));
-            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Voucher2", localDate, new BigDecimal(50.00), new BigDecimal(45.00), true, "for testing"));
+            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Entree $10", localDate, new BigDecimal(10.00), new BigDecimal(9.00), true, "Enjoy your food"));
+            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Entree $50", localDate, new BigDecimal(50.00), new BigDecimal(45.00), true, "More food please"));
         }
         catch (UnknownPersistenceException | InputDataValidationException | VoucherExistException ex)
         {
@@ -193,16 +206,15 @@ public class DataInitSessionBean {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
             String strDate = "10/23";
             Date newDate = sdf.parse(strDate);
-            LocalDate localDate = newDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
              
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
-            
-            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", localDate, "Cust One"), 1L);
+           
             
         }
         catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerVoucherExistException |
-                CreateNewCreditCardException | CreditCardExistException | ParseException ex)
+               ParseException ex)
         {
             ex.printStackTrace();
         }
@@ -213,11 +225,11 @@ public class DataInitSessionBean {
     {
         try
         {
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing1", 5, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing2", 4, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing3", 3, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing4", 2, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("testing5", 1, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("recommended!!", 5, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("So so only", 4, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Not recommended", 3, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Highly recommended", 2, new ArrayList<>()), customerIdToTest, 4l);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Ok ok only leh", 1, new ArrayList<>()), customerIdToTest, 4l);
         }
         catch (UnknownPersistenceException | InputDataValidationException | ReviewExistException | CreateNewReviewException ex)
         {

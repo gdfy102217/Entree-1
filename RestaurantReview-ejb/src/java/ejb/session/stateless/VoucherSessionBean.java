@@ -125,15 +125,18 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
                 
                 em.persist(newCustomerVoucher);
                 SaleTransaction newSaleTransaction = new SaleTransaction(voucher.getPrice().doubleValue(), new Date());
-                newSaleTransaction.setCustomerVouchers(new ArrayList<>());
+                
 //                Long transactionId = transactionSessionBeanLocal.createTransactionForVoucher(newSaleTransaction, customerId, newCustomerVoucher);
+
                 em.persist(newSaleTransaction);
+                
                 newSaleTransaction.setCustomer(owner);
                 owner.getTransactions().add(newSaleTransaction);
                 newSaleTransaction.setCreditCard(owner.getCreditCard());
-                owner.getCreditCard().setTransaction(newSaleTransaction);
-                newSaleTransaction.getCustomerVouchers().add(newCustomerVoucher);
-                newCustomerVoucher.setTransaction(newSaleTransaction);
+//                owner.getCreditCard().setTransaction(newSaleTransaction);
+                newSaleTransaction.setCustomerVoucher(newCustomerVoucher);
+//                newSaleTransaction.getCustomerVouchers().add(newCustomerVoucher);
+                newCustomerVoucher.setSaleTransaction(newSaleTransaction);
                 
                 newCustomerVoucher.setOwner(owner);
                 owner.getCustomerVouchers().add(newCustomerVoucher);
@@ -235,7 +238,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
         {
             CustomerVoucher customerVoucherToRedeem = (CustomerVoucher) query.getSingleResult();
             customerVoucherToRedeem.getVoucher();
-            customerVoucherToRedeem.getTransaction();
+            customerVoucherToRedeem.getSaleTransaction();
             customerVoucherToRedeem.getOwner();
             
             return customerVoucherToRedeem;
@@ -298,7 +301,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
             for(CustomerVoucher customerVoucher: customerVouchers)
             {
                 customerVoucher.getVoucher();
-                customerVoucher.getTransaction();
+                customerVoucher.getSaleTransaction();
                 customerVoucher.getOwner();
             }
 

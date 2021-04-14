@@ -90,7 +90,8 @@ public class TransactionResource {
                     st.setBankAccount(dummyBankAccount);
                 }
                 
-                st.getCustomerVouchers().clear();
+//                st.getCustomerVouchers().clear();
+                st.setCustomerVoucher(null);
             }
 
             GenericEntity<List<SaleTransaction>> genericEntity = new GenericEntity<List<SaleTransaction>>(myTransactions) {

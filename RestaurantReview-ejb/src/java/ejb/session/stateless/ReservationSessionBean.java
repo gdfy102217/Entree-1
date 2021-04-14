@@ -9,13 +9,18 @@ import entity.Customer;
 import entity.Reservation;
 import entity.Restaurant;
 import entity.TableConfiguration;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -130,7 +135,7 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-    public List<Reservation> retrieveReservationsByRestaurantId(Long restaurantId, LocalDate date, Double reservationTime)
+    public List<Reservation> retrieveReservationsByRestaurantId(Long restaurantId, Date date, Double reservationTime)
     {
         Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.restaurant.userId = :inRestaurantId AND r.reservationDate = :inDate AND r.reservationTime = :inReservationTime");
         query.setParameter("inRestaurantId", restaurantId);
@@ -148,13 +153,40 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-    public int[] retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
+    public List<Reservation> retrieveReservationsById(Long restaurantId)
+    {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.restaurant.userId = :inRestaurantId");
+        query.setParameter("inRestaurantId", restaurantId);
+//        query.setParameter("inReservationTime", reservationTime);
+//        query.setParameter("inDate", date);
+        List<Reservation> reservations = query.getResultList();
+        
+        for(Reservation reservation:reservations)
+        {
+//            reservation.getCategoryEntity();
+//            reservation.getTagEntities().size();
+        }
+        
+        return reservations;
+    }
+    
+    @Override
+    public List<Integer> retrieveAvailableTableByTime(Long restaurantId, String date, double time) throws RestaurantNotFoundException
     {
         TableConfiguration tc = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId).getTableConfiguration();
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate d = LocalDate.parse(date, dtf);
+        Date d = new Date();
+        try
+        {
+            d = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (ParseException ex)
+        {
+            Logger.getLogger(ReservationSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         List<Reservation> reservationList = retrieveReservationsByRestaurantId(restaurantId, d, time);
         
+
         
         int numOfLargeAvailable = tc.getNumOfLargeTable();
         int numOfMediumAvailable = tc.getNumOfMediumTable();
@@ -171,7 +203,12 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
             }
         }
         
-        return new int[] {numOfLargeAvailable, numOfMediumAvailable, numOfSmallAvailable};
+        List<Integer> list = new ArrayList<>();
+        list.add(numOfSmallAvailable);
+        list.add(numOfMediumAvailable);
+        list.add(numOfLargeAvailable);
+        
+        return list;
     }
     
     @Override
@@ -193,15 +230,18 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
     }
     
     @Override
-    public Reservation retrieveReservationForCustomer(Long customerId) throws ReservationNotFoundException
+    public List<Reservation> retrieveReservationForCustomer(Long customerId) throws ReservationNotFoundException
     {
         Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.customer.userId = :inCustomerId");
         query.setParameter("inCustomerId", customerId);
-        Reservation reservation = (Reservation) query.getSingleResult();
         
-        if(reservation.getReservationId() != null)
+        List<Reservation> reservations = query.getResultList();
+        
+//        Reservation reservation = (Reservation) query.getSingleResult();
+        
+        if(reservations.size() > 0)
         {       
-            return reservation;
+            return reservations;
         }
         else
         {

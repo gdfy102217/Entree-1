@@ -71,8 +71,9 @@ public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLoc
                 em.persist(newTransaction);
                 newTransaction.setCustomer(customer);
                 customer.getTransactions().add(newTransaction);
-                newTransaction.getCustomerVouchers().add(customerVoucher);
-                customerVoucher.setTransaction(newTransaction);
+                newTransaction.setCustomerVoucher(customerVoucher);
+//                newTransaction.getCustomerVouchers().add(customerVoucher);
+                customerVoucher.setSaleTransaction(newTransaction);
                 
                 em.flush();
 
