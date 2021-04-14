@@ -125,6 +125,7 @@ public class CustomerResource
             for(CustomerVoucher cv:customer.getCustomerVouchers())
             {
                 cv.setOwner(null);
+                cv.setRestaurant(null);
                 cv.setSaleTransaction(null);
                 cv.setVoucher(null);
                 
@@ -132,6 +133,7 @@ public class CustomerResource
             
             for(SaleTransaction st: customer.getTransactions())
             {
+                st.setRestaurant(null);
                 st.setCreditCard(null);
                 st.setCustomer(null);
                 st.setCustomerVoucher(null);
