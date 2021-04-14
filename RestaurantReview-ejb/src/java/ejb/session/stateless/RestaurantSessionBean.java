@@ -9,7 +9,7 @@ import entity.BankAccount;
 import entity.Dish;
 import entity.Restaurant;
 import entity.TableConfiguration;
-import entity.Transaction;
+import entity.SaleTransaction;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +51,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     @EJB
     private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
     @EJB
-    private TransactionSessionBeanLocal transactionSessionBeanLocal;
+    private SaleTransactionSessionBeanLocal transactionSessionBeanLocal;
     
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
@@ -84,7 +84,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 
                 em.flush();
 
-                return newRestaurant.getUseId();
+                return newRestaurant.getUserId();
             }
             catch(PersistenceException ex)
             {
@@ -114,12 +114,12 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     @Override
     public List<Restaurant> retrieveAllRestaurants()
     {
-        Query query = em.createQuery("SELECT r FROM Restaurant r ORDER BY r.useId ASC");        
+        Query query = em.createQuery("SELECT r FROM Restaurant r ORDER BY r.userId ASC");        
         List<Restaurant> restaurants = query.getResultList();
         
         for(Restaurant restaurant: restaurants)
         {
-            restaurant.getDishs().size();
+            restaurant.getDishes().size();
             restaurant.getPromotions().size();
             restaurant.getReservations().size();
             restaurant.getReviews().size();
@@ -136,7 +136,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         if(restaurant != null)
         {
-            restaurant.getDishs().size();
+            restaurant.getDishes().size();
             restaurant.getReservations().size();
             return restaurant;
         }
@@ -171,7 +171,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         for(Restaurant restaurant:restaurants)
         {
-            restaurant.getDishs().size();
+            restaurant.getDishes().size();
             restaurant.getPromotions().size();
             restaurant.getReservations().size();
             restaurant.getReviews().size();
@@ -243,7 +243,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             if(restaurant != null)
             {
                 
-                Transaction newTransaction = new Transaction();
+                SaleTransaction newTransaction = new SaleTransaction();
                 newTransaction.setPaidAmount(restaurant.getCreditAmount());
                 newTransaction.setTransactionDate(new Date(new Date().getTime() + (60 * 60 * 1000)));
                 
@@ -274,13 +274,13 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     public Long updateRestaurant(Restaurant restaurant) 
             throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException
     {
-        if(restaurant != null && restaurant.getUseId()!= null)
+        if(restaurant != null && restaurant.getUserId()!= null)
         {
             Set<ConstraintViolation<Restaurant>>constraintViolations = validator.validate(restaurant);
         
             if(constraintViolations.isEmpty())
             {
-                Restaurant restaurantToUpdate = retrieveRestaurantById(restaurant.getUseId());
+                Restaurant restaurantToUpdate = retrieveRestaurantById(restaurant.getUserId());
 
                 //alr done in Bank Account SB
 //                if(bankAccountId != null && (!restaurantToUpdate.getBankAccount().getBankAccountId().equals(bankAccountId)))
@@ -307,7 +307,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 restaurantToUpdate.setCreditAmount(restaurant.getCreditAmount());
                 restaurantToUpdate.setDescription(restaurant.getDescription());
                 
-                return restaurantToUpdate.getUseId();
+                return restaurantToUpdate.getUserId();
                 
             }
             else

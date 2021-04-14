@@ -49,12 +49,12 @@ public class ReservationManagedBean implements Serializable
     
     private List<Reservation> filtedReservations;
     
-    private LocalDate selectedDate;
+    private Date selectedDate;
     
     public ReservationManagedBean()
     {
         selectedReservation = new Reservation();
-        selectedDate = LocalDate.now();
+        selectedDate = new Date();
         allReservations = new ArrayList<>();
         selectedReservations = new ArrayList<>();
     }
@@ -69,9 +69,11 @@ public class ReservationManagedBean implements Serializable
             
             for (Reservation res: allReservations)
             {
+                System.out.println(selectedDate);
                 if (res.getReservationDate().equals(getSelectedDate()))
                 {
                     selectedReservations.add(res);
+                    System.out.println(res);
                 }
             }
             
@@ -87,7 +89,7 @@ public class ReservationManagedBean implements Serializable
         //FacesContext.getCurrentInstance().getExternalContext().redirect();
     }
     
-    public void getSelectedReservationByDate(SelectEvent<LocalDate> event)
+    public void getSelectedReservationByDate(SelectEvent<Date> event)
     {
         
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -95,7 +97,7 @@ public class ReservationManagedBean implements Serializable
 //        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", event.getObject().format(formatter)));
         
         
-        System.out.println("GET selected reservation called!!!!!!" + event.getObject().format(formatter));
+//        System.out.println("GET selected reservation called!!!!!!" + event.getObject().format(formatter));
         selectedReservations.clear();
         
         for (Reservation res: allReservations)
@@ -168,12 +170,12 @@ public class ReservationManagedBean implements Serializable
         this.filtedReservations = filtedReservations;
     }
 
-    public LocalDate getSelectedDate()
+    public Date getSelectedDate()
     {
         return selectedDate;
     }
 
-    public void setSelectedDate(LocalDate selectedDate)
+    public void setSelectedDate(Date selectedDate)
     {
         this.selectedDate = selectedDate;
     }

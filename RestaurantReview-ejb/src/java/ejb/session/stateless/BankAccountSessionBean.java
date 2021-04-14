@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.BankAccount;
 import entity.Restaurant;
+import entity.SaleTransaction;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -134,6 +135,14 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     public void deleteBankAccount(Long bankAccountId) throws BankAccountNotFoundException
     {
         BankAccount bankAccountToRemove = retrieveBankAccountById(bankAccountId);
+        
+        bankAccountToRemove.getRestaurant().setBankAccount(null);
+        bankAccountToRemove.setRestaurant(new Restaurant());
+        for (SaleTransaction t: bankAccountToRemove.getTransactions())
+        {
+            t.setBankAccount(null);
+        }
+        bankAccountToRemove.getTransactions().clear();
         
         em.remove(bankAccountToRemove);
 

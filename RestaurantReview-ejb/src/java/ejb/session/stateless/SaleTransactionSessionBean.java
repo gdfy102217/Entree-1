@@ -6,19 +6,23 @@
 package ejb.session.stateless;
 
 import entity.Customer;
+import entity.CustomerVoucher;
 import entity.Restaurant;
-import entity.Transaction;
+import entity.SaleTransaction;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreateTransactionException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -28,8 +32,14 @@ import util.exception.UnknownPersistenceException;
  * @author zhiliangwang
  */
 @Stateless
-public class TransactionSessionBean implements TransactionSessionBeanLocal
+public class SaleTransactionSessionBean implements SaleTransactionSessionBeanLocal
 {
+
+    @EJB
+    private VoucherSessionBeanLocal voucherSessionBeanLocal;
+
+    @EJB
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
     
     @EJB
     private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
@@ -40,18 +50,71 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
-    public TransactionSessionBean()
+    public SaleTransactionSessionBean()
     {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
     
+    @Override
+    public Long createTransactionForVoucher(SaleTransaction newTransaction, Long customerId, CustomerVoucher customerVoucher) 
+            throws CreateTransactionException, UnknownPersistenceException, InputDataValidationException
+    {
+        Set<ConstraintViolation<SaleTransaction>>constraintViolations = validator.validate(newTransaction);
+        
+        if(constraintViolations.isEmpty())
+        {
+            try
+            {
+                Customer customer = customerSessionBeanLocal.retrieveCustomerById(customerId);
+                        
+                em.persist(newTransaction);
+                newTransaction.setCustomer(customer);
+                customer.getTransactions().add(newTransaction);
+                newTransaction.setCustomerVoucher(customerVoucher);
+//                newTransaction.getCustomerVouchers().add(customerVoucher);
+                customerVoucher.setSaleTransaction(newTransaction);
+                
+                em.flush();
+
+                return newTransaction.getTransactionId();
+            }
+            catch(PersistenceException ex)
+            {
+                if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
+                {
+                    if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
+                    {
+                        throw new CreateTransactionException();
+                    }
+                    else
+                    {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    }
+                }
+                else
+                {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }
+            }
+            catch(CustomerNotFoundException ex)
+            {
+                throw new CreateTransactionException("An error has occurred while creating the new transaction: " + ex.getMessage());
+            }
+        }
+        else
+        {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+                
+    }
+    
     
     @Override
-    public Long createCashOutTransaction(Transaction newTransaction, Long restaurantId) 
+    public Long createCashOutTransaction(SaleTransaction newTransaction, Long restaurantId) 
             throws CreateTransactionException, UnknownPersistenceException, RestaurantNotFoundException, InputDataValidationException
     {
-        Set<ConstraintViolation<Transaction>>constraintViolations = validator.validate(newTransaction);
+        Set<ConstraintViolation<SaleTransaction>>constraintViolations = validator.validate(newTransaction);
         
         if(constraintViolations.isEmpty())
         {
@@ -98,8 +161,18 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal
                 
     }
     
+    @Override
+    public List<SaleTransaction> retrieveTransactionsByCustomerId(Long customerId)
+    {
+        Query query = em.createQuery("SELECT st FROM SaleTransaction st WHERE st.customer.userId = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        List<SaleTransaction> saleTransactions = query.getResultList();
+        
+        return saleTransactions;
+    }
     
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Transaction>>constraintViolations)
+    
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<SaleTransaction>>constraintViolations)
     {
         String msg = "Input data validation error!:";
             

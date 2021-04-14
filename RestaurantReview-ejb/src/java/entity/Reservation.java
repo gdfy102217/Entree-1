@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,11 +17,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import util.enumeration.TableSize;
@@ -36,18 +35,25 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
     
-    @NotNull
-    @Column(nullable = false)
-    @FutureOrPresent
-    private LocalDate reservationDate;
+//    @NotNull
+//    @Column(nullable = false)
+//    @FutureOrPresent
+//    private LocalDate reservationDate;
     
     @NotNull
     @Column(nullable = false)
-    private LocalTime reservationTime;
+//    @FutureOrPresent
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date reservationDate;
+    
+    @NotNull
+    @Column(nullable = false)
+    private Double reservationTime;
     
     @NotNull
     @Column(nullable = false)
     private LocalDateTime timeOfCreation;
+    
     
     @NotNull
     @Column(nullable = false )
@@ -65,13 +71,14 @@ public class Reservation implements Serializable {
     @OneToOne(optional = false)
     private Restaurant restaurant;
     
-    @OneToOne(optional = false)
+ 
+    @ManyToOne
     private Customer customer;
 
     public Reservation() {
     }
 
-    public Reservation(LocalDate reservationDate, LocalTime reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
+    public Reservation(Date reservationDate, Double reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.timeOfCreation = LocalDateTime.now();
@@ -90,11 +97,11 @@ public class Reservation implements Serializable {
         this.reservationId = reservationId;
     }
 
-    public LocalDate getReservationDate() {
+    public Date getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservationDate(LocalDate reservationDate) {
+    public void setReservationDate(Date reservationDate) {
         this.reservationDate = reservationDate;
     }
 
@@ -172,12 +179,12 @@ public class Reservation implements Serializable {
         return "entity.Reservation[ id=" + reservationId + " ]";
     }
 
-    public LocalTime getReservationTime()
+    public Double getReservationTime()
     {
         return reservationTime;
     }
 
-    public void setReservationTime(LocalTime reservationTime)
+    public void setReservationTime(Double reservationTime)
     {
         this.reservationTime = reservationTime;
     }

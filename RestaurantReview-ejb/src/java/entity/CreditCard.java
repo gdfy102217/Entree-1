@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +23,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class CreditCard implements Serializable {
 
+
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,21 +40,26 @@ public class CreditCard implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-    @FutureOrPresent
-    @Temporal(javax.persistence.TemporalType.DATE)
+    private Boolean deleted;
+    
+    @NotNull
+    @Column(nullable = false)
+//    @FutureOrPresent
     private Date expiryDate;
     
     @NotNull
     @Column(nullable = false, length = 128)
     private String nameOnCard;
     
-    @ManyToOne(optional = false)
+
+    @OneToOne(mappedBy = "creditCard")
     private Customer owner;
     
-    @OneToOne(mappedBy = "creditCard")
-    private Transaction transaction;
-
+//    @OneToOne(mappedBy = "creditCard")
+//    private SaleTransaction transaction;
+    
     public CreditCard() {
+        deleted = false;
     }
 
     public CreditCard(String cardNumber, String cvv, Date expiryDate, String nameOnCard) {
@@ -59,8 +67,8 @@ public class CreditCard implements Serializable {
         this.cvv = cvv;
         this.expiryDate = expiryDate;
         this.nameOnCard = nameOnCard;
+        this.deleted = false;
     }
-    
     
     
     public Long getCreditCardId() {
@@ -110,15 +118,25 @@ public class CreditCard implements Serializable {
     public void setOwner(Customer owner) {
         this.owner = owner;
     }
-
-    public Transaction getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
     
+    public Boolean getDeleted()
+    {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted)
+    {
+        this.deleted = deleted;
+    }
+
+//    public SaleTransaction getTransaction() {
+//        return transaction;
+//    }
+//
+//    public void setTransaction(SaleTransaction transaction) {
+//        this.transaction = transaction;
+//    }
+//    
     
 
     @Override

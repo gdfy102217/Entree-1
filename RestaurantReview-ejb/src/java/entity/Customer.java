@@ -34,27 +34,33 @@ public class Customer extends User implements Serializable {
     
     private Integer customerLevel;
 
-    @OneToMany(mappedBy = "owner")
-    private List<CreditCard> creditCards;
+    @OneToOne
+    private CreditCard creditCard;
     
-    @OneToOne(mappedBy = "customer")
-    private List<Reservation> reservation;
+//
+//    @OneToOne(mappedBy = "customer")
+//    private List<Reservation> reservation;
+
+
+    @OneToMany(mappedBy = "customer")
+    private List<Reservation> reservations;
+
     
     @OneToMany(mappedBy = "creater")
     private List<Review> reviews;
     
     @OneToMany(mappedBy = "customer")
-    private List<Transaction> transactions;
+    private List<SaleTransaction> transactions;
     
     @OneToMany(mappedBy = "owner")
     private List<CustomerVoucher> customerVouchers;
 
     public Customer() {
         super();
-        creditCards = new ArrayList<>();
         reviews = new ArrayList<>();
         transactions =  new ArrayList<>();
         customerVouchers = new ArrayList<>();
+        this.customerLevel = 1;
     }
 
 
@@ -68,11 +74,11 @@ public class Customer extends User implements Serializable {
     
 
     public Long getId() {
-        return super.getUseId();
+        return super.getUserId();
     }
 
     public void setId(Long id) {
-        super.setUseId(id);
+        super.setUserId(id);
     }
 
     public String getFirstName() {
@@ -99,12 +105,12 @@ public class Customer extends User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<CreditCard> getCreditCards() {
-        return creditCards;
+    public CreditCard getCreditCard() {
+        return creditCard;
     }
 
-    public void setCreditCards(List<CreditCard> creditCards) {
-        this.creditCards = creditCards;
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 
     public List<Review> getReviews() {
@@ -115,11 +121,11 @@ public class Customer extends User implements Serializable {
         this.reviews = reviews;
     }
 
-    public List<Transaction> getTransactions() {
+    public List<SaleTransaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(List<SaleTransaction> transactions) {
         this.transactions = transactions;
     }
 
@@ -136,7 +142,7 @@ public class Customer extends User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (super.getUseId() != null ? super.getUseId().hashCode() : 0);
+        hash += (super.getUserId() != null ? super.getUserId().hashCode() : 0);
         return hash;
     }
 
@@ -165,17 +171,27 @@ public class Customer extends User implements Serializable {
     public void setCustomerLevel(Integer customerLevel) {
         this.customerLevel = customerLevel;
     }
-    
-    
-    public List<Reservation> getReservation()
+
+    public List<Reservation> getReservations()
     {
-        return reservation;
+        return reservations;
     }
 
-    public void setReservation(List<Reservation> reservation)
+    public void setReservations(List<Reservation> reservations)
     {
-        this.reservation = reservation;
+        this.reservations = reservations;
     }
+    
+    
+//    public List<Reservation> getReservation()
+//    {
+//        return reservations;
+//    }
+//
+//    public void setReservation(List<Reservation> reservations)
+//    {
+//        this.reservations = reservations;
+//    }
 
     
 }

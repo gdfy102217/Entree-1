@@ -65,27 +65,27 @@ public class Restaurant extends User implements Serializable {
     private TableConfiguration tableConfiguration;
     
     
-    @OneToMany(mappedBy = "restaurant")
-    private List<Dish> dishs;
+    @OneToMany
+    private List<Dish> dishes;
     
     @OneToMany(mappedBy = "restaurant")
     private List<Reservation> reservations;
     
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany
     private List<Promotion> promotions;
     
     @OneToMany(mappedBy = "receiver")
     private List<Review> reviews;
     
     @OneToMany(mappedBy = "restaurant")
-    private List<Transaction> transactions;
+    private List<SaleTransaction> transactions;
     
     @OneToMany(mappedBy = "restaurant")
     private List<CustomerVoucher> customerVouchers;
     
     public Restaurant() {
         super();
-        dishs = new ArrayList<>();
+        dishes = new ArrayList<>();
         reservations = new ArrayList<>();
         promotions = new ArrayList<>();
         reviews = new ArrayList<>();
@@ -114,14 +114,31 @@ public class Restaurant extends User implements Serializable {
         this.closeTime = closeTime;
         this.bankAccount = null;
     }
+    
+    public Restaurant(String email, String password, String name, String address, 
+            String postalCode, String contactNumber, Boolean acceptReservation, 
+            String description, Integer openTime, Integer closeTime, List<String> photos) {
+        super(email, password);
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.contactNumber = contactNumber;
+        this.photos = photos;
+        this.acceptReservation = acceptReservation;
+        this.creditAmount = 0.0;
+        this.description = description;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.bankAccount = null;
+    }
 
     
     public Long getId() {
-        return super.getUseId();
+        return super.getUserId();
     }
 
     public void setId(Long id) {
-        super.setUseId(id);
+        super.setUserId(id);
     }
 
     public String getName() {
@@ -188,12 +205,12 @@ public class Restaurant extends User implements Serializable {
         this.tableConfiguration = tableConfiguration;
     }
 
-    public List<Dish> getDishs() {
-        return dishs;
+    public List<Dish> getDishes() {
+        return dishes;
     }
 
-    public void setDishs(List<Dish> dishs) {
-        this.dishs = dishs;
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     public List<Promotion> getPromotions() {
@@ -212,11 +229,11 @@ public class Restaurant extends User implements Serializable {
         this.reviews = reviews;
     }
 
-    public List<Transaction> getTransactions() {
+    public List<SaleTransaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(List<SaleTransaction> transactions) {
         this.transactions = transactions;
     }
     

@@ -67,7 +67,7 @@ public class DishManagementManagedBean implements Serializable
     {
         currentRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
         //setDishes(dishSessionBeanLocal.retrieveAllDishesForParticularRestaurant(currentRestaurant.getId()));
-        dishes = currentRestaurant.getDishs();
+        dishes = currentRestaurant.getDishes();
     }
     
     
@@ -150,7 +150,7 @@ public class DishManagementManagedBean implements Serializable
             filePath = ("http://localhost:8080/RestaurantReview-war/uploadedFiles/" + event.getFile().getFileName());
             fileOutputStream.close();
             inputStream.close();
-            filePath = null;
+//            filePath = null;
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
         }

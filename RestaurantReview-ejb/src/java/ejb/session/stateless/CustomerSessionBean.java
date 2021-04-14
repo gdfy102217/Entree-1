@@ -56,7 +56,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 em.persist(newCustomer);
                 em.flush();
 
-                return newCustomer.getUseId();
+                return newCustomer.getUserId();
             }
             catch(PersistenceException ex)
             {
@@ -86,7 +86,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     @Override
     public List<Customer> retrieveAllCustomers()
     {
-        Query query = em.createQuery("SELECT c FROM Customer c ORDER BY c.useId ASC");        
+        Query query = em.createQuery("SELECT c FROM Customer c ORDER BY c.userId ASC");        
         List<Customer> customers = query.getResultList();
         
 //        for(Customer customer: customers)
@@ -153,6 +153,14 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         }
     }
     
+    @Override
+    public void changePassword(String newPassword, Long customerId) throws CustomerNotFoundException
+    {
+        Customer customerToChangePassword = retrieveCustomerById(customerId);
+        
+        customerToChangePassword.setPassword(newPassword);
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Customer>>constraintViolations)
     {
         String msg = "Input data validation error!:";
@@ -163,5 +171,36 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         }
         
         return msg;
+    }
+    
+    @Override
+    public Long updateCustomer(Customer customer) throws CustomerNotFoundException, InputDataValidationException
+    {
+        System.out.println("Customer name: " + customer.getFirstName());
+        
+        if(customer != null && customer.getUserId()!=null)
+        {
+            Set<ConstraintViolation<Customer>>constraintViolations = validator.validate(customer);
+        
+            if(constraintViolations.isEmpty())
+            {
+                Customer customerToUpdate = retrieveCustomerById(customer.getUserId());
+
+                    customerToUpdate.setFirstName(customer.getFirstName());
+                    customerToUpdate.setLastName(customer.getLastName());
+                    customerToUpdate.setEmail(customer.getEmail());
+                    customerToUpdate.setPhoneNumber(customer.getPhoneNumber());
+                    customerToUpdate.setPassword(customer.getPassword());
+                    return customerToUpdate.getUserId();
+            }
+            else
+            {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        }
+        else 
+        {
+            throw new CustomerNotFoundException("Customer ID not provided for customer to be updated");
+        }
     }
 }

@@ -38,9 +38,7 @@ public class Dish implements Serializable {
     
     
     private Boolean recommended;
-    
-    @ManyToOne(optional = false)
-    private Restaurant restaurant;
+
 
     public Dish() {
     }
@@ -103,13 +101,6 @@ public class Dish implements Serializable {
         this.recommended = recommended;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
     
     
 
