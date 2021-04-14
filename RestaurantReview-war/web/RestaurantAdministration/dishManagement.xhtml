@@ -53,8 +53,8 @@
                 </p:column>
 
                 <p:column headerText="Action" >
-                    <p:commandButton oncomplete="PF('dialogViewDish').show()" icon="ui-icon-document" title="View">
-                        <f:setPropertyActionListener value="#{dish}" target="#{dishManagementManagedBean.dishToView}" />
+                    <p:commandButton update="formViewDish" oncomplete="PF('dialogViewDish').show()" icon="ui-icon-document" title="View">
+                        <f:setPropertyActionListener value="#{dish}" target="#{dishManagementManagedBean.dishToView}"/>
                     </p:commandButton>
                     <p:commandButton actionListener="#{dishManagementManagedBean.doUpdateDish}" update="formUpdateDish" oncomplete="PF('dialogUpdateDish').show()" icon="ui-icon-pencil" title="Update">
                         <f:attribute name="dishToUpdate" value="#{dish}" />
@@ -159,9 +159,11 @@
 
         </h:form>
         
-        <p:dialog id="dialogViewDish" widgetVar="dialogViewDish" header="View Dish" closable="true">
-            <p:graphicImage url="#{dishManagementManagedBean.dishToView.photo}" width="100%" />
+        <h:form id="formViewDish">
+        <p:dialog id="dialogViewDish" widgetVar="dialogViewDish" header="View Dish" closable="true" >
+            <p:graphicImage url="#{dishManagementManagedBean.dishToView.photo}" width="80%" style="display: block; margin: 0px auto;"/>
         </p:dialog>
+        </h:form>
 
         <h:form id="formUpdateDish">
 
