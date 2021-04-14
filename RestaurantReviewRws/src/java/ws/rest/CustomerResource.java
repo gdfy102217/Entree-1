@@ -179,6 +179,55 @@ public class CustomerResource
 //            }
              
             
+            for(SaleTransaction st: customer.getTransactions())
+            {
+                st.setCreditCard(null);
+                st.setCustomer(null);
+                st.setCustomerVoucher(null);
+                st.setBankAccount(null);
+            }
+            
+            for(Review r: customer.getReviews())
+            {
+                r.setReceiver(null); 
+                r.setCreater(null);
+            }
+            
+            for(Reservation rv: customer.getReservations())
+            {
+                rv.setCustomer(null);
+                rv.setRestaurant(null);
+                rv.setTableSizeAssigned(null);
+                
+            }
+            
+//            customer.getCustomerVouchers().clear();
+//            customer.getReviews().clear();
+//            customer.getTransactions().clear();
+//            customer.getReservations().clear();
+            
+//            if (customer.getCustomerVouchers().size() > 0)
+//            {
+//                customer.getCustomerVouchers().clear();
+//            }
+            
+//            customer.getCustomerVouchers().clear();
+//            if (customer.getReviews().size() > 0)
+//            {
+//                customer.getReviews().clear();
+//            }
+//            
+//            if(customer.getTransactions().size() > 0)
+//            {
+//                customer.getTransactions().clear();
+//            }
+//            
+//            if(customer.getReservations().size() > 0)
+//            {
+//                customer.getReservations().clear();
+//            }
+             
+            
             System.out.println("Disassociation completed!");
 
             GenericEntity<Customer> genericEntity = new GenericEntity<Customer>(customer) {
