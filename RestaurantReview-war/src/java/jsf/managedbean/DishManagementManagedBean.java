@@ -107,6 +107,13 @@ public class DishManagementManagedBean implements Serializable
         }
     }
     
+    public void deletePhoto(ActionEvent event){
+        System.out.println("********** DishManagementManagedBean.deletePhoto()");
+        
+        dishToUpdate.setPhoto(null);
+       
+    }
+    
     public void handleFileUpload(FileUploadEvent event)
     {
         try

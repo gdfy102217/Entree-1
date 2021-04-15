@@ -171,7 +171,7 @@
 
                 <p:messages id="messagesUpdateDish" redisplay="false" />
 
-                <p:panelGrid>
+                <p:panelGrid id="tableUpdateDish">
 
                     <p:row>
                         <p:column>
@@ -218,6 +218,11 @@
                             <p:autoUpdate />
                         </p:messages>    
                         <p:column>
+                            <p:graphicImage url="#{dishManagementManagedBean.dishToUpdate.photo}" style="max-width: 30%"/>
+                            <br />
+                            <p:commandButton icon="ui-icon-trash" value="Delete Photos" actionListener="#{dishManagementManagedBean.deletePhoto}" update="formAllDishes:dataTableAllDishes formUpdateDish:tableUpdateDish">
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete the dish photo?" icon="ui-icon-alert" />
+                    </p:commandButton>
                             <p:fileUpload listener="#{dishManagementManagedBean.updatePhoto}" multiple="false" />
                         </p:column>
                     </p:row>
