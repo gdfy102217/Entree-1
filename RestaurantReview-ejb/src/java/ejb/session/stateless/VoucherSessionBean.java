@@ -271,9 +271,11 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
                 customerVoucherToRedeem.setRestaurant(restaurant);
                 Double transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue();
                 System.out.println("Start credit");
-                Double newAcmount = restaurant.getCreditAmount() + transferCredit;
-                restaurant.setCreditAmount(transferCredit);
+                Double newAmount = restaurant.getCreditAmount() + transferCredit;
+                restaurant.setCreditAmount(newAmount);
+                System.out.println("Credit tranferred!");
                 restaurant.getCustomerVouchers().add(customerVoucherToRedeem);
+                System.out.println("Added to customer voucher list!");
                 return restaurant;
             }
             
