@@ -31,8 +31,8 @@ public class CustomerVoucher implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerVoucherId;
     
-    @Column(nullable = false)
-    @NotNull
+//    @Column(nullable = false)
+//    @NotNull
     private Boolean redeemed;
     
     @FutureOrPresent
