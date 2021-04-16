@@ -107,7 +107,7 @@ public class CustomerResource
     
     @Path("customerLogin")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response customerLogin(@QueryParam("email") String username, @QueryParam("password") String password)
     {
@@ -125,10 +125,61 @@ public class CustomerResource
             for(CustomerVoucher cv:customer.getCustomerVouchers())
             {
                 cv.setOwner(null);
+                cv.setRestaurant(null);
                 cv.setSaleTransaction(null);
                 cv.setVoucher(null);
                 
             }
+            
+            for(SaleTransaction st: customer.getTransactions())
+            {
+                st.setRestaurant(null);
+                st.setCreditCard(null);
+                st.setCustomer(null);
+                st.setCustomerVoucher(null);
+                st.setBankAccount(null);
+            }
+            
+            for(Review r: customer.getReviews())
+            {
+                r.setReceiver(null); 
+                r.setCreater(null);
+            }
+            
+            for(Reservation rv: customer.getReservations())
+            {
+                rv.setCustomer(null);
+                rv.setRestaurant(null);
+                rv.setTableSizeAssigned(null);
+                
+            }
+            
+//            customer.getCustomerVouchers().clear();
+//            customer.getReviews().clear();
+//            customer.getTransactions().clear();
+//            customer.getReservations().clear();
+            
+//            if (customer.getCustomerVouchers().size() > 0)
+//            {
+//                customer.getCustomerVouchers().clear();
+//            }
+            
+//            customer.getCustomerVouchers().clear();
+//            if (customer.getReviews().size() > 0)
+//            {
+//                customer.getReviews().clear();
+//            }
+//            
+//            if(customer.getTransactions().size() > 0)
+//            {
+//                customer.getTransactions().clear();
+//            }
+//            
+//            if(customer.getReservations().size() > 0)
+//            {
+//                customer.getReservations().clear();
+//            }
+             
             
             for(SaleTransaction st: customer.getTransactions())
             {
@@ -179,7 +230,12 @@ public class CustomerResource
 //            }
              
             
-            return Response.status(Status.OK).entity(customer).build();
+            System.out.println("Disassociation completed!");
+
+            GenericEntity<Customer> genericEntity = new GenericEntity<Customer>(customer) {
+            };
+            
+            return Response.status(Status.OK).entity(genericEntity).build();
         }
         catch(InvalidLoginCredentialException ex)
         {
