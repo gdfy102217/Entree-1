@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -57,7 +58,7 @@ public class RestaurantManagedBean implements Serializable {
     private String newPassword;
     private String confirmPasswod;
     
-    private Double creditAmount;
+    private BigDecimal creditAmount;
     
     public RestaurantManagedBean() {
     }
@@ -229,12 +230,12 @@ public class RestaurantManagedBean implements Serializable {
         this.confirmPasswod = confirmPasswod;
     }
 
-    public Double getCreditAmount()
+    public BigDecimal getCreditAmount()
     {
         return creditAmount;
     }
 
-    public void setCreditAmount(Double creditAmount)
+    public void setCreditAmount(BigDecimal creditAmount)
     {
         this.creditAmount = creditAmount;
     }

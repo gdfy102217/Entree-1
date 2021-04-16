@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -54,7 +55,7 @@ public class Restaurant extends User implements Serializable {
     @Min(0)
     private Integer closeTime;
     
-    private double creditAmount;
+    private BigDecimal creditAmount;
     
     private String description;
     
@@ -92,7 +93,7 @@ public class Restaurant extends User implements Serializable {
         transactions = new ArrayList<>();
         acceptReservation = Boolean.TRUE;
         this.photos = new ArrayList<>();
-        this.creditAmount = 0.0;
+        this.creditAmount = BigDecimal.ZERO;
         this.bankAccount = null;
         customerVouchers = new ArrayList<>();
         this.photos = new ArrayList<>();
@@ -108,7 +109,7 @@ public class Restaurant extends User implements Serializable {
         this.contactNumber = contactNumber;
         this.photos = new ArrayList<>();
         this.acceptReservation = acceptReservation;
-        this.creditAmount = 0.0;
+        this.creditAmount = BigDecimal.ZERO;
         this.description = description;
         this.openTime = openTime;
         this.closeTime = closeTime;
@@ -125,7 +126,7 @@ public class Restaurant extends User implements Serializable {
         this.contactNumber = contactNumber;
         this.photos = photos;
         this.acceptReservation = acceptReservation;
-        this.creditAmount = 0.0;
+        this.creditAmount = BigDecimal.ZERO;
         this.description = description;
         this.openTime = openTime;
         this.closeTime = closeTime;
@@ -181,11 +182,11 @@ public class Restaurant extends User implements Serializable {
         this.acceptReservation = acceptReservation;
     }
 
-    public double getCreditAmount() {
+    public BigDecimal getCreditAmount() {
         return creditAmount;
     }
 
-    public void setCreditAmount(double creditAmount) {
+    public void setCreditAmount(BigDecimal creditAmount) {
         this.creditAmount = creditAmount;
     }
 
