@@ -263,6 +263,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         reviewToRemove.setCreator(new Customer());
         reviewToRemove.getReceiver().getReviews().remove(reviewToRemove);
         reviewToRemove.setReceiver(new Restaurant());
+        reviewToRemove.getCustomerLikes().clear();
         
         em.remove(reviewToRemove);
 
