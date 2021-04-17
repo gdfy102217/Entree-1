@@ -6,11 +6,9 @@
 package jsf.managedbean;
 
 import ejb.session.stateless.RestaurantSessionBeanLocal;
-import ejb.session.stateless.TableConfigurationSessionBeanLocal;
 import entity.Restaurant;
 import entity.TableConfiguration;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -37,8 +34,6 @@ import util.exception.UnknownPersistenceException;
 public class RestaurantRegisterManagedBean implements Serializable
 {
 
-    @EJB
-    private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
     @EJB
     private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
     

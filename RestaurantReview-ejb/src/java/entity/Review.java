@@ -39,7 +39,7 @@ public class Review implements Serializable {
     
     private List<String> photos;
     
-    private Integer numOfLikes;
+    private List<Customer> listOfCustomerLikes;
     
     private Integer numOfDislikes;
     
@@ -61,7 +61,7 @@ public class Review implements Serializable {
         this.content = content;
         this.rating = rating;
         this.photos = photos;
-        this.numOfLikes = 0;
+        this.listOfCustomerLikes = new ArrayList<>();
         this.numOfDislikes = 0;
         this.timeOfCreation = new Date(new Date().getTime() + 1000);
     }
@@ -100,12 +100,12 @@ public class Review implements Serializable {
         this.photos = photos;
     }
 
-    public Integer getNumOfLikes() {
-        return numOfLikes;
+    public List<Customer> getListOfCustomerLikes() {
+        return listOfCustomerLikes;
     }
 
-    public void setNumOfLikes(Integer numOfLikes) {
-        this.numOfLikes = numOfLikes;
+    public void setListOfCustomerLikes(List<Customer> listOfCustomerLikes) {
+        this.listOfCustomerLikes = listOfCustomerLikes;
     }
 
     public Integer getNumOfDislikes() {
