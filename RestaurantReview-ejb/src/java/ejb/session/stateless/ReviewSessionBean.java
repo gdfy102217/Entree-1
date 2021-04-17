@@ -8,11 +8,8 @@ package ejb.session.stateless;
 import entity.Customer;
 import entity.Restaurant;
 import entity.Review;
-import entity.User;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,6 +21,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreateNewReviewException;
+import util.exception.CustomerInLikeListException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantNotFoundException;
@@ -70,7 +68,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                 Restaurant receiver = restaurantSessionBeanLocal.retrieveRestaurantById(receiverId);
                 
                 em.persist(newReview); 
-                newReview.setCreater(creater);
+                newReview.setCreator(creater);
                 creater.getReviews().add(newReview);
                 newReview.setReceiver(receiver);
                 receiver.getReviews().add(newReview);
@@ -206,11 +204,23 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     @Override
     public List<Review> retrieveReviewsByCustomerId(Long customerId)
     {
-        Query query = em.createQuery("SELECT r FROM Review r WHERE r.creater.userId = :inCustomerId ORDER BY r.reviewId ASC");
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.creator.userId = :inCustomerId ORDER BY r.reviewId ASC");
         query.setParameter("inCustomerId", customerId);
         List<Review> reviews = query.getResultList();
         
         return reviews;
+    }
+    
+    @Override
+    public void addCustomerToLikeList(Long customerId, Long reviewId) throws CustomerNotFoundException, ReviewNotFoundException, CustomerInLikeListException
+    {
+        Customer customer = customerSessionBeanLocal.retrieveCustomerById(customerId);
+        Review review = retrieveReviewById(reviewId);
+        
+        if (review.getCustomerLikes().contains(customer)) {
+            throw new CustomerInLikeListException();
+        }
+        review.getCustomerLikes().add(customer);
     }
     
     @Override
@@ -225,11 +235,11 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                 Review reviewToUpdate = retrieveReviewById(review.getReviewId());
 
                     reviewToUpdate.setContent(review.getContent());
-                    reviewToUpdate.setNumOfLikes(review.getNumOfLikes());
-                    reviewToUpdate.setPhotos(review.getPhotos());
+//                    reviewToUpdate.setPhotos(review.getPhotos());
                     reviewToUpdate.setRating(review.getRating());
-                    reviewToUpdate.setCreater(review.getCreater());
+                    reviewToUpdate.setCreator(review.getCreator());
                     reviewToUpdate.setReceiver(review.getReceiver());
+                    reviewToUpdate.setCustomerLikes(review.getCustomerLikes());
                     reviewToUpdate.setTimeOfCreation(review.getTimeOfCreation());
                     return reviewToUpdate.getReviewId();
             }
@@ -249,10 +259,11 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     {
         Review reviewToRemove = retrieveReviewById(reviewId);
         
-        reviewToRemove.getCreater().getReviews().remove(reviewToRemove);
-        reviewToRemove.setCreater(new Customer());
+        reviewToRemove.getCreator().getReviews().remove(reviewToRemove);
+        reviewToRemove.setCreator(new Customer());
         reviewToRemove.getReceiver().getReviews().remove(reviewToRemove);
         reviewToRemove.setReceiver(new Restaurant());
+        reviewToRemove.getCustomerLikes().clear();
         
         em.remove(reviewToRemove);
 

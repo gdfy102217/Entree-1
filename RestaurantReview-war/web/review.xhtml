@@ -38,12 +38,6 @@
                     <h:outputText value="#{review.rating}" />
                 </p:column>
                 
-                <p:column headerText="Photo" width="30%">
-                    <p:galleria value="#{review.photos}" var="image" panelWidth="380" panelHeight="200" rendered="#{review.photos.size() > 0}">
-                        <p:graphicImage url="#{image}" />
-                    </p:galleria>
-                    <h:outputText value="No Photos" rendered="#{review.photos.size() == 0}"/>
-                </p:column>
                 
                 <p:column headerText="No. of Likes" sortBy="#{review.numOfLikes}" filterBy="#{review.numOfLikes}" filterMatchMode="contains">
                     <h:outputText value="#{review.numOfLikes}" />

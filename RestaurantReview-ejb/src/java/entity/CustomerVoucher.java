@@ -49,7 +49,7 @@ public class CustomerVoucher implements Serializable {
     private Voucher voucher;
     
     
-    @OneToOne(mappedBy = "customerVoucher")
+    @OneToOne(mappedBy = "customerVoucher", optional = false)
     private SaleTransaction saleTransaction;
     
     @ManyToOne

@@ -5,48 +5,34 @@
  */
 package jsf.managedbean;
 
-import ejb.session.stateless.BankAccountSessionBeanLocal;
 import ejb.session.stateless.RestaurantSessionBeanLocal;
 import entity.BankAccount;
 import entity.Restaurant;
-import entity.TableConfiguration;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FileUploadEvent;
-import util.exception.BankAccountExistException;
 import util.exception.BankAccountNotFoundException;
 import util.exception.ChangePasswordException;
-import util.exception.CreateNewBankAccountException;
-import util.exception.CreateTransactionException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.TableConfigurationNotFoundException;
-import util.exception.UnknownPersistenceException;
 
 
 @Named(value = "restaurantManagedBean")
 @ViewScoped
 public class RestaurantManagedBean implements Serializable {
-
-    @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
     private RestaurantSessionBeanLocal restaurantSessionBeanLocal;

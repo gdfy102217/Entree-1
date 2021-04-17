@@ -31,8 +31,6 @@ public class Customer extends User implements Serializable {
     @NotNull
     @Column(nullable = false)
     private String phoneNumber;
-    
-    private Integer customerLevel;
 
     @OneToOne
     private CreditCard creditCard;
@@ -41,7 +39,7 @@ public class Customer extends User implements Serializable {
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
     
-    @OneToMany(mappedBy = "creater")
+    @OneToMany(mappedBy = "creator")
     private List<Review> reviews;
     
     @OneToMany(mappedBy = "customer")
@@ -55,7 +53,6 @@ public class Customer extends User implements Serializable {
         reviews = new ArrayList<>();
         transactions =  new ArrayList<>();
         customerVouchers = new ArrayList<>();
-        this.customerLevel = 1;
     }
 
 
@@ -64,7 +61,6 @@ public class Customer extends User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.customerLevel = 1;
     }
     
 
@@ -157,14 +153,6 @@ public class Customer extends User implements Serializable {
     @Override
     public String toString() {
         return "entity.Customer[ id=" + getId()+ " ]";
-    }
-
-    public Integer getCustomerLevel() {
-        return customerLevel;
-    }
-
-    public void setCustomerLevel(Integer customerLevel) {
-        this.customerLevel = customerLevel;
     }
 
     public List<Reservation> getReservations()

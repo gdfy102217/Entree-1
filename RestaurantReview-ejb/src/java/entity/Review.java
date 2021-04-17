@@ -37,32 +37,31 @@ public class Review implements Serializable {
     @Digits(integer = 1, fraction = 0)
     private Integer rating;
     
-    private List<String> photos;
+//    private List<String> photos;
     
-    private Integer numOfLikes;
-    
-    private Integer numOfDislikes;
+    @OneToMany
+    private List<Customer> customerLikes;
+
     
     @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date timeOfCreation;
     
-    @ManyToOne
-    private Customer creater;
+    @ManyToOne (optional = false)
+    private Customer creator;
     
-    @ManyToOne
+    @ManyToOne (optional = false)
     private Restaurant receiver;
     
     public Review() {
       
     }
 
-    public Review(String content, Integer rating, List<String> photos) {
+    public Review(String content, Integer rating) {
         this.content = content;
         this.rating = rating;
-        this.photos = photos;
-        this.numOfLikes = 0;
-        this.numOfDislikes = 0;
+//        this.photos = photos;
+        this.customerLikes = new ArrayList<>();
         this.timeOfCreation = new Date(new Date().getTime() + 1000);
     }
     
@@ -92,31 +91,24 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
-    public List<String> getPhotos() {
-        return photos;
-    }
+//    public List<String> getPhotos() {
+//        return photos;
+//    }
+//
+//    public void setPhotos(List<String> photos) {
+//        this.photos = photos;
+//    }
 
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
-    }
-
-    public Integer getNumOfLikes() {
-        return numOfLikes;
-    }
-
-    public void setNumOfLikes(Integer numOfLikes) {
-        this.numOfLikes = numOfLikes;
-    }
-
-    public Integer getNumOfDislikes() {
-        return numOfDislikes;
-    }
-
-    public void setNumOfDislikes(Integer numOfDislikes) {
-        this.numOfDislikes = numOfDislikes;
+    public List<Customer> getCustomerLikes() {
+        return customerLikes;
     }
 
 
+    public void setCustomerLikes(List<Customer> customerLikes) {
+        this.customerLikes = customerLikes;
+    }
+
+    
     
     @Override
     public int hashCode() {
@@ -151,12 +143,12 @@ public class Review implements Serializable {
         this.timeOfCreation = timeOfCreation;
     }
 
-    public Customer getCreater() {
-        return creater;
+    public Customer getCreator() {
+        return creator;
     }
 
-    public void setCreater(Customer creater) {
-        this.creater = creater;
+    public void setCreator(Customer creator) {
+        this.creator = creator;
     }
 
     public Restaurant getReceiver() {

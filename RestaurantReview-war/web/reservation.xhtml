@@ -48,10 +48,7 @@
                         <h:outputText value="#{reservation.customer.lastName} #{reservation.customer.firstName}" />
                     </p:column>
 
-                    <p:column headerText="No. Pax" sortBy="#{reservation.numOfPax}" filterMatchMode="contains">
-                        <h:outputText value="#{reservation.numOfPax}" />
-                    </p:column>
-
+                
                     <p:column headerText="Table Size" sortBy="#{reservation.tableSizeAssigned}" filterMatchMode="contains">
                         <h:outputText value="#{reservation.tableSizeAssigned}" />
                     </p:column>
@@ -117,15 +114,7 @@
                         <h:outputText value="0" />
                             </p:column>
                         </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel value="Number of Pax " />                                
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{reservationManagedBean.selectedReservation.numOfPax}" />
-                            </p:column>
-                        </p:row>
+  
 
                         <p:row>
                             <p:column>

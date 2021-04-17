@@ -73,6 +73,7 @@ public class VoucherResource {
                     Voucher dummyVoucher = new Voucher();
                     dummyVoucher.setTitle(cv.getVoucher().getTitle());
                     dummyVoucher.setContent(cv.getVoucher().getContent());
+                    dummyVoucher.setExpiryDate(cv.getVoucher().getExpiryDate());
                     cv.setVoucher(dummyVoucher);
                 }
                 

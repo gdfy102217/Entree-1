@@ -175,8 +175,8 @@ public class DataInitSessionBean {
         
         try
         {
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 19.5, 2, TableSize.SMALL, "Round table"), 1l, 3l);
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 1.5, 8, TableSize.MEDIUM, "Baby chair required"), 2l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 19.5, TableSize.SMALL, "Round table"), 1l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 1.5, TableSize.MEDIUM, "Baby chair required"), 2l, 3l);
         }
         catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {
@@ -225,11 +225,11 @@ public class DataInitSessionBean {
     {
         try
         {
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("recommended!!", 5, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("So so only", 4, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Not recommended", 3, new ArrayList<>()), customerIdToTest, restaurantIdToTest);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Highly recommended", 2, new ArrayList<>()), customerIdToTest, 4l);
-            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Ok ok only leh", 1, new ArrayList<>()), customerIdToTest, 4l);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("recommended!!", 5), customerIdToTest, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("So so only", 4), customerIdToTest, 4l);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Not recommended", 3), 2l, restaurantIdToTest);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Highly recommended", 2), customerIdToTest, 4l);
+            reviewSessionBeanLocal.createNewReviewForRestaurant(new Review("Ok ok only leh", 1), 2l, 4l);
         }
         catch (UnknownPersistenceException | InputDataValidationException | ReviewExistException | CreateNewReviewException ex)
         {

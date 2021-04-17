@@ -7,10 +7,7 @@ package ws.rest;
 
 import ejb.session.stateless.RestaurantSessionBeanLocal;
 import entity.Customer;
-import entity.CustomerVoucher;
-import entity.Dish;
 import entity.Promotion;
-import entity.Reservation;
 import entity.Restaurant;
 import entity.Review;
 import entity.SaleTransaction;
@@ -78,9 +75,10 @@ public class RestaurantResource {
                 for(Review rw: restaurant.getReviews()){
                     rw.setReceiver(null);
                     Customer tempCust = new Customer();
-                    tempCust.setFirstName(rw.getCreater().getFirstName());
-                    tempCust.setLastName(rw.getCreater().getLastName());
-                    rw.setCreater(tempCust);
+                    tempCust.setFirstName(rw.getCreator().getFirstName());
+                    tempCust.setLastName(rw.getCreator().getLastName());
+                    rw.setCreator(tempCust);
+                    rw.setCustomerLikes(null);
                 }
 //                for(SaleTransaction t: restaurant.getTransactions()){
 //                    t.setRestaurant(null);
@@ -157,15 +155,21 @@ public class RestaurantResource {
                 dummyReview.setReceiver(dummyReceiver);
                 
                 Customer dummyCreater = new Customer();
-                dummyCreater.setId(review.getCreater().getId());
-                dummyCreater.setFirstName(review.getCreater().getFirstName());
-                dummyCreater.setLastName(review.getCreater().getLastName());
-                dummyReview.setCreater(dummyCreater);
+                dummyCreater.setId(review.getCreator().getId());
+                dummyCreater.setFirstName(review.getCreator().getFirstName());
+                dummyCreater.setLastName(review.getCreator().getLastName());
+                dummyReview.setCreator(dummyCreater);
                 
+                dummyReview.setReviewId(review.getReviewId());
                 dummyReview.setContent(review.getContent());
-                dummyReview.setNumOfLikes(review.getNumOfLikes());
+                dummyReview.setCustomerLikes(new ArrayList<Customer>());
+                for (Customer customer: review.getCustomerLikes()){
+                    Customer dummyCustomer = new Customer();
+                    dummyCustomer.setUserId(customer.getUserId());
+                    dummyReview.getCustomerLikes().add(dummyCustomer);
+                }
                 dummyReview.setRating(review.getRating());
-                dummyReview.setPhotos(review.getPhotos());
+//                dummyReview.setPhotos(review.getPhotos());
                 dummyReview.setTimeOfCreation(review.getTimeOfCreation());
                 
                 dummyReviewList.add(dummyReview);
