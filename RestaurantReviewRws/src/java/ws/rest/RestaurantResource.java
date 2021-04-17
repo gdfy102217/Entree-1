@@ -14,7 +14,9 @@ import entity.Reservation;
 import entity.Restaurant;
 import entity.Review;
 import entity.SaleTransaction;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -115,6 +117,11 @@ public class RestaurantResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveRestaurantDetails(@QueryParam("restaurantId") Long restaurantId)
     {
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+    Date date = new Date();  
+    System.out.println(formatter.format(date));  
+        
         try
         {
             Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
@@ -122,11 +129,22 @@ public class RestaurantResource {
             restaurant.setBankAccount(null);
             restaurant.setPassword(null);
             restaurant.getReservations().clear();
+            List<Promotion> tempPromo = new ArrayList<>();
             
             for (Promotion promotion: restaurant.getPromotions())
             {
+//                System.out.println("Promotion img: " + promotion.getPhoto());
+//                System.out.println("New Date: " + today.toString());
                 promotion.setRestaurant(null);
+                if (promotion.getEndDate().after(new Date()))
+                {
+                    tempPromo.add(promotion);
+                    System.out.println("Promotion Id: " + promotion.getPromotionId());
+                    System.out.println("Promotion not expired!!!!");
+                }
             }
+            
+            restaurant.setPromotions(tempPromo);
             
             List<Review> dummyReviewList = new ArrayList<>();
             for (Review review: restaurant.getReviews())

@@ -37,13 +37,13 @@ public class Promotion implements Serializable {
     
     @NotNull
     @Column(nullable = false)  
-    @FutureOrPresent
+//    @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date startDate;
     
     @NotNull
     @Column(nullable = false)
-    @FutureOrPresent
+//    @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
 
