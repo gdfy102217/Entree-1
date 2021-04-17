@@ -145,7 +145,7 @@ public class RestaurantResource {
                 dummyReview.setCreater(dummyCreater);
                 
                 dummyReview.setContent(review.getContent());
-                dummyReview.setNumOfLikes(review.getNumOfLikes());
+                dummyReview.setCustomerLikes(review.getCustomerLikes());
                 dummyReview.setRating(review.getRating());
                 dummyReview.setPhotos(review.getPhotos());
                 dummyReview.setTimeOfCreation(review.getTimeOfCreation());

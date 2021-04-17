@@ -39,9 +39,8 @@ public class Review implements Serializable {
     
     private List<String> photos;
     
-    private Integer numOfLikes;
-    
-    private Integer numOfDislikes;
+    @OneToMany
+    private List<Customer> customerLikes;
     
     @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -61,8 +60,7 @@ public class Review implements Serializable {
         this.content = content;
         this.rating = rating;
         this.photos = photos;
-        this.numOfLikes = 0;
-        this.numOfDislikes = 0;
+        this.customerLikes = new ArrayList<>();
         this.timeOfCreation = new Date(new Date().getTime() + 1000);
     }
     
@@ -100,23 +98,15 @@ public class Review implements Serializable {
         this.photos = photos;
     }
 
-    public Integer getNumOfLikes() {
-        return numOfLikes;
+    public List<Customer> getCustomerLikes() {
+        return customerLikes;
     }
 
-    public void setNumOfLikes(Integer numOfLikes) {
-        this.numOfLikes = numOfLikes;
+    public void setCustomerLikes(List<Customer> customerLikes) {
+        this.customerLikes = customerLikes;
     }
 
-    public Integer getNumOfDislikes() {
-        return numOfDislikes;
-    }
-
-    public void setNumOfDislikes(Integer numOfDislikes) {
-        this.numOfDislikes = numOfDislikes;
-    }
-
-
+    
     
     @Override
     public int hashCode() {
