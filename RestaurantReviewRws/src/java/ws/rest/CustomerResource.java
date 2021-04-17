@@ -11,6 +11,7 @@ import entity.CustomerVoucher;
 import entity.Reservation;
 import entity.Review;
 import entity.SaleTransaction;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -144,6 +145,12 @@ public class CustomerResource
             {
                 r.setReceiver(null); 
                 r.setCreater(null);
+                r.setCustomerLikes(new ArrayList<Customer>());
+                for (Customer c: r.getCustomerLikes()){
+                    Customer dummyCustomer = new Customer();
+                    dummyCustomer.setUserId(customer.getUserId());
+                    r.getCustomerLikes().add(dummyCustomer);
+                }
             }
             
             for(Reservation rv: customer.getReservations())

@@ -10,6 +10,7 @@ import ejb.session.stateless.ReviewSessionBeanLocal;
 import entity.Customer;
 import entity.Restaurant;
 import entity.Review;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,6 +82,13 @@ public class ReviewResource {
                 dummyReceiver.setId(r.getReceiver().getId());
                 dummyReceiver.setName(r.getReceiver().getName());
                 r.setReceiver(dummyReceiver);
+                
+                r.setCustomerLikes(new ArrayList<Customer>());
+                for (Customer customer: r.getCustomerLikes()){
+                    Customer dummyCustomer = new Customer();
+                    dummyCustomer.setUserId(customer.getUserId());
+                    r.getCustomerLikes().add(dummyCustomer);
+                }
             }
 
             GenericEntity<List<Review>> genericEntity = new GenericEntity<List<Review>>(myReviews) {

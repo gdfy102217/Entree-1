@@ -75,6 +75,7 @@ public class RestaurantResource {
                     tempCust.setFirstName(rw.getCreater().getFirstName());
                     tempCust.setLastName(rw.getCreater().getLastName());
                     rw.setCreater(tempCust);
+                    rw.setCustomerLikes(null);
                 }
 //                for(SaleTransaction t: restaurant.getTransactions()){
 //                    t.setRestaurant(null);
@@ -140,8 +141,14 @@ public class RestaurantResource {
                 dummyCreater.setLastName(review.getCreater().getLastName());
                 dummyReview.setCreater(dummyCreater);
                 
+                dummyReview.setReviewId(review.getReviewId());
                 dummyReview.setContent(review.getContent());
-                dummyReview.setCustomerLikes(review.getCustomerLikes());
+                dummyReview.setCustomerLikes(new ArrayList<Customer>());
+                for (Customer customer: review.getCustomerLikes()){
+                    Customer dummyCustomer = new Customer();
+                    dummyCustomer.setUserId(customer.getUserId());
+                    dummyReview.getCustomerLikes().add(dummyCustomer);
+                }
                 dummyReview.setRating(review.getRating());
                 dummyReview.setPhotos(review.getPhotos());
                 dummyReview.setTimeOfCreation(review.getTimeOfCreation());
