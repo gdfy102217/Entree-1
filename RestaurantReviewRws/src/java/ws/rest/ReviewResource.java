@@ -30,6 +30,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.CustomerInLikeListException;
 import util.exception.ReviewNotFoundException;
 
 /**
@@ -178,6 +179,34 @@ public class ReviewResource {
         else
         {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update review request").build();
+        }
+    }
+    
+    @Path("addCustomerToLikeList")
+    @GET
+    public Response addCustomerToLikeList(@QueryParam("customerId") Long customerId, @QueryParam("reviewId") Long reviewId)
+    {
+        if(customerId != null && reviewId != null)
+        {
+            try
+            {
+                reviewSessionBeanLocal.addCustomerToLikeList(customerId, reviewId);
+
+                return Response.status(Response.Status.OK).entity("Add customer to list of like successfully!").build();
+            }
+            catch(CustomerInLikeListException ex)
+            {
+                String res = "Customer (ID: " + customerId + ") already like reivew (ID: " + reviewId + ")!";
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(res).build();
+            }
+            catch(Exception ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid add like request").build();
         }
     }
     

@@ -9,6 +9,8 @@ import entity.Review;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewReviewException;
+import util.exception.CustomerInLikeListException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.ReviewExistException;
 import util.exception.ReviewNotFoundException;
@@ -34,5 +36,7 @@ public interface ReviewSessionBeanLocal {
     public Review createNewReviewForRestaurant(Review newReview, Long createrId, Long receiverId) throws UnknownPersistenceException, InputDataValidationException, CreateNewReviewException, ReviewExistException;
 
     public Long updateReview(Review review) throws InputDataValidationException, ReviewNotFoundException;
+
+    public void addCustomerToLikeList(Long customerId, Long reviewId) throws CustomerNotFoundException, ReviewNotFoundException, CustomerInLikeListException;
 
 }

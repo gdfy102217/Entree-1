@@ -7,13 +7,9 @@ package ws.rest;
 
 import ejb.session.stateless.RestaurantSessionBeanLocal;
 import entity.Customer;
-import entity.CustomerVoucher;
-import entity.Dish;
 import entity.Promotion;
-import entity.Reservation;
 import entity.Restaurant;
 import entity.Review;
-import entity.SaleTransaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

@@ -41,6 +41,7 @@ public class Review implements Serializable {
     
     @OneToMany
     private List<Customer> customerLikes;
+
     
     @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -101,6 +102,7 @@ public class Review implements Serializable {
     public List<Customer> getCustomerLikes() {
         return customerLikes;
     }
+
 
     public void setCustomerLikes(List<Customer> customerLikes) {
         this.customerLikes = customerLikes;
