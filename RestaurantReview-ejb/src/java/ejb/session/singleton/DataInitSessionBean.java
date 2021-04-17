@@ -106,22 +106,22 @@ public class DataInitSessionBean {
         {
             initializeRestaurantData();
         }
-        if(em.find(Reservation.class, 1l) == null)
-        {
-            initializeReservationData();
-        }
+//        if(em.find(Reservation.class, 1l) == null)
+//        {
+//            initializeReservationData();
+//        }
         if(em.find(Voucher.class, 1l) == null)
         {
             initializeVoucherData();
         }
-        if(em.find(CustomerVoucher.class, 1l) == null)
-        {
-            initializeCustomerVoucherData();
-        }
-        if(em.find(Review.class, 1l) == null)
-        {
-            initializeReviewData();
-        }
+//        if(em.find(CustomerVoucher.class, 1l) == null)
+//        {
+//            initializeCustomerVoucherData();
+//        }
+//        if(em.find(Review.class, 1l) == null)
+//        {
+//            initializeReviewData();
+//        }
 
     }
     
@@ -131,23 +131,27 @@ public class DataInitSessionBean {
         
         try
         {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
-            String strDate = "10/23";
-            Date newDate = sdf.parse(strDate);
-            LocalDate localDate = newDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//            SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
+//            String strDate = "10/23";
+//            Date newDate = sdf.parse(strDate);
+//            LocalDate localDate = newDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             
             this.customerIdToTest = customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Yuan", "Feng", "82327342"));
             customerSessionBeanLocal.createNewCustomer(new Customer("custtwo@test.com", "password", "Nich", "Teo", "98435722"));
             
-            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", newDate, "Cust One"), 1L);
-            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("9999888877776666", "123", newDate, "Cust Two"), 2L);
+//            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("1111222233334444", "123", newDate, "Cust One"), 1L);
+//            creditCardSessionBeanLocal.createNewCreditCard(new CreditCard("9999888877776666", "123", newDate, "Cust Two"), 2L);
             
         }
-        catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException |
-                CreateNewCreditCardException | CreditCardExistException | ParseException ex)
+        catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException ex)
         {
             ex.printStackTrace();
         }
+//        catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException |
+//                CreateNewCreditCardException | CreditCardExistException | ParseException ex)
+//        {
+//            ex.printStackTrace();
+//        }
     }
     
     private void initializeRestaurantData()
