@@ -144,7 +144,7 @@ public class CustomerResource
             for(Review r: customer.getReviews())
             {
                 r.setReceiver(null); 
-                r.setCreater(null);
+                r.setCreator(null);
                 r.setCustomerLikes(new ArrayList<Customer>());
                 for (Customer c: r.getCustomerLikes()){
                     Customer dummyCustomer = new Customer();
@@ -199,7 +199,7 @@ public class CustomerResource
             for(Review r: customer.getReviews())
             {
                 r.setReceiver(null); 
-                r.setCreater(null);
+                r.setCreator(null);
             }
             
             for(Reservation rv: customer.getReservations())

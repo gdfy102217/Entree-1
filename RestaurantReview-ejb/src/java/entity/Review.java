@@ -47,10 +47,10 @@ public class Review implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date timeOfCreation;
     
-    @ManyToOne
-    private Customer creater;
+    @ManyToOne (optional = false)
+    private Customer creator;
     
-    @ManyToOne
+    @ManyToOne (optional = false)
     private Restaurant receiver;
     
     public Review() {
@@ -143,12 +143,12 @@ public class Review implements Serializable {
         this.timeOfCreation = timeOfCreation;
     }
 
-    public Customer getCreater() {
-        return creater;
+    public Customer getCreator() {
+        return creator;
     }
 
-    public void setCreater(Customer creater) {
-        this.creater = creater;
+    public void setCreator(Customer creator) {
+        this.creator = creator;
     }
 
     public Restaurant getReceiver() {

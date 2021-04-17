@@ -62,7 +62,7 @@ public class Restaurant extends User implements Serializable {
     @OneToOne
     private BankAccount bankAccount;
     
-    @OneToOne(optional = true)
+    @OneToOne
     private TableConfiguration tableConfiguration;
     
     
@@ -72,7 +72,7 @@ public class Restaurant extends User implements Serializable {
     @OneToMany(mappedBy = "restaurant")
     private List<Reservation> reservations;
     
-    @OneToMany
+    @OneToMany(mappedBy = "restaurant")
     private List<Promotion> promotions;
     
     @OneToMany(mappedBy = "receiver")

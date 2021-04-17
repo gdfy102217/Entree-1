@@ -77,7 +77,7 @@ public class ReviewResource {
             
             for (Review r: myReviews)
             {
-                r.setCreater(dummyCreater);
+                r.setCreator(dummyCreater);
                 Restaurant dummyReceiver = new Restaurant();
                 dummyReceiver.setId(r.getReceiver().getId());
                 dummyReceiver.setName(r.getReceiver().getName());
@@ -118,10 +118,10 @@ public class ReviewResource {
             Review review = reviewSessionBeanLocal.retrieveReviewById(reviewId);
             
             Customer dummyCreater = new Customer();
-            dummyCreater.setId(review.getCreater().getId()); 
-            dummyCreater.setFirstName(review.getCreater().getFirstName());
-            dummyCreater.setLastName(review.getCreater().getLastName());
-            review.setCreater(dummyCreater);
+            dummyCreater.setId(review.getCreator().getId()); 
+            dummyCreater.setFirstName(review.getCreator().getFirstName());
+            dummyCreater.setLastName(review.getCreator().getLastName());
+            review.setCreator(dummyCreater);
             
             Restaurant dummyReceiver = new Restaurant();
             dummyReceiver.setId(review.getReceiver().getId());

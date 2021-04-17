@@ -54,12 +54,6 @@ public class Reservation implements Serializable {
     @Column(nullable = false)
     private LocalDateTime timeOfCreation;
     
-    
-    @NotNull
-    @Column(nullable = false )
-    @Digits(integer = 2, fraction = 0)
-    private Integer numOfPax;
-    
     @NotNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -72,17 +66,16 @@ public class Reservation implements Serializable {
     private Restaurant restaurant;
     
  
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Customer customer;
 
     public Reservation() {
     }
 
-    public Reservation(Date reservationDate, Double reservationTime, Integer numOfPax, TableSize tableSizeAssigned, String remark) {
+    public Reservation(Date reservationDate, Double reservationTime, TableSize tableSizeAssigned, String remark) {
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.timeOfCreation = LocalDateTime.now();
-        this.numOfPax = numOfPax;
         this.tableSizeAssigned = tableSizeAssigned;
         this.remark = remark;
     }
@@ -111,14 +104,6 @@ public class Reservation implements Serializable {
 
     public void setTimeOfCreation(LocalDateTime timeOfCreation) {
         this.timeOfCreation = timeOfCreation;
-    }
-
-    public Integer getNumOfPax() {
-        return numOfPax;
-    }
-
-    public void setNumOfPax(Integer numOfPax) {
-        this.numOfPax = numOfPax;
     }
 
     public TableSize getTableSizeAssigned() {

@@ -175,8 +175,8 @@ public class DataInitSessionBean {
         
         try
         {
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 19.5, 2, TableSize.SMALL, "Round table"), 1l, 3l);
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 1.5, 8, TableSize.MEDIUM, "Baby chair required"), 2l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 19.5, TableSize.SMALL, "Round table"), 1l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 1.5, TableSize.MEDIUM, "Baby chair required"), 2l, 3l);
         }
         catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {

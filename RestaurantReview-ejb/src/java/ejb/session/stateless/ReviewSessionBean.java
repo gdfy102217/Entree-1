@@ -68,7 +68,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                 Restaurant receiver = restaurantSessionBeanLocal.retrieveRestaurantById(receiverId);
                 
                 em.persist(newReview); 
-                newReview.setCreater(creater);
+                newReview.setCreator(creater);
                 creater.getReviews().add(newReview);
                 newReview.setReceiver(receiver);
                 receiver.getReviews().add(newReview);
@@ -237,7 +237,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                     reviewToUpdate.setContent(review.getContent());
                     reviewToUpdate.setPhotos(review.getPhotos());
                     reviewToUpdate.setRating(review.getRating());
-                    reviewToUpdate.setCreater(review.getCreater());
+                    reviewToUpdate.setCreator(review.getCreator());
                     reviewToUpdate.setReceiver(review.getReceiver());
                     reviewToUpdate.setCustomerLikes(review.getCustomerLikes());
                     reviewToUpdate.setTimeOfCreation(review.getTimeOfCreation());
@@ -259,8 +259,8 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     {
         Review reviewToRemove = retrieveReviewById(reviewId);
         
-        reviewToRemove.getCreater().getReviews().remove(reviewToRemove);
-        reviewToRemove.setCreater(new Customer());
+        reviewToRemove.getCreator().getReviews().remove(reviewToRemove);
+        reviewToRemove.setCreator(new Customer());
         reviewToRemove.getReceiver().getReviews().remove(reviewToRemove);
         reviewToRemove.setReceiver(new Restaurant());
         

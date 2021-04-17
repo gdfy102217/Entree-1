@@ -72,9 +72,9 @@ public class RestaurantResource {
                 for(Review rw: restaurant.getReviews()){
                     rw.setReceiver(null);
                     Customer tempCust = new Customer();
-                    tempCust.setFirstName(rw.getCreater().getFirstName());
-                    tempCust.setLastName(rw.getCreater().getLastName());
-                    rw.setCreater(tempCust);
+                    tempCust.setFirstName(rw.getCreator().getFirstName());
+                    tempCust.setLastName(rw.getCreator().getLastName());
+                    rw.setCreator(tempCust);
                     rw.setCustomerLikes(null);
                 }
 //                for(SaleTransaction t: restaurant.getTransactions()){
@@ -136,10 +136,10 @@ public class RestaurantResource {
                 dummyReview.setReceiver(dummyReceiver);
                 
                 Customer dummyCreater = new Customer();
-                dummyCreater.setId(review.getCreater().getId());
-                dummyCreater.setFirstName(review.getCreater().getFirstName());
-                dummyCreater.setLastName(review.getCreater().getLastName());
-                dummyReview.setCreater(dummyCreater);
+                dummyCreater.setId(review.getCreator().getId());
+                dummyCreater.setFirstName(review.getCreator().getFirstName());
+                dummyCreater.setLastName(review.getCreator().getLastName());
+                dummyReview.setCreator(dummyCreater);
                 
                 dummyReview.setReviewId(review.getReviewId());
                 dummyReview.setContent(review.getContent());

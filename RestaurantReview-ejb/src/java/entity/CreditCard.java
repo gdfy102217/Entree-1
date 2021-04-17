@@ -44,7 +44,6 @@ public class CreditCard implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-//    @FutureOrPresent
     private Date expiryDate;
     
     @NotNull
@@ -55,8 +54,6 @@ public class CreditCard implements Serializable {
     @OneToOne(mappedBy = "creditCard")
     private Customer owner;
     
-//    @OneToOne(mappedBy = "creditCard")
-//    private SaleTransaction transaction;
     
     public CreditCard() {
         deleted = false;
