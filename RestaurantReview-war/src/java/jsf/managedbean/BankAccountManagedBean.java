@@ -11,6 +11,7 @@ import entity.BankAccount;
 import entity.Restaurant;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -46,7 +47,7 @@ public class BankAccountManagedBean implements Serializable
     private Restaurant currentRestaurant;
     private BankAccount bankAccount;
     
-    private Double creditAmount;
+    private BigDecimal creditAmount;
     
     public BankAccountManagedBean()
     {
@@ -91,7 +92,7 @@ public class BankAccountManagedBean implements Serializable
             Long newTransactionId = restaurantSessionBeanLocal.cashOutCredit(currentRestaurant.getId());
             Restaurant updatedRestaurant = restaurantSessionBeanLocal.retrieveRestaurantById(currentRestaurant.getId());
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", updatedRestaurant);            
-            creditAmount = new Double(0);
+            creditAmount = BigDecimal.ZERO;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cash out successfully! With transaction ID: " + newTransactionId, null));
         }
         catch(UnknownPersistenceException | CreateTransactionException | RestaurantNotFoundException | InputDataValidationException ex)
@@ -120,12 +121,12 @@ public class BankAccountManagedBean implements Serializable
         this.bankAccount = bankAccount;
     }
 
-    public Double getCreditAmount()
+    public BigDecimal getCreditAmount()
     {
         return creditAmount;
     }
 
-    public void setCreditAmount(Double creditAmount)
+    public void setCreditAmount(BigDecimal creditAmount)
     {
         this.creditAmount = creditAmount;
     }

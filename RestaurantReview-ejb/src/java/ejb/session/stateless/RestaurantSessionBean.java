@@ -10,6 +10,7 @@ import entity.Dish;
 import entity.Restaurant;
 import entity.TableConfiguration;
 import entity.SaleTransaction;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -250,7 +251,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 try
                 {
                     Long newTransactionId = transactionSessionBeanLocal.createCashOutTransaction(newTransaction, restaurantId);
-                    restaurant.setCreditAmount(0);
+                    restaurant.setCreditAmount(BigDecimal.ZERO);
                     return newTransactionId;
                 }
                 catch(CreateTransactionException ex)

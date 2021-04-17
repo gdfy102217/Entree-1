@@ -10,6 +10,7 @@ import entity.CustomerVoucher;
 import entity.Restaurant;
 import entity.SaleTransaction;
 import entity.Voucher;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,7 +125,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
                 Voucher voucher = retrieveVoucherById(voucherId);
                 
                 em.persist(newCustomerVoucher);
-                SaleTransaction newSaleTransaction = new SaleTransaction(voucher.getPrice().doubleValue(), new Date());
+                SaleTransaction newSaleTransaction = new SaleTransaction(voucher.getPrice(), new Date());
                 
 //                Long transactionId = transactionSessionBeanLocal.createTransactionForVoucher(newSaleTransaction, customerId, newCustomerVoucher);
 
@@ -231,15 +232,18 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     @Override
     public CustomerVoucher retrieveCustomerVoucherBySixDigitCode(String sixDigitCode) throws CustomerVoucherNotFoundException
     {
-        Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.sixDigitCode = :inSixDigitCode");
-        query.setParameter("inSixDigitCode", sixDigitCode); 
-        
+
         try 
         {
+            Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.sixDigitCode = :inSixDigitCode");
+            query.setParameter("inSixDigitCode", sixDigitCode); 
+            
+            System.out.println("****** Voucher Session Bean ****** Customer voucher to be redeemed found!!!!");
+            
             CustomerVoucher customerVoucherToRedeem = (CustomerVoucher) query.getSingleResult();
-            customerVoucherToRedeem.getVoucher();
-            customerVoucherToRedeem.getSaleTransaction();
-            customerVoucherToRedeem.getOwner();
+//            customerVoucherToRedeem.getVoucher();
+//            customerVoucherToRedeem.getSaleTransaction();
+//            customerVoucherToRedeem.getOwner();
             
             return customerVoucherToRedeem;
         }
@@ -255,8 +259,15 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     {
         try 
         {
+            
             Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
             CustomerVoucher customerVoucherToRedeem = retrieveCustomerVoucherBySixDigitCode(sixDigitCode);
+            System.out.println("****** Voucher Session Bean ****** Restaurant ID: " + restaurant.getUserId());
+            System.out.println("****** Voucher Session Bean ****** Customer Voucher ID: " + customerVoucherToRedeem.getOwner().getFirstName());
+            CustomerVoucher cvToUpdate = retrieveCustomerVoucherById(customerVoucherToRedeem.getCustomerVoucherId());
+            
+                
+            
             if (customerVoucherToRedeem.getRedeemed()) 
             {
                 throw new CustomerVoucherRedeemedException();
@@ -267,16 +278,27 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
             }
             else
             {
-                customerVoucherToRedeem.setRedeemed(true);
+                customerVoucherToRedeem.setRedeemed(Boolean.TRUE);
                 customerVoucherToRedeem.setRestaurant(restaurant);
-                Double transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue();
+                BigDecimal transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable();
                 System.out.println("Start credit");
-                Double newAmount = restaurant.getCreditAmount() + transferCredit;
+                BigDecimal newAmount = restaurant.getCreditAmount().add(transferCredit);
                 restaurant.setCreditAmount(newAmount);
                 System.out.println("Credit tranferred!");
                 restaurant.getCustomerVouchers().add(customerVoucherToRedeem);
                 System.out.println("Added to customer voucher list!");
                 return restaurant;
+                
+//                cvToUpdate.setRedeemed(Boolean.TRUE);
+//                cvToUpdate.setRestaurant(restaurant);
+//                BigDecimal transferCredit = cvToUpdate.getVoucher().getAmountRedeemable();
+//                System.out.println("Start credit");
+//                BigDecimal newAmount = restaurant.getCreditAmount().add(transferCredit);
+//                restaurant.setCreditAmount(newAmount);
+//                System.out.println("Credit tranferred!");
+//                restaurant.getCustomerVouchers().add(cvToUpdate);
+//                System.out.println("Added to customer voucher list!");
+//                return restaurant;
             }
             
             

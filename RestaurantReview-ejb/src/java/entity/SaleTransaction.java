@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ public class SaleTransaction implements Serializable {
     @NotNull
     @Column(nullable = false)
     @Digits(integer = 5, fraction = 2)
-    private Double paidAmount;
+    private BigDecimal paidAmount;
     
     @NotNull
     @Column(nullable = false)
@@ -64,7 +65,7 @@ public class SaleTransaction implements Serializable {
 //        this.customerVouchers = new ArrayList<>();
     }
 
-    public SaleTransaction(Double paidAmount, Date transactionDate) {
+    public SaleTransaction(BigDecimal paidAmount, Date transactionDate) {
         super();
         this.paidAmount = paidAmount;
         this.transactionDate = transactionDate;
@@ -80,11 +81,11 @@ public class SaleTransaction implements Serializable {
         this.transactionId = transactionId;
     }
 
-    public Double getPaidAmount() {
+    public BigDecimal getPaidAmount() {
         return paidAmount;
     }
 
-    public void setPaidAmount(Double paidAmount) {
+    public void setPaidAmount(BigDecimal paidAmount) {
         this.paidAmount = paidAmount;
     }
 
