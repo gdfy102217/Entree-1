@@ -217,10 +217,10 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         Customer customer = customerSessionBeanLocal.retrieveCustomerById(customerId);
         Review review = retrieveReviewById(reviewId);
         
-        if (review.getListOfCustomerLikes().contains(customer)) {
+        if (review.getCustomerLikes().contains(customer)) {
             throw new CustomerInLikeListException();
         }
-        review.getListOfCustomerLikes().add(customer);
+        review.getCustomerLikes().add(customer);
     }
     
     @Override
@@ -235,11 +235,11 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                 Review reviewToUpdate = retrieveReviewById(review.getReviewId());
 
                     reviewToUpdate.setContent(review.getContent());
-                    reviewToUpdate.setListOfCustomerLikes(review.getListOfCustomerLikes());
                     reviewToUpdate.setPhotos(review.getPhotos());
                     reviewToUpdate.setRating(review.getRating());
                     reviewToUpdate.setCreater(review.getCreater());
                     reviewToUpdate.setReceiver(review.getReceiver());
+                    reviewToUpdate.setCustomerLikes(review.getCustomerLikes());
                     reviewToUpdate.setTimeOfCreation(review.getTimeOfCreation());
                     return reviewToUpdate.getReviewId();
             }
@@ -263,7 +263,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         reviewToRemove.setCreater(new Customer());
         reviewToRemove.getReceiver().getReviews().remove(reviewToRemove);
         reviewToRemove.setReceiver(new Restaurant());
-        reviewToRemove.getListOfCustomerLikes().clear();
+        reviewToRemove.getCustomerLikes().clear();
         
         em.remove(reviewToRemove);
 
