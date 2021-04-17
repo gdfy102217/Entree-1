@@ -222,7 +222,7 @@ public class ReviewResource {
             {
                 reviewSessionBeanLocal.deleteReview(reviewId);
 
-                return Response.status(Response.Status.OK).entity(reviewId).build();
+                return Response.status(Response.Status.OK).entity("Review " + reviewId + " is deleted!").build();
             }
             catch(Exception ex)
             {
