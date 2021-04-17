@@ -15,6 +15,7 @@ import util.exception.CustomerVoucherExistException;
 import util.exception.CustomerVoucherExpiredException;
 import util.exception.CustomerVoucherNotFoundException;
 import util.exception.CustomerVoucherRedeemedException;
+import util.exception.DuplicatePurchaseException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -28,7 +29,7 @@ import util.exception.VoucherNotFoundException;
 @Local
 public interface VoucherSessionBeanLocal {
 
-    public Long createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException;
+    public Long createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException, DuplicatePurchaseException;
 
     public Voucher createNewVoucher(Voucher newVoucher) throws UnknownPersistenceException, InputDataValidationException, VoucherExistException;
 

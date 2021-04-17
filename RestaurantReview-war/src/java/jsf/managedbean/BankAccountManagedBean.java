@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import util.exception.BankAccountExistException;
+import util.exception.BankAccountNotFoundException;
 import util.exception.CreateNewBankAccountException;
 import util.exception.CreateTransactionException;
 import util.exception.InputDataValidationException;
@@ -83,6 +84,26 @@ public class BankAccountManagedBean implements Serializable
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
         }
     }
+    
+    public void updateBankAccount(ActionEvent event) throws IOException
+    {
+        try
+        {
+            System.out.println("Ceate Bank Account!!!!!!!!!!!");
+            BankAccount updatedBank = bankAccountSessionBeanLocal.updateBankAccount(bankAccount);
+//            bankAccountSessionBeanLocal.updateBankAccount(bankAccount);
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRestaurant", newRestaurant);            
+            bankAccount = updatedBank;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Bank Account " + updatedBank.getBankAccountId() + " updated successfully", null));
+//            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/bankAccountManagement.xhtml");
+        } catch (InputDataValidationException |
+                 BankAccountNotFoundException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
+        }
+    }
+    
+    
     
     public void cashOut(ActionEvent event)
     {

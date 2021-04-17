@@ -39,12 +39,12 @@
                 </p:column>
                 
                 
-                <p:column headerText="No. of Likes" sortBy="#{review.numOfLikes}" filterBy="#{review.numOfLikes}" filterMatchMode="contains">
-                    <h:outputText value="#{review.numOfLikes}" />
+                <p:column headerText="No. of Likes" sortBy="#{review.customerLikes.size()}" filterBy="#{review.customerLikes.size()}" filterMatchMode="contains">
+                    <h:outputText value="#{review.customerLikes.size()}" />
                 </p:column>
 
-                <p:column headerText="Created by: " sortBy="#{review.creater.firstName}" filterBy="#{review.creater.firstName}" filterMatchMode="contains">
-                    <h:outputText value="#{review.creater.firstName} #{review.creater.lastName}" />
+                <p:column headerText="Created by: " sortBy="#{review.creator.firstName}" filterBy="#{review.creator.firstName}" filterMatchMode="contains">
+                    <h:outputText value="#{review.creator.firstName} #{review.creator.lastName}" />
                 </p:column>
                 
                 <p:column headerText="Time of Creation" sortBy="#{review.timeOfCreation}" filterBy="#{review.timeOfCreation}" filterMatchMode="contains">

@@ -30,6 +30,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.DuplicatePurchaseException;
 
 /**
  * REST Web Service
@@ -241,6 +242,10 @@ public class VoucherResource {
                 
                 return Response.status(Response.Status.OK).entity(customerVoucherId).build();
             }				
+            catch(DuplicatePurchaseException ex)
+            {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+            }
             catch(Exception ex)
             {
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();

@@ -49,7 +49,7 @@
                         <p:autoUpdate />
                     </p:messages>
                     <p:commandButton id="createBankAccount" value="Create" update="formBankDetail" disabled="#{bankAccountManagedBean.bankAccount.bankAccountId != null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
-                    <p:commandButton id="updateBankAccount" value="Update" disabled="#{bankAccountManagedBean.bankAccount.bankAccountId == null}" actionListener="#{bankAccountManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="updateBankAccount" value="Update" disabled="#{bankAccountManagedBean.bankAccount.bankAccountId == null}" actionListener="#{bankAccountManagedBean.updateBankAccount}"/>
                 </p:panel>
 
                 <p:panel id="cashOutPanel" widgetVar="cashOutPanel" closable="true">

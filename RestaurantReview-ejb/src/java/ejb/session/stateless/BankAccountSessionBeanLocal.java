@@ -29,5 +29,7 @@ public interface BankAccountSessionBeanLocal {
     public BankAccount retrieveBankAccountById(Long bankAccountId) throws BankAccountNotFoundException;
 
     public void deleteBankAccount(Long bankAccountId) throws BankAccountNotFoundException;
+
+    public BankAccount updateBankAccount(BankAccount bankAccount) throws BankAccountNotFoundException, InputDataValidationException;
     
 }

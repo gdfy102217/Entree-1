@@ -48,6 +48,7 @@ import util.exception.CreditCardExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerUsernameExistException;
 import util.exception.CustomerVoucherExistException;
+import util.exception.DuplicatePurchaseException;
 import util.exception.InputDataValidationException;
 import util.exception.ReservationExistException;
 import util.exception.RestaurantUsernameExistException;
@@ -175,8 +176,8 @@ public class DataInitSessionBean {
         
         try
         {
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 19.5, TableSize.SMALL, "Round table"), 1l, 3l);
-            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, 1.5, TableSize.MEDIUM, "Baby chair required"), 2l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(currDate, 19.5, TableSize.SMALL, "Round table"), 1l, 3l);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(currDate, 1.5, TableSize.MEDIUM, "Baby chair required"), 2l, 3l);
         }
         catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {
@@ -190,7 +191,7 @@ public class DataInitSessionBean {
         
         try
         {
-            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Entree $10", localDate, new BigDecimal(10.00), new BigDecimal(9.00), true, "Enjoy your food"));
+            this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Entree $10", localDate.plusDays(1), new BigDecimal(10.00), new BigDecimal(9.00), true, "Enjoy your food"));
             this.voucherToTest = voucherSessionBeanLocal.createNewVoucher(new Voucher("Entree $50", localDate, new BigDecimal(50.00), new BigDecimal(45.00), true, "More food please"));
         }
         catch (UnknownPersistenceException | InputDataValidationException | VoucherExistException ex)
@@ -209,11 +210,11 @@ public class DataInitSessionBean {
             
              
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
-            voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), customerIdToTest);
+            voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucherToTest.getVoucherId(), 2l);
            
             
         }
-        catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerVoucherExistException |
+        catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerVoucherExistException | DuplicatePurchaseException|
                ParseException ex)
         {
             ex.printStackTrace();

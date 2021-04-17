@@ -99,6 +99,33 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
     
     @Override
+    public BankAccount updateBankAccount(BankAccount bankAccount) throws BankAccountNotFoundException, InputDataValidationException{
+         
+         System.out.println("Band account ID: " + bankAccount.getBankAccountId());
+        
+        if(bankAccount != null && bankAccount.getBankAccountId()!=null){
+            
+            Set<ConstraintViolation<BankAccount>>constraintViolations = validator.validate(bankAccount);
+        
+            if(constraintViolations.isEmpty())
+            {
+                BankAccount bankAccountToUpdate = retrieveBankAccountById(bankAccount.getBankAccountId());
+                
+                bankAccountToUpdate.setBankAccountNumber(bankAccount.getBankAccountNumber());
+                bankAccountToUpdate.setNameOfBank(bankAccount.getNameOfBank());
+                bankAccountToUpdate.setNameOfOwner(bankAccount.getNameOfOwner());
+                
+                return bankAccountToUpdate;
+
+            } else {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        } else {
+            throw new BankAccountNotFoundException("Bank Account ID " + bankAccount.getBankAccountId() + " does not exist!");
+        }
+     }
+    
+    @Override
     public List<BankAccount> retrieveAllBankAccounts()
     {
         Query query = em.createQuery("SELECT ba FROM BankAccount ba ORDER BY ba.bankAccountNumber ASC");        

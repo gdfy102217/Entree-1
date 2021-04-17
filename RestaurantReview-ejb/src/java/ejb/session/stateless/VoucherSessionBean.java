@@ -37,6 +37,7 @@ import util.exception.CustomerVoucherExistException;
 import util.exception.CustomerVoucherExpiredException;
 import util.exception.CustomerVoucherNotFoundException;
 import util.exception.CustomerVoucherRedeemedException;
+import util.exception.DuplicatePurchaseException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -113,7 +114,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     
     @Override
     public Long createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) 
-            throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException
+            throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException,DuplicatePurchaseException
     {
         Set<ConstraintViolation<CustomerVoucher>> constraintViolations = validator.validate(newCustomerVoucher);
         
@@ -123,6 +124,14 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
             {
                 Customer owner = customerSessionBeanLocal.retrieveCustomerById(customerId);
                 Voucher voucher = retrieveVoucherById(voucherId);
+                
+                for(CustomerVoucher cv: voucher.getCustomerVouchers()) 
+                {
+                    if(cv.getOwner().getUserId().equals(customerId))
+                    {
+                        throw new DuplicatePurchaseException("Each customer can only purchase the same voucher once.");
+                    }
+                }
                 
                 em.persist(newCustomerVoucher);
                 SaleTransaction newSaleTransaction = new SaleTransaction(voucher.getPrice(), new Date());
@@ -316,7 +325,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     @Override
     public List<CustomerVoucher> retrieveAllCustomerVouchersByCustomerId(Long customerId) throws CustomerVoucherNotFoundException
     {
-        Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.owner.userId = :inCustomerId ORDER BY cv.customerVoucherId ASC");
+        Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.owner.userId = :inCustomerId ORDER BY cv.voucher.expiryDate ASC");
         query.setParameter("inCustomerId", customerId);        
         
         try {
