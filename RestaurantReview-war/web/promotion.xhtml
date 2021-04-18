@@ -176,7 +176,7 @@
 
                 <p:messages id="messagesUpdatePromotion" redisplay="false" />
 
-                <p:panelGrid>
+                <p:panelGrid id="tableUpdatePromotion">
 
                     <p:row>
                         <p:column>
@@ -224,6 +224,11 @@
                             <p:autoUpdate />
                         </p:messages>    
                         <p:column>
+                            <p:graphicImage url="#{promotionManagedBean.promotionToUpdate.photo}" style="max-width: 30%"/>
+                            <br />
+                            <p:commandButton icon="ui-icon-trash" value="Delete Photos" actionListener="#{promotionManagedBean.deletePhoto}" update="formAllPromotions:dataTableAllPromotions formUpdatePromotion:tableUpdatePromotion">
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete the promotion photo?" icon="ui-icon-alert" />
+                    </p:commandButton>
                             <p:fileUpload listener="#{promotionManagedBean.updatePhoto}" multiple="false" />
                         </p:column>
                     </p:row>

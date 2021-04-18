@@ -94,6 +94,13 @@ public class PromotionManagedBean implements Serializable{
         setPromotionToView((Promotion)event.getComponent().getAttributes().get("promotionToView"));
     }
     
+    public void deletePhoto(ActionEvent event){
+        System.out.println("********** PromotionManagedBean.deletePhoto()");
+        
+        promotionToUpdate.setPhoto(null);
+       
+    }
+    
     public void handleFileUpload(FileUploadEvent event)
     {
         try
